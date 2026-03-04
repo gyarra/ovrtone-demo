@@ -1,5 +1,9 @@
 import Link from "next/link";
 
+export const metadata = {
+  title: "Ovrtone - Home",
+};
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center gap-4">

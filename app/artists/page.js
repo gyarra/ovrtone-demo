@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 const WireframeBox = ({ children, className = "", dashed = false, label, height, onClick, style = {} }) => (
   <div
@@ -75,6 +76,7 @@ const Note = ({ children }) => (
 
 /* ── Artist Result Card ── */
 const ArtistCard = ({ name, genre, price, rating, reviews, bandSize, bookings, isMobile }) => (
+  <Link href="/artists/band-1" style={{ textDecoration: "none", color: "inherit" }}>
   <WireframeBox style={{ padding: 0, overflow: "hidden", cursor: "pointer" }}>
     <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row" }}>
       {/* Thumbnail */}
@@ -110,6 +112,7 @@ const ArtistCard = ({ name, genre, price, rating, reviews, bandSize, bookings, i
       </div>
     </div>
   </WireframeBox>
+  </Link>
 );
 
 /* ── Filter Button (closed state) ── */
@@ -183,6 +186,8 @@ export default function ArtistSearchWireframe() {
   const [view, setView] = useState("desktop");
   const [openFilter, setOpenFilter] = useState(null);
   const [pageState, setPageState] = useState("filtered");
+  const [sortOption, setSortOption] = useState("low");
+  const [sortOpen, setSortOpen] = useState(false);
 
   const isMobile = view === "mobile";
   const containerWidth = isMobile ? 375 : 860;
@@ -257,25 +262,8 @@ export default function ArtistSearchWireframe() {
         transition: "width 0.3s ease",
       }}>
 
-        {/* ── 1. SEARCH BAR ── */}
-        <SectionLabel number="1">Search Bar</SectionLabel>
-        <WireframeBox style={{ padding: 0, overflow: "hidden" }} label="Search input — needs discussion">
-          <div style={{
-            display: "flex", alignItems: "center", gap: 10,
-            padding: isMobile ? 12 : 14, background: "#f8fafc",
-          }}>
-            <span style={{ fontSize: 16, color: "#94a3b8" }}>🔍</span>
-            <div style={{ flex: 1, color: "#94a3b8", fontSize: 13 }}>Search artists...</div>
-          </div>
-        </WireframeBox>
-        <Annotation>
-          Do we need this for MVP? Filters may be sufficient. Airbnb doesn&apos;t have text search.
-          Band name search is only useful if the client already knows the artist — not the core flow.
-          Recommendation: de-emphasize or defer. Lead with filters instead.
-        </Annotation>
-
-        {/* ── 2. FILTER BAR ── */}
-        <SectionLabel number="2">Filter Bar</SectionLabel>
+        {/* ── 1. FILTER BAR ── */}
+        <SectionLabel number="1">Filter Bar</SectionLabel>
         <Note>Horizontal button bar (Airbnb-style). Filters apply immediately — no &quot;Apply&quot; button needed.</Note>
 
         <div style={{
@@ -384,7 +372,7 @@ export default function ArtistSearchWireframe() {
         )}
 
         {/* ── 3. RESULTS HEADER ── */}
-        <SectionLabel number="3">Results Header</SectionLabel>
+        <SectionLabel number="2">Results Header</SectionLabel>
         <div style={{
           display: "flex", justifyContent: "space-between", alignItems: "center",
           flexWrap: "wrap", gap: 8,
@@ -398,13 +386,48 @@ export default function ArtistSearchWireframe() {
             </span>
           </div>
           {/* Sort */}
-          <WireframeBox style={{ padding: "6px 14px", display: "inline-flex", alignItems: "center", gap: 6 }}>
-            <span style={{ fontSize: 11, color: "#64748b" }}>Sort:</span>
-            <span style={{ fontSize: 11, fontWeight: 700, color: "#334155" }}>Price: Low → High ▾</span>
-          </WireframeBox>
+          <div style={{ position: "relative" }}>
+            <button
+              onClick={() => setSortOpen(!sortOpen)}
+              style={{
+                padding: "6px 14px", borderRadius: 8,
+                border: "1.5px solid #cbd5e1", background: "#f8fafc",
+                display: "inline-flex", alignItems: "center", gap: 6,
+                cursor: "pointer", fontSize: 11,
+              }}
+            >
+              <span style={{ color: "#64748b" }}>Sort:</span>
+              <span style={{ fontWeight: 700, color: "#334155" }}>
+                {sortOption === "low" ? "Price: Low → High" : "Price: High → Low"} {sortOpen ? "▲" : "▼"}
+              </span>
+            </button>
+            {sortOpen && (
+              <div style={{
+                position: "absolute", top: "calc(100% + 4px)", right: 0,
+                background: "#fff", border: "1.5px solid #e2e8f0", borderRadius: 8,
+                boxShadow: "0 4px 16px rgba(0,0,0,0.1)", zIndex: 10,
+                overflow: "hidden", minWidth: 180,
+              }}>
+                {["low", "high"].map(opt => (
+                  <button
+                    key={opt}
+                    onClick={() => { setSortOption(opt); setSortOpen(false); }}
+                    style={{
+                      display: "block", width: "100%", padding: "8px 14px",
+                      border: "none", background: sortOption === opt ? "#eff6ff" : "#fff",
+                      color: sortOption === opt ? "#1d4ed8" : "#334155",
+                      fontSize: 12, fontWeight: sortOption === opt ? 700 : 500,
+                      cursor: "pointer", textAlign: "left",
+                    }}
+                  >
+                    {opt === "low" ? "Price: Low → High" : "Price: High → Low"}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
         <Note>Sort options for MVP: &quot;Price: Low to High&quot; and &quot;Price: High to Low.&quot; More sorts post-MVP.</Note>
-        <Annotation>Default sort order TBD — needs discussion re: subscription tiers, profile boosts, booking popularity, ratings.</Annotation>
 
         {/* Active Filters Chips (when filtered) */}
         {pageState === "filtered" && (
@@ -416,7 +439,7 @@ export default function ArtistSearchWireframe() {
         )}
 
         {/* ── 4. ARTIST RESULT CARDS ── */}
-        <SectionLabel number="4">Artist Result Cards</SectionLabel>
+        <SectionLabel number="3">Artist Result Cards</SectionLabel>
 
         {/* DEFAULT / FILTERED states */}
         {(pageState === "default" || pageState === "filtered") && (
@@ -495,7 +518,7 @@ export default function ArtistSearchWireframe() {
         {/* Card detail annotations */}
         {pageState !== "empty" && (
           <>
-            <SectionLabel number="5">Card Design Notes</SectionLabel>
+            <SectionLabel number="4">Card Design Notes</SectionLabel>
             <WireframeBox style={{ padding: isMobile ? 12 : 16 }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: "#334155", marginBottom: 8 }}>Each card displays:</div>
               <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 6, fontSize: 11, color: "#475569" }}>
@@ -521,7 +544,7 @@ export default function ArtistSearchWireframe() {
         )}
 
         {/* ── 6. PAGE STATES REFERENCE ── */}
-        <SectionLabel number="6">Page States Reference</SectionLabel>
+        <SectionLabel number="5">Page States Reference</SectionLabel>
         <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 8 }}>
           {[
             ["Default (No Filters)", "All artists shown. Default sort TBD (subscription tiers, boosts, popularity, ratings — needs discussion).", "#f0fdf4", "#166534"],
