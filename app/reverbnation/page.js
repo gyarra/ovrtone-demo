@@ -367,8 +367,8 @@ export default function ReverbNationPage() {
             <section className="border border-[#e0e0e0] rounded bg-white p-5 mb-6">
               <h2 className="text-[16px] font-bold mb-3">About the Artist</h2>
               <p className="text-[13px] text-[#666] leading-relaxed mb-2">
-                Only 19-years old, Los Angeles indie artist Lena Fayre has already amassed over 20 million 
-                Spotify streams and YouTube views, accumulated over 400,000 monthly Spotify listeners, 
+                Only 19-years old, Los Angeles indie artist Lena Fayre has already amassed over 20 million
+                Spotify streams and YouTube views, accumulated over 400,000 monthly Spotify listeners,
                 won multiple songwriting awards including Jo...
               </p>
               <span className="text-[13px] cursor-pointer block mb-5" style={{ color: C.blue }}>Read More</span>

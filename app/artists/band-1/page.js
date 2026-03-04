@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 const WireframeBox = ({ children, className = "", dashed = false, label, height, onClick, style = {} }) => (
   <div
@@ -435,6 +436,7 @@ export default function ArtistProfileWireframe() {
               </div>
               <div style={{ fontSize: 10, color: "#64748b" }}>Logged-in users only</div>
             </div>
+            <Link href="/booking" style={{ textDecoration: "none" }}>
             <div style={{
               padding: "10px 32px", background: "#3b82f6", borderRadius: 8,
               color: "#fff", fontSize: 14, fontWeight: 700, textAlign: "center",
@@ -442,6 +444,7 @@ export default function ArtistProfileWireframe() {
             }}>
               Book This Artist
             </div>
+            </Link>
           </div>
           <Annotation>Sticky bottom bar on mobile. Fixed sidebar or sticky header on desktop. Button text TBD — &quot;Book This Artist&quot; / &quot;Instant Book&quot; / &quot;Book Now&quot;.</Annotation>
         </WireframeBox>
