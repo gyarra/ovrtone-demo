@@ -1,28 +1,26 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 
-/* ─── palette & tokens ──────────────────────────────── */
+/* ─── palette & tokens (extracted from live site) ──── */
 const C = {
-  black: "#1a1a1a",
-  darkBg: "#2d2d2d",
-  headerBg: "#1e1e1e",
+  black: "#000000",
+  sidebarBg: "rgb(31, 32, 37)",
+  coverBg: "rgb(31, 32, 37)",
   white: "#ffffff",
-  lightGray: "#f5f5f5",
-  midGray: "#e0e0e0",
-  gray: "#999999",
-  darkGray: "#666666",
-  textPrimary: "#333333",
-  textSecondary: "#666666",
-  blue: "#2d9cdb",
-  blueHover: "#2488c4",
-  red: "#e74c3c",
+  pageBg: "#edf0f1",
+  contentBg: "#ffffff",
+  textPrimary: "rgb(51, 51, 51)",
+  textSecondary: "rgb(102, 102, 102)",
+  textMuted: "rgb(153, 153, 153)",
+  blue: "rgb(44, 156, 233)",
+  blueBtnBg: "rgb(58, 158, 224)",
+  blueBtnBorder: "rgb(31, 133, 200)",
   fan: "#e8513d",
-  green: "#27ae60",
-  border: "#e0e0e0",
-  heroBg: "#3a3a3a",
+  border: "#ddd",
 };
+
+const FONT = "'Roboto', 'Helvetica', Arial, sans-serif";
 
 /* ─── mock data ─────────────────────────────────────── */
 const SONGS = [
@@ -40,9 +38,9 @@ const PERFORMANCES = [
 ];
 
 const COMMENTS = [
-  { name: "Daly Redline", text: ". Excellent♡ ☺︎♡♡" },
-  { name: "Rosette Cribben", text: "So much creativity coming out of you Le..." },
-  { name: "Red Cloud", text: "Your music and (beautiful) voice are so ..." },
+  { name: "Daly Redline", text: ". Excellent\u2661 \u10E6\u0B9C\u10E6\u2661" },
+  { name: "Rosette Cribben", text: "So much creativity coming out of you Lena...Great expressive vocals..." },
+  { name: "Red Cloud", text: "Your music and (beautiful) voice are so well mixed up, that the general impression is..." },
 ];
 
 const FAVORITE_ARTISTS = [
@@ -112,37 +110,34 @@ export default function ReverbNationPage() {
   const [footerTab, setFooterTab] = useState("Artists");
 
   return (
-    <div style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif", color: C.textPrimary, backgroundColor: C.white }}>
+    <div style={{ fontFamily: FONT, fontSize: 16, color: C.textPrimary, backgroundColor: C.pageBg }}>
 
-      {/* ═══════ HEADER NAV ═══════ */}
-      <header style={{ backgroundColor: C.headerBg }} className="sticky top-0 z-50">
-        <div className="max-w-[1200px] mx-auto flex items-center h-[50px] px-4 gap-4">
-          {/* Logo */}
-          <div className="flex items-center gap-1 flex-shrink-0">
+      {/* HEADER NAV */}
+      <header className="fixed top-0 left-0 right-0 z-[4003]" style={{ backgroundColor: C.black, height: 55 }}>
+        <div className="max-w-[1200px] mx-auto flex items-center h-full px-4 gap-4">
+          <div className="flex items-center gap-1.5 flex-shrink-0">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke={C.blue} strokeWidth="2"/><circle cx="10" cy="10" r="4" fill={C.blue}/></svg>
             <span className="text-white font-bold text-[15px] tracking-tight">ReverbNation</span>
           </div>
 
-          {/* Search */}
-          <div className="flex items-center bg-[#444] rounded-full px-3 py-1 gap-2 w-[200px]">
-            <svg width="14" height="14" fill="none" stroke="#aaa" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
-            <span className="text-[13px] text-[#aaa]">Search ReverbNation</span>
+          <div className="flex items-center bg-[#333] rounded px-3 py-1.5 gap-2 w-[200px]">
+            <svg width="14" height="14" fill="none" stroke="#888" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+            <span className="text-[13px] text-[#888]">Search ReverbNation</span>
           </div>
 
-          {/* Nav links */}
           <nav className="flex items-center gap-5 ml-2">
             {NAV_ITEMS.map((item) => (
-              <span key={item} className="text-[13px] text-[#ccc] hover:text-white cursor-pointer whitespace-nowrap">
+              <span key={item} className="text-[14px] text-[#ccc] hover:text-white cursor-pointer whitespace-nowrap">
                 {item}
               </span>
             ))}
           </nav>
 
           <div className="ml-auto flex items-center gap-3">
-            <span className="text-[13px] text-[#ccc] cursor-pointer">Log In</span>
+            <span className="text-[14px] text-[#ccc] cursor-pointer">Log In</span>
             <button
-              className="text-[13px] font-semibold text-white rounded px-4 py-1.5 cursor-pointer"
-              style={{ backgroundColor: C.blue }}
+              className="text-[14px] font-medium text-white rounded-[3px] px-4 py-2 cursor-pointer"
+              style={{ backgroundColor: C.blueBtnBg, border: `1px solid ${C.blueBtnBorder}` }}
             >
               Join For Free
             </button>
@@ -150,51 +145,57 @@ export default function ReverbNationPage() {
         </div>
       </header>
 
-      {/* ═══════ HERO SECTION ═══════ */}
-      <section style={{ backgroundColor: C.heroBg }} className="relative">
-        {/* Cover image placeholder */}
-        <div className="max-w-[1200px] mx-auto relative" style={{ height: 240 }}>
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[rgba(0,0,0,0.5)]" />
-          <PlaceholderImg w="100%" h={240} style={{ backgroundColor: "#4a5568" }} />
+      <div style={{ height: 55 }} />
+
+      {/* HERO / COVER PHOTO */}
+      <section className="relative" style={{ backgroundColor: C.coverBg }}>
+        <div className="relative w-full" style={{ height: 360 }}>
+          <div className="absolute inset-0" style={{ backgroundColor: C.coverBg }} />
+          <div className="absolute inset-0 bg-gradient-to-t from-[rgba(0,0,0,0.6)] to-transparent" />
         </div>
 
-        {/* Artist info overlay */}
-        <div className="max-w-[1200px] mx-auto px-4 relative" style={{ marginTop: -80 }}>
+        <div className="max-w-[1200px] mx-auto px-6 relative" style={{ marginTop: -120 }}>
           <div className="flex items-end gap-5 pb-4">
-            {/* Artist photo */}
-            <div className="w-[120px] h-[120px] rounded bg-gray-400 border-4 border-white shadow-lg flex-shrink-0 overflow-hidden">
-              <PlaceholderImg w={120} h={120} style={{ backgroundColor: "#7a8a9a" }} />
+            <div className="w-[130px] h-[100px] flex-shrink-0 overflow-hidden rounded">
+              <PlaceholderImg w={130} h={100} style={{ backgroundColor: "#5a6a7a" }} />
             </div>
 
-            <div className="pb-1">
-              <div className="flex items-center gap-3 mb-1">
-                <h1 className="text-white text-[28px] font-bold leading-tight">Lena Fayre</h1>
-                <button className="flex items-center gap-1.5 border border-[#888] rounded px-3 py-1 text-[12px] text-white cursor-pointer hover:bg-white/10">
+            <div className="pb-1 flex-1">
+              <div className="flex items-center gap-3 mb-1.5">
+                <h1 className="text-white text-[40px] leading-[52px]" style={{ fontWeight: 300 }}>
+                  Lena Fayre
+                </h1>
+                <button
+                  className="flex items-center gap-1.5 px-4 py-2 text-[14px] text-white cursor-pointer"
+                  style={{ backgroundColor: "rgba(0,0,0,0.1)", border: "1px solid #fff", fontWeight: 500, borderRadius: 1000 }}
+                >
                   <svg width="12" height="12" fill="white" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
                   Share
                 </button>
-                <button className="border border-[#888] rounded px-3 py-1 text-[12px] text-white cursor-pointer hover:bg-white/10">
+                <button
+                  className="px-4 py-2 text-[14px] text-white cursor-pointer"
+                  style={{ backgroundColor: "rgba(0,0,0,0.1)", border: "1px solid #fff", fontWeight: 500, borderRadius: 1000 }}
+                >
                   Become a Fan
                 </button>
               </div>
-              <p className="text-[13px] text-[#ccc]">
-                Pop / Singer Songwriter / Experimental&nbsp;&nbsp;•&nbsp;&nbsp;Manhattan Beach, CA&nbsp;
+              <p className="text-[16px] text-[#ccc]" style={{ fontWeight: 400 }}>
+                Pop / Singer-Songwriter / Experimental&nbsp;&nbsp;{"\u2022"}&nbsp;&nbsp;Manhattan Beach, CA&nbsp;
                 <span className="inline-block w-4 h-3 bg-blue-700 rounded-sm align-middle" title="US Flag" />
               </p>
             </div>
           </div>
 
-          {/* Tabs */}
-          <div className="flex gap-6 border-b border-[#555]">
+          <div className="flex gap-8 border-b border-[rgba(255,255,255,0.2)]">
             {TABS.map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className="pb-3 text-[14px] cursor-pointer transition-colors"
+                className="pb-3 text-[16px] cursor-pointer transition-colors"
                 style={{
-                  color: activeTab === tab ? C.white : "#aaa",
-                  borderBottom: activeTab === tab ? `2px solid ${C.white}` : "2px solid transparent",
-                  fontWeight: activeTab === tab ? 600 : 400,
+                  color: activeTab === tab ? C.white : "rgba(255,255,255,0.6)",
+                  borderBottom: activeTab === tab ? "3px solid #fff" : "3px solid transparent",
+                  fontWeight: activeTab === tab ? 500 : 400,
                   marginBottom: -1,
                 }}
               >
@@ -205,294 +206,314 @@ export default function ReverbNationPage() {
         </div>
       </section>
 
-      {/* ═══════ MAIN CONTENT (3 columns) ═══════ */}
-      <main className="max-w-[1200px] mx-auto px-4 py-6">
-        <div className="grid grid-cols-[1fr_1fr_300px] gap-6">
+      {/* ACTION BAR */}
+      <div style={{ backgroundColor: C.contentBg }} className="border-b border-[#e0e0e0]">
+        <div className="max-w-[1200px] mx-auto px-6 flex items-center gap-4 py-2">
+          <button className="flex items-center gap-1.5 text-[13px] text-[#555] cursor-pointer hover:text-[#333]">
+            <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+            Save
+          </button>
+          <button className="flex items-center gap-1.5 text-[13px] text-[#555] cursor-pointer hover:text-[#333]">
+            <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            Message
+          </button>
+          <button className="flex items-center gap-1.5 text-[13px] text-[#555] cursor-pointer hover:text-[#333]">
+            <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
+            Share Artist
+          </button>
+        </div>
+      </div>
 
-          {/* ─── LEFT COLUMN: Featured Songs ─── */}
-          <div>
-            <section className="border border-[#e0e0e0] rounded bg-white p-5 mb-6">
-              <h2 className="text-[16px] font-bold mb-4">Featured Songs</h2>
+      {/* MAIN CONTENT (white content + dark sidebar) */}
+      <main className="max-w-[1200px] mx-auto" style={{ display: "table", width: "100%" }}>
+        <div style={{ display: "table-cell", verticalAlign: "top", backgroundColor: C.contentBg }}>
+          <div className="overflow-hidden px-3 py-6">
+            <div className="flex gap-0">
 
-              {/* Player */}
-              <div className="flex items-center gap-3 mb-3">
-                <button
-                  className="w-[50px] h-[50px] rounded-full flex items-center justify-center flex-shrink-0"
-                  style={{ backgroundColor: C.blue }}
-                >
-                  <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-                <div className="flex-1">
-                  <WaveformBar />
-                </div>
-                <span className="text-[12px] text-[#999] flex-shrink-0">0:00 / 4:07</span>
-              </div>
+              {/* LEFT COLUMN: Featured Songs + Community */}
+              <div className="w-1/2 px-3">
+                <div className="mb-6">
+                  <h4 className="text-[18px] text-black mb-2" style={{ fontWeight: 500 }}>Featured Songs</h4>
 
-              <div className="flex gap-4 text-[12px] mb-4" style={{ color: C.blue }}>
-                <span className="cursor-pointer">► play all</span>
-                <span className="cursor-pointer">↗ share all</span>
-                <span className="cursor-pointer">&lt;/&gt; embed</span>
-              </div>
-
-              {/* Song list */}
-              <div className="divide-y divide-[#eee]">
-                {SONGS.map((song, i) => (
-                  <div key={i} className="flex items-center py-2.5 gap-3">
-                    <span className="text-[18px] text-[#ccc] cursor-pointer">+</span>
-                    <svg width="14" height="14" fill={C.blue} viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                    <span className="text-[14px] flex-1">{song.title}</span>
-                    {song.bandcamp && (
-                      <span className="text-[10px] border border-[#ddd] rounded px-2 py-0.5 text-[#666] cursor-pointer">
-                        Buy on<br/>Bandcamp
-                      </span>
-                    )}
-                    <span className="text-[13px] text-[#999] w-[40px] text-right">{song.duration}</span>
+                  <div className="flex items-center gap-3 mb-3">
+                    <button
+                      className="w-[50px] h-[50px] rounded-full flex items-center justify-center flex-shrink-0"
+                      style={{ backgroundColor: C.blueBtnBg }}
+                    >
+                      <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+                    <div className="flex-1">
+                      <WaveformBar />
+                    </div>
+                    <span className="text-[12px] text-[#999] flex-shrink-0 tabular-nums">0:00 / 4:07</span>
                   </div>
-                ))}
-              </div>
 
-              <div className="mt-4">
-                <span className="text-[13px] cursor-pointer" style={{ color: C.blue }}>All Music »</span>
-              </div>
-            </section>
+                  <div className="flex gap-4 text-[13px] mb-4" style={{ color: C.blue }}>
+                    <span className="cursor-pointer">{"\u25B6"} play all</span>
+                    <span className="cursor-pointer">{"\u2197"} share all</span>
+                    <span className="cursor-pointer">&lt;/&gt; embed</span>
+                  </div>
 
-            {/* ─── COMMUNITY ─── */}
-            <section className="border border-[#e0e0e0] rounded bg-white p-5">
-              <h2 className="text-[16px] font-bold mb-3">Community</h2>
+                  <div className="divide-y divide-[#eee]">
+                    {SONGS.map((song, i) => (
+                      <div key={i} className="flex items-center py-3 gap-3">
+                        <span className="text-[18px] text-[#ccc] cursor-pointer leading-none">+</span>
+                        <svg width="14" height="14" fill={C.blue} viewBox="0 0 24 24" className="flex-shrink-0"><path d="M8 5v14l11-7z"/></svg>
+                        <span className="text-[14px] flex-1">{song.title}</span>
+                        {song.bandcamp && (
+                          <span className="text-[10px] border border-[#ddd] rounded px-2 py-0.5 text-[#666] cursor-pointer whitespace-nowrap">
+                            Buy on Bandcamp
+                          </span>
+                        )}
+                        <span className="text-[14px] text-[#999] w-[40px] text-right tabular-nums">{song.duration}</span>
+                      </div>
+                    ))}
+                  </div>
 
-              <h3 className="text-[13px] font-bold mb-1">Status</h3>
-              <p className="text-[13px] text-[#666] mb-4">
-                I am taking a break and planning the next chapter. Stay tuned....
-              </p>
-
-              <div className="mb-3">
-                <span className="text-[14px] font-bold" style={{ color: C.blue }}>3568 Fans</span>
-                <div className="flex gap-1 mt-2 flex-wrap">
-                  {Array.from({ length: 8 }).map((_, i) => (
-                    <PlaceholderImg key={i} w={42} h={42} className="rounded" style={{ backgroundColor: `hsl(${i * 40 + 200}, 30%, ${60 + i * 3}%)` }} />
-                  ))}
+                  <div className="mt-4">
+                    <span className="text-[14px] font-bold cursor-pointer" style={{ color: C.blue }}>All Music {"\u00BB"}</span>
+                  </div>
                 </div>
-              </div>
 
-              <button className="border border-[#ddd] rounded px-3 py-1.5 text-[12px] text-[#333] cursor-pointer hover:bg-[#f5f5f5] mb-5">
-                Become a Fan
-              </button>
+                {/* COMMUNITY */}
+                <div className="mt-8">
+                  <h4 className="text-[18px] text-black mb-3" style={{ fontWeight: 500 }}>Community</h4>
 
-              <h3 className="text-[14px] font-bold mb-3" style={{ color: C.red }}>Comments</h3>
-              <div className="space-y-4">
-                {COMMENTS.map((c, i) => (
-                  <div key={i} className="flex gap-3">
-                    <Avatar size={36} color={`hsl(${i * 90 + 180}, 25%, 65%)`} />
-                    <div>
-                      <span className="text-[13px] font-bold block" style={{ color: C.blue }}>{c.name}</span>
-                      <span className="text-[13px] text-[#666]">{c.text}</span>
+                  <h6 className="text-[14px] font-bold mb-1">Status</h6>
+                  <p className="text-[14px] text-[#666] mb-5 leading-relaxed">
+                    I am taking a break and planning the next chapter. Stay tuned....
+                  </p>
+
+                  <div className="mb-4">
+                    <a className="text-[16px] font-bold cursor-pointer" style={{ color: C.blue }}>3568 Fans</a>
+                    <div className="flex gap-1.5 mt-2 flex-wrap">
+                      {Array.from({ length: 10 }).map((_, i) => (
+                        <PlaceholderImg key={i} w={38} h={38} className="rounded" style={{ backgroundColor: `hsl(${i * 35 + 200}, 25%, ${55 + i * 3}%)` }} />
+                      ))}
                     </div>
                   </div>
-                ))}
+
+                  <button
+                    className="text-[14px] text-white font-bold rounded-[3px] px-4 py-2 cursor-pointer mb-6"
+                    style={{ backgroundColor: C.blueBtnBg, border: `1px solid ${C.blueBtnBorder}` }}
+                  >
+                    Become A Fan
+                  </button>
+
+                  <div>
+                    <a className="text-[16px] font-bold cursor-pointer block mb-3" style={{ color: C.blue }}>Comments</a>
+                    <div className="space-y-4">
+                      {COMMENTS.map((c, i) => (
+                        <div key={i} className="flex gap-3">
+                          <Avatar size={38} color={`hsl(${i * 90 + 180}, 25%, 60%)`} />
+                          <div className="min-w-0">
+                            <a className="text-[14px] font-bold block cursor-pointer" style={{ color: C.blue }}>{c.name}</a>
+                            <span className="text-[14px] text-[#666]">{c.text}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <button className="mt-4 border border-[#ddd] rounded-[3px] px-3 py-1.5 text-[13px] text-[#333] cursor-pointer hover:bg-[#f5f5f5]">
+                      Add Comment
+                    </button>
+                  </div>
+                </div>
               </div>
 
-              <button className="mt-4 border border-[#ddd] rounded px-3 py-1.5 text-[12px] text-[#333] cursor-pointer hover:bg-[#f5f5f5]">
-                Add Comment
-              </button>
-            </section>
+              {/* RIGHT COLUMN: Featured Video + Past Performances */}
+              <div className="w-1/2 px-3">
+                <div className="mb-6">
+                  <h4 className="text-[18px] text-black mb-2" style={{ fontWeight: 500 }}>Featured Video</h4>
+
+                  <div className="relative bg-[#1a1a1a] overflow-hidden mb-3" style={{ aspectRatio: "16/10" }}>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <PlaceholderImg w="100%" h="100%" style={{ backgroundColor: "#3a3a3a", position: "absolute", inset: 0 }} />
+                      <div className="relative z-10">
+                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" className="mx-auto opacity-80">
+                          <circle cx="30" cy="30" r="28" stroke="white" strokeWidth="2"/>
+                          <path d="M24 18l18 12-18 12z" fill="white"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div className="absolute bottom-2 left-2 bg-black/70 text-white text-[10px] font-bold px-2 py-0.5 rounded tracking-wider">
+                      vevo
+                    </div>
+                  </div>
+
+                  <h3 className="text-[16px] font-bold mb-1 cursor-pointer" style={{ color: C.blue }}>Cry</h3>
+                  <p className="text-[13px] text-[#999]">
+                    Duration - 4:16&nbsp;&nbsp;&nbsp;Views - 551.1K&nbsp;&nbsp;&nbsp;Likes - 1.3K
+                  </p>
+
+                  <div className="mt-4">
+                    <span className="text-[14px] font-bold cursor-pointer" style={{ color: C.blue }}>All Videos {"\u00BB"}</span>
+                  </div>
+                </div>
+
+                {/* PAST PERFORMANCES */}
+                <div className="mt-8">
+                  <h4 className="text-[18px] text-black mb-3" style={{ fontWeight: 500 }}>Past Performances</h4>
+
+                  <div className="divide-y divide-[#eee]">
+                    {PERFORMANCES.map((p, i) => (
+                      <div key={i} className="flex gap-4 py-4">
+                        <div className="flex-shrink-0 w-[65px] text-center border border-[#e0e0e0] rounded py-2.5 bg-white">
+                          <div className="text-[12px] font-bold text-[#999] uppercase tracking-wide">{p.month} {p.day}</div>
+                          <div className="text-[14px] font-bold text-[#666]">{p.year}</div>
+                        </div>
+
+                        <div className="flex-1 min-w-0">
+                          <div className="text-[15px] font-bold">{p.venue}</div>
+                          <div className="text-[13px] text-[#999]">{p.location} - {p.date}</div>
+                          <a className="text-[13px] cursor-pointer" style={{ color: C.blue }}>Get Directions</a>
+                        </div>
+
+                        <button className="self-center text-[18px] text-[#ccc] cursor-pointer">{"\u22EF"}</button>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-3">
+                    <span className="text-[14px] cursor-pointer" style={{ color: C.blue }}>All Past Events {"\u00BB"}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* PHOTO GALLERY ROW */}
+            <div className="flex gap-3 mt-8 mb-4 overflow-x-auto px-3">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="flex-shrink-0 w-[190px] h-[130px] rounded overflow-hidden"
+                  style={{ backgroundColor: `hsl(${i * 30 + 190}, 25%, ${40 + i * 8}%)` }}
+                />
+              ))}
+            </div>
           </div>
+        </div>
 
-          {/* ─── MIDDLE COLUMN: Featured Video + Past Performances ─── */}
-          <div>
-            <section className="border border-[#e0e0e0] rounded bg-white p-5 mb-6">
-              <h2 className="text-[16px] font-bold mb-4">Featured Video</h2>
-
-              {/* Video placeholder */}
-              <div className="relative bg-[#1a1a1a] rounded overflow-hidden mb-3" style={{ aspectRatio: "16/10" }}>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center">
-                    <PlaceholderImg w="100%" h="100%" style={{ backgroundColor: "#3a3a3a", position: "absolute", inset: 0 }} />
-                    <div className="relative z-10">
-                      <svg width="50" height="50" viewBox="0 0 50 50" fill="none" className="mx-auto mb-2 opacity-80">
-                        <circle cx="25" cy="25" r="24" stroke="white" strokeWidth="2"/>
-                        <path d="M20 15l15 10-15 10z" fill="white"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                {/* vevo badge */}
-                <div className="absolute bottom-2 left-2 bg-black/70 text-white text-[10px] font-bold px-2 py-0.5 rounded tracking-wide">
-                  vevo
-                </div>
-              </div>
-
-              <h3 className="text-[15px] font-bold mb-1">Cry</h3>
-              <p className="text-[12px] text-[#999]">
-                Duration · 4:16&nbsp;&nbsp;Views · 551.1K&nbsp;&nbsp;Likes · 1.3K
-              </p>
-
-              <div className="mt-4">
-                <span className="text-[13px] cursor-pointer" style={{ color: C.blue }}>All Videos »</span>
-              </div>
-            </section>
-
-            {/* ─── PAST PERFORMANCES ─── */}
-            <section className="border border-[#e0e0e0] rounded bg-white p-5">
-              <h2 className="text-[16px] font-bold mb-4">Past Performances</h2>
-
-              <div className="divide-y divide-[#eee]">
-                {PERFORMANCES.map((p, i) => (
-                  <div key={i} className="flex gap-4 py-4">
-                    {/* Date block */}
-                    <div className="flex-shrink-0 w-[60px] text-center border border-[#e0e0e0] rounded py-2">
-                      <div className="text-[11px] font-bold text-[#999] uppercase">{p.month} {p.day}</div>
-                      <div className="text-[13px] font-bold text-[#666]">{p.year}</div>
-                    </div>
-
-                    <div className="flex-1 min-w-0">
-                      <div className="text-[14px] font-bold">{p.venue}</div>
-                      <div className="text-[12px] text-[#999]">{p.location} · {p.date}</div>
-                      <span className="text-[12px] cursor-pointer" style={{ color: C.blue }}>Get Directions</span>
-                    </div>
-
-                    <button className="self-center text-[18px] text-[#ccc] cursor-pointer">⋯</button>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-3">
-                <span className="text-[13px] cursor-pointer" style={{ color: C.blue }}>All Past Events »</span>
-              </div>
-            </section>
-          </div>
-
-          {/* ─── RIGHT SIDEBAR ─── */}
-          <aside>
-            {/* About the Artist */}
-            <section className="border border-[#e0e0e0] rounded bg-white p-5 mb-6">
-              <h2 className="text-[16px] font-bold mb-3">About the Artist</h2>
-              <p className="text-[13px] text-[#666] leading-relaxed mb-2">
+        {/* DARK SIDEBAR */}
+        <aside style={{
+          display: "table-cell",
+          verticalAlign: "top",
+          backgroundColor: C.sidebarBg,
+          width: 340,
+          color: C.white,
+        }}>
+          <div className="p-6">
+            <div className="pb-6 mb-0">
+              <h4 className="text-[18px] text-white mb-3" style={{ fontWeight: 500 }}>About the Artist</h4>
+              <p className="text-[14px] text-white/90 leading-[22.4px] mb-2">
                 Only 19-years old, Los Angeles indie artist Lena Fayre has already amassed over 20 million
                 Spotify streams and YouTube views, accumulated over 400,000 monthly Spotify listeners,
                 won multiple songwriting awards including Jo...
               </p>
-              <span className="text-[13px] cursor-pointer block mb-5" style={{ color: C.blue }}>Read More</span>
+              <a className="text-[14px] cursor-pointer block mb-6" style={{ color: C.blue }}>Read More</a>
 
-              {/* CTA buttons */}
-              <div className="flex items-center gap-2 mb-5">
+              <div className="flex items-center gap-2 mb-6">
                 <button
-                  className="text-white text-[13px] font-bold rounded px-4 py-2 cursor-pointer"
-                  style={{ backgroundColor: C.fan }}
+                  className="text-white text-[14px] font-bold rounded-[3px] px-4 py-2 cursor-pointer"
+                  style={{ backgroundColor: C.blueBtnBg, border: `1px solid ${C.blueBtnBorder}` }}
                 >
-                  Become a Fan
+                  Become A Fan
                 </button>
-                <button className="w-[36px] h-[36px] border border-[#ddd] rounded flex items-center justify-center cursor-pointer hover:bg-[#f5f5f5]">
-                  <svg width="14" height="14" fill="#666" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
+                <button className="w-[36px] h-[36px] border border-[#555] rounded-[3px] flex items-center justify-center cursor-pointer hover:border-[#888]">
+                  <svg width="14" height="14" fill="white" opacity="0.7" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
                 </button>
-                <button className="w-[36px] h-[36px] border border-[#ddd] rounded flex items-center justify-center cursor-pointer hover:bg-[#f5f5f5]">
-                  <svg width="14" height="14" fill="#666" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                <button className="w-[36px] h-[36px] border border-[#555] rounded-[3px] flex items-center justify-center cursor-pointer hover:border-[#888]">
+                  <svg width="14" height="14" fill="white" opacity="0.7" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
                 </button>
               </div>
 
-              {/* Stats */}
-              <div className="grid grid-cols-3 gap-2 text-center border-t border-b border-[#eee] py-4 mb-5">
+              <div className="grid grid-cols-3 gap-2 text-center border-t border-b border-[rgba(255,255,255,0.15)] py-5 mb-6">
                 <div>
-                  <div className="text-[18px] font-bold">57.8K</div>
-                  <div className="text-[10px] text-[#999] uppercase">Song Plays</div>
+                  <div className="text-[16px] text-white">57.8K</div>
+                  <div className="text-[10px] text-[rgba(255,255,255,0.5)] uppercase tracking-wide">Song Plays</div>
                 </div>
                 <div>
-                  <div className="text-[18px] font-bold">8K</div>
-                  <div className="text-[10px] text-[#999] uppercase">Video Plays</div>
+                  <div className="text-[16px] text-white">8K</div>
+                  <div className="text-[10px] text-[rgba(255,255,255,0.5)] uppercase tracking-wide">Video Plays</div>
                 </div>
                 <div>
-                  <div className="text-[18px] font-bold">3.6K</div>
-                  <div className="text-[10px] text-[#999] uppercase">Total Fans</div>
+                  <div className="text-[16px] text-white">3.6K</div>
+                  <div className="text-[10px] text-[rgba(255,255,255,0.5)] uppercase tracking-wide">Total Fans</div>
                 </div>
               </div>
 
-              {/* Links */}
-              <div className="space-y-3 mb-5">
+              <div className="space-y-3 mb-6">
                 {[
-                  { icon: "🎵", label: "iTunes" },
-                  { icon: "🎵", label: "Amazon Mp3" },
-                  { icon: "🌐", label: "lenafayre.com/" },
-                  { icon: "f", label: "facebook.com/LenaFayre" },
+                  { icon: "music", label: "iTunes" },
+                  { icon: "music", label: "Amazon Mp3" },
+                  { icon: "web", label: "lenafayre.com/" },
+                  { icon: "fb", label: "facebook.com/LenaFayre" },
                 ].map((link, i) => (
-                  <div key={i} className="flex items-center gap-2">
+                  <div key={i} className="flex items-center gap-2.5">
                     <span className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] flex-shrink-0"
                       style={{ backgroundColor: C.blue, color: "white" }}>
-                      {link.icon === "f" ? "f" : "♪"}
+                      {link.icon === "fb" ? "f" : "\u266A"}
                     </span>
-                    <span className="text-[13px] text-[#333] truncate">{link.label}</span>
+                    <span className="text-[14px] text-white/80 truncate">{link.label}</span>
                   </div>
                 ))}
-                <span className="text-[13px] cursor-pointer" style={{ color: C.blue }}>More</span>
+                <a className="text-[14px] cursor-pointer" style={{ color: C.blue }}>More</a>
               </div>
 
-              {/* Press */}
-              <div className="border-t border-[#eee] pt-4">
-                <h3 className="text-[15px] font-bold mb-2">Press</h3>
-                <p className="text-[13px] text-[#666] italic leading-relaxed mb-2">
-                  &quot;2015 Grand Prize Winner John Lennon Songwriting Contest&quot;
+              <div className="border-t border-[rgba(255,255,255,0.15)] pt-5">
+                <h4 className="text-[18px] text-white mb-3" style={{ fontWeight: 500 }}>Press</h4>
+                <p className="text-[14px] text-white/80 leading-relaxed mb-1">
+                  {"\u201C"}Artists You Should Know: Lena Fayre. Los Angeles-based artist Lena Fayre has made some very impressive strides in her brief nineteen years...{"\u201D"}
                 </p>
-                <p className="text-[13px] text-[#666] leading-relaxed mb-2">
-                  · The John Lennon Songwriting Contest
+                <p className="text-[13px] text-white/60 mb-2">
+                  - Eric J. Lawrence, <span style={{ color: C.blue }} className="cursor-pointer">KCRW Music Blog</span>
                 </p>
-                <span className="text-[13px] cursor-pointer" style={{ color: C.blue }}>Read More</span>
+                <a className="text-[14px] cursor-pointer" style={{ color: C.blue }}>Read More</a>
               </div>
-            </section>
+            </div>
 
-            {/* Favorite Artists */}
-            <section className="border border-[#e0e0e0] rounded bg-white p-5 mb-6">
-              <h2 className="text-[15px] font-bold mb-3">Favorite Artists</h2>
+            <div className="border-t border-[rgba(255,255,255,0.15)] pt-5 pb-5 px-6">
+              <h4 className="text-[16px] text-white/70 mb-3" style={{ fontWeight: 400 }}>Favorite Artists</h4>
               <div className="space-y-3">
                 {FAVORITE_ARTISTS.map((a, i) => (
                   <div key={i} className="flex items-center gap-3">
-                    <Avatar size={36} color={`hsl(${i * 60 + 10}, 40%, 55%)`} />
+                    <Avatar size={36} color={`hsl(${i * 60 + 10}, 35%, 50%)`} />
                     <div>
-                      <div className="text-[13px] font-bold">{a.name}</div>
-                      <div className="text-[11px] text-[#999]">{a.genre}</div>
+                      <div className="text-[14px] font-bold text-white">{a.name}</div>
+                      <div className="text-[12px] text-white/50">{a.genre}</div>
                     </div>
                   </div>
                 ))}
               </div>
-            </section>
+            </div>
 
-            {/* Suggested Collections */}
-            <section className="border border-[#e0e0e0] rounded bg-white p-5">
-              <h2 className="text-[15px] font-bold mb-3">Suggested Collections</h2>
+            <div className="border-t border-[rgba(255,255,255,0.15)] pt-5 px-6 pb-6">
+              <h4 className="text-[16px] text-white/70 mb-3" style={{ fontWeight: 400 }}>Suggested Collections</h4>
               <div className="space-y-3">
                 {COLLECTIONS.map((c, i) => (
                   <div key={i} className="flex items-center gap-3">
-                    <PlaceholderImg w={40} h={40} className="rounded" style={{ backgroundColor: `hsl(${i * 50 + 220}, 45%, 45%)` }} />
-                    <span className="text-[13px] font-bold">{c.name}</span>
+                    <PlaceholderImg w={40} h={40} className="rounded" style={{ backgroundColor: `hsl(${i * 50 + 220}, 45%, 40%)` }} />
+                    <span className="text-[14px] font-bold text-white">{c.name}</span>
                   </div>
                 ))}
               </div>
-            </section>
-          </aside>
-        </div>
-
-        {/* ─── PHOTO GALLERY ROW ─── */}
-        <div className="flex gap-3 mt-6 mb-6 overflow-x-auto">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <div
-              key={i}
-              className="flex-shrink-0 w-[200px] h-[140px] rounded overflow-hidden"
-              style={{ backgroundColor: `hsl(${i * 30 + 190}, 25%, ${40 + i * 8}%)` }}
-            />
-          ))}
-        </div>
+            </div>
+          </div>
+        </aside>
       </main>
 
-      {/* ═══════ FOOTER ═══════ */}
-      <footer className="border-t border-[#e0e0e0]">
-        {/* Tools For tabs */}
-        <div className="max-w-[1200px] mx-auto px-4 pt-6">
-          <div className="flex items-center gap-6 border-b border-[#e0e0e0] pb-0">
+      {/* FOOTER */}
+      <footer className="border-t border-[#ddd]" style={{ backgroundColor: C.pageBg }}>
+        <div className="max-w-[1200px] mx-auto px-6 pt-6">
+          <div className="flex items-center gap-6 border-b border-[#ddd] pb-0">
             <span className="text-[14px] font-bold text-[#333] pb-3">Tools For:</span>
             {FOOTER_TABS.map((tab) => (
               <button
                 key={tab}
                 onClick={() => setFooterTab(tab)}
-                className="pb-3 text-[13px] cursor-pointer"
+                className="pb-3 text-[14px] cursor-pointer"
                 style={{
-                  color: footerTab === tab ? C.textPrimary : C.gray,
+                  color: footerTab === tab ? C.textPrimary : C.textMuted,
                   borderBottom: footerTab === tab ? "2px solid #333" : "2px solid transparent",
                   fontWeight: footerTab === tab ? 600 : 400,
                   marginBottom: -1,
@@ -502,33 +523,36 @@ export default function ReverbNationPage() {
               </button>
             ))}
 
-            {/* Social icons */}
             <div className="ml-auto flex gap-2">
-              {["BLOG", "f", "𝕏", "▶", "📷", "P"].map((icon, i) => (
+              {[
+                { label: "BLOG", bg: "#ff5722" },
+                { label: "f", bg: "#3b5998" },
+                { label: "X", bg: "#1da1f2" },
+                { label: "\u25B6", bg: "#ff0000" },
+                { label: "\uD83D\uDCF7", bg: "#c13584" },
+                { label: "P", bg: "#bd081c" },
+              ].map((icon, i) => (
                 <div
                   key={i}
                   className="w-[28px] h-[28px] rounded flex items-center justify-center text-white text-[11px] font-bold cursor-pointer"
-                  style={{ backgroundColor: ["#ff5722", "#3b5998", "#1da1f2", "#ff0000", "#c13584", "#bd081c"][i] }}
+                  style={{ backgroundColor: icon.bg }}
                 >
-                  {icon}
+                  {icon.label}
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Link columns */}
-        <div className="max-w-[1200px] mx-auto px-4 py-8" style={{ backgroundColor: "#f8f8f8" }}>
+        <div className="max-w-[1200px] mx-auto px-6 py-8">
           <div className="grid grid-cols-5 gap-6">
             {Object.entries(FOOTER_LINKS).map(([heading, links]) => (
               <div key={heading}>
-                <h4 className="text-[13px] font-bold mb-3" style={{ color: C.blue }}>
-                  {heading}
-                </h4>
+                <h6 className="text-[16px] font-bold text-black mb-3">{heading}</h6>
                 <ul className="space-y-1.5">
                   {links.map((link) => (
                     <li key={link}>
-                      <span className="text-[12px] text-[#666] cursor-pointer hover:underline">{link}</span>
+                      <span className="text-[13px] text-[#666] cursor-pointer hover:underline">{link}</span>
                     </li>
                   ))}
                 </ul>
@@ -537,10 +561,9 @@ export default function ReverbNationPage() {
           </div>
         </div>
 
-        {/* Copyright */}
-        <div className="border-t border-[#e0e0e0] py-4 text-center" style={{ backgroundColor: "#f8f8f8" }}>
-          <p className="text-[11px] text-[#999]">© 2006-2026 BandLab Singapore Pte. Ltd.</p>
-          <p className="text-[10px] text-[#bbb] mt-1">
+        <div className="border-t border-[#ddd] py-4 text-center">
+          <p className="text-[12px] text-[#999]">{"\u00A9"} 2006-2026 BandLab Singapore Pte. Ltd.</p>
+          <p className="text-[11px] text-[#bbb] mt-1">
             All third party trademarks are the property of the respective trademark owners. ReverbNation is not affiliated with those trademark owners.
           </p>
         </div>
