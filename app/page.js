@@ -26,6 +26,7 @@ export default function Home() {
           { href: "/artists/band-1", label: "Artist Profile" },
           { href: "/booking", label: "Booking" },
           { href: "/messages", label: "Messages" },
+          { href: "/artist_sign_up", label: "Artist Sign-Up" },
           { href: "/reverbnation", label: "ReverbNation" },
         ].map(({ href, label }) => (
           <Link
