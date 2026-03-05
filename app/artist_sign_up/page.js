@@ -148,13 +148,6 @@ function StepContent({ step, isMobile }) {
             </span>
           </div>
         </WireframeBox>
-        {/* Email verification note */}
-        <div style={{ marginTop: 10, padding: 10, background: "#fffbeb", border: "1.5px solid #fde68a", borderRadius: 6 }}>
-          <div style={{ fontSize: 10, fontWeight: 700, color: "#92400e" }}>⚠ Email Verification</div>
-          <div style={{ fontSize: 10, color: "#78350f", marginTop: 2 }}>
-            Verification email sent on submit · User can continue sign-up flow · Profile publish blocked until verified
-          </div>
-        </div>
       </WireframeBox>
     </>
   );
@@ -409,9 +402,6 @@ function StepContent({ step, isMobile }) {
               <span style={{ fontSize: 11, color: "#475569", fontWeight: 600 }}>{a}</span>
             </WireframeBox>
           ))}
-        </div>
-        <div style={{ marginTop: 10, padding: 8, background: "#fffbeb", border: "1.5px solid #fde68a", borderRadius: 6 }}>
-          <div style={{ fontSize: 10, color: "#92400e" }}>⚠ Date-level only at sign-up · Per-day time slots (if in scope) managed from Edit Profile · Calendar up to 1 year ahead</div>
         </div>
       </WireframeBox>
     </>
@@ -706,34 +696,6 @@ export default function ArtistSignUpWireframe() {
 
       </div>
 
-      {/* ── Legend ── */}
-      <div style={{ width: containerWidth, maxWidth: "100%", marginTop: 16 }}>
-        <div style={{
-          background: "#fff", borderRadius: 8, padding: "12px 16px",
-          border: "1px solid #e2e8f0", boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
-        }}>
-          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: 1.5, color: "#64748b", textTransform: "uppercase", marginBottom: 8 }}>Legend</div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 14 }}>
-            {[
-              [null, "border: solid", "Content area"],
-              [null, "border: dashed", "Media / upload placeholder"],
-              ["#dcfce7", "#166534", "Required step / Available"],
-              ["#e2e8f0", "#64748b", "Optional step"],
-              ["#fffbeb", "#92400e", "⚠ Open question / confirm scope"],
-              ["#eff6ff", "#1e40af", "ℹ️ Implementation note"],
-            ].map(([bg, color, label]) => (
-              <div key={label} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                {bg ? (
-                  <div style={{ width: 10, height: 10, borderRadius: 2, background: bg, border: `1px solid ${color}` }} />
-                ) : (
-                  <div style={{ width: 10, height: 10, borderRadius: 2, border: label.includes("dashed") ? "2px dashed #94a3b8" : "1.5px solid #cbd5e1" }} />
-                )}
-                <span style={{ fontSize: 10, color: "#64748b" }}>{label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
 
     </div>
   );

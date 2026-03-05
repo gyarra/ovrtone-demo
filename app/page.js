@@ -27,6 +27,7 @@ export default function Home() {
           { href: "/booking", label: "Booking" },
           { href: "/messages", label: "Messages" },
           { href: "/artist_sign_up", label: "Artist Sign-Up" },
+          { href: "/client-profile-1", label: "Client Profile" },
           { href: "/reverbnation", label: "ReverbNation" },
         ].map(({ href, label }) => (
           <Link
