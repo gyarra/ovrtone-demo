@@ -18,6 +18,7 @@ const C = {
   blueBtnBorder: "rgb(31, 133, 200)",
   fan: "#e8513d",
   border: "#ddd",
+  sectionBorder: "rgb(223, 228, 230)",
 };
 
 const FONT = "'Roboto', 'Helvetica', Arial, sans-serif";
@@ -110,10 +111,10 @@ export default function ReverbNationPage() {
   const [footerTab, setFooterTab] = useState("Artists");
 
   return (
-    <div style={{ fontFamily: FONT, fontSize: 16, color: C.textPrimary, backgroundColor: C.pageBg }}>
+    <div className="text-base text-[rgb(51,51,51)] bg-[#edf0f1]" style={{ fontFamily: FONT }}>
 
       {/* HEADER NAV */}
-      <header className="fixed top-0 left-0 right-0 z-[4003]" style={{ backgroundColor: C.black, height: 55 }}>
+      <header className="fixed top-0 left-0 right-0 z-[4003] bg-black h-[55px]">
         <div className="max-w-[1200px] mx-auto flex items-center h-full px-4 gap-4">
           <div className="flex items-center gap-1.5 flex-shrink-0">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke={C.blue} strokeWidth="2"/><circle cx="10" cy="10" r="4" fill={C.blue}/></svg>
@@ -145,22 +146,21 @@ export default function ReverbNationPage() {
         </div>
       </header>
 
-      <div style={{ height: 55 }} />
+      <div className="h-[55px]" />
 
       {/* HERO / COVER PHOTO */}
-      <section className="relative" style={{ backgroundColor: C.coverBg }}>
-        <div className="relative w-full" style={{ height: 360 }}>
-          <div className="absolute inset-0" style={{ backgroundColor: C.coverBg }} />
+      <section className="relative bg-[rgb(31,32,37)]">
+        <div className="relative w-full h-[430px]">
+          <div
+            className="absolute inset-0 bg-cover bg-[rgb(31,32,37)]"
+            style={{ backgroundImage: "url('/reverb_background.jpeg')", backgroundPosition: "center top" }}
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-[rgba(0,0,0,0.6)] to-transparent" />
         </div>
 
-        <div className="max-w-[1200px] mx-auto px-6 relative" style={{ marginTop: -120 }}>
-          <div className="flex items-end gap-5 pb-4">
-            <div className="w-[130px] h-[100px] flex-shrink-0 overflow-hidden rounded">
-              <PlaceholderImg w={130} h={100} style={{ backgroundColor: "#5a6a7a" }} />
-            </div>
-
-            <div className="pb-1 flex-1">
+        <div className="mx-auto px-9 relative -mt-[120px]">
+          <div className="flex items-end gap-5 pb-4" style={{ paddingLeft: 260 }}>
+            <div className="flex-1">
               <div className="flex items-center gap-3 mb-1.5">
                 <h1 className="text-white text-[40px] leading-[52px]" style={{ fontWeight: 300 }}>
                   Lena Fayre
@@ -185,18 +185,29 @@ export default function ReverbNationPage() {
               </p>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="flex gap-8 border-b border-[rgba(255,255,255,0.2)]">
+      {/* TAB NAV BAR (white, with profile photo overlapping into hero) */}
+      <div className="relative bg-white h-[60px] border-b border-[rgb(223,228,230)]">
+        <div className="mx-auto px-9 relative h-full flex items-center">
+          {/* Profile photo - overlaps hero and nav bar */}
+          <div
+            className="absolute shrink-0 overflow-hidden w-[248px] h-[187px] border-2 border-white -top-[143px] left-9"
+          >
+            <img src="/lena_profile_pic.jpeg" alt="Lena Fayre" className="w-full h-full object-cover" />
+          </div>
+
+          {/* Tabs - offset to the right of the profile photo */}
+          <div className="flex items-center h-full ml-[260px] pl-3">
             {TABS.map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className="pb-3 text-[16px] cursor-pointer transition-colors"
+                className="h-full px-3 text-[18px] cursor-pointer transition-colors"
                 style={{
-                  color: activeTab === tab ? C.white : "rgba(255,255,255,0.6)",
-                  borderBottom: activeTab === tab ? "3px solid #fff" : "3px solid transparent",
-                  fontWeight: activeTab === tab ? 500 : 400,
-                  marginBottom: -1,
+                  color: activeTab === tab ? "rgb(66, 93, 170)" : C.black,
+                  fontWeight: 500,
                 }}
               >
                 {tab}
@@ -204,41 +215,23 @@ export default function ReverbNationPage() {
             ))}
           </div>
         </div>
-      </section>
-
-      {/* ACTION BAR */}
-      <div style={{ backgroundColor: C.contentBg }} className="border-b border-[#e0e0e0]">
-        <div className="max-w-[1200px] mx-auto px-6 flex items-center gap-4 py-2">
-          <button className="flex items-center gap-1.5 text-[13px] text-[#555] cursor-pointer hover:text-[#333]">
-            <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
-            Save
-          </button>
-          <button className="flex items-center gap-1.5 text-[13px] text-[#555] cursor-pointer hover:text-[#333]">
-            <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-            Message
-          </button>
-          <button className="flex items-center gap-1.5 text-[13px] text-[#555] cursor-pointer hover:text-[#333]">
-            <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
-            Share Artist
-          </button>
-        </div>
       </div>
 
       {/* MAIN CONTENT (white content + dark sidebar) */}
-      <main className="max-w-[1200px] mx-auto" style={{ display: "table", width: "100%" }}>
-        <div style={{ display: "table-cell", verticalAlign: "top", backgroundColor: C.contentBg }}>
-          <div className="overflow-hidden px-3 py-6">
-            <div className="flex gap-0">
+      <main className="flex w-full">
+        {/* Content area */}
+        <div className="flex-1 bg-white align-top">
+          <div className="overflow-hidden p-6 px-6">
+            <div className="grid grid-cols-2 border-b border-[rgb(223,228,230)]">
 
               {/* LEFT COLUMN: Featured Songs + Community */}
-              <div className="w-1/2 px-3">
+              <div className="px-3 border-r border-[rgb(223,228,230)]">
                 <div className="mb-6">
-                  <h4 className="text-[18px] text-black mb-2" style={{ fontWeight: 500 }}>Featured Songs</h4>
+                  <h4 className="text-[18px] text-black mb-2 font-medium">Featured Songs</h4>
 
                   <div className="flex items-center gap-3 mb-3">
                     <button
-                      className="w-[50px] h-[50px] rounded-full flex items-center justify-center flex-shrink-0"
-                      style={{ backgroundColor: C.blueBtnBg }}
+                      className="w-[50px] h-[50px] rounded-full flex items-center justify-center flex-shrink-0 bg-[rgb(58,158,224)]"
                     >
                       <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                     </button>
@@ -277,7 +270,7 @@ export default function ReverbNationPage() {
 
                 {/* COMMUNITY */}
                 <div className="mt-8">
-                  <h4 className="text-[18px] text-black mb-3" style={{ fontWeight: 500 }}>Community</h4>
+                  <h4 className="text-[18px] text-black mb-3 font-medium">Community</h4>
 
                   <h6 className="text-[14px] font-bold mb-1">Status</h6>
                   <p className="text-[14px] text-[#666] mb-5 leading-relaxed">
@@ -322,9 +315,9 @@ export default function ReverbNationPage() {
               </div>
 
               {/* RIGHT COLUMN: Featured Video + Past Performances */}
-              <div className="w-1/2 px-3">
+              <div className="px-3">
                 <div className="mb-6">
-                  <h4 className="text-[18px] text-black mb-2" style={{ fontWeight: 500 }}>Featured Video</h4>
+                  <h4 className="text-[18px] text-black mb-2 font-medium">Featured Video</h4>
 
                   <div className="relative bg-[#1a1a1a] overflow-hidden mb-3" style={{ aspectRatio: "16/10" }}>
                     <div className="absolute inset-0 flex items-center justify-center">
@@ -353,7 +346,7 @@ export default function ReverbNationPage() {
 
                 {/* PAST PERFORMANCES */}
                 <div className="mt-8">
-                  <h4 className="text-[18px] text-black mb-3" style={{ fontWeight: 500 }}>Past Performances</h4>
+                  <h4 className="text-[18px] text-black mb-3 font-medium">Past Performances</h4>
 
                   <div className="divide-y divide-[#eee]">
                     {PERFORMANCES.map((p, i) => (
@@ -395,16 +388,10 @@ export default function ReverbNationPage() {
         </div>
 
         {/* DARK SIDEBAR */}
-        <aside style={{
-          display: "table-cell",
-          verticalAlign: "top",
-          backgroundColor: C.sidebarBg,
-          width: 340,
-          color: C.white,
-        }}>
+        <aside className="w-[400px] shrink-0 bg-[rgb(31,32,37)] text-white align-top">
           <div className="p-6">
             <div className="pb-6 mb-0">
-              <h4 className="text-[18px] text-white mb-3" style={{ fontWeight: 500 }}>About the Artist</h4>
+              <h4 className="text-[18px] text-white mb-3 font-medium">About the Artist</h4>
               <p className="text-[14px] text-white/90 leading-[22.4px] mb-2">
                 Only 19-years old, Los Angeles indie artist Lena Fayre has already amassed over 20 million
                 Spotify streams and YouTube views, accumulated over 400,000 monthly Spotify listeners,
@@ -461,7 +448,7 @@ export default function ReverbNationPage() {
               </div>
 
               <div className="border-t border-[rgba(255,255,255,0.15)] pt-5">
-                <h4 className="text-[18px] text-white mb-3" style={{ fontWeight: 500 }}>Press</h4>
+                <h4 className="text-[18px] text-white mb-3 font-medium">Press</h4>
                 <p className="text-[14px] text-white/80 leading-relaxed mb-1">
                   {"\u201C"}Artists You Should Know: Lena Fayre. Los Angeles-based artist Lena Fayre has made some very impressive strides in her brief nineteen years...{"\u201D"}
                 </p>
