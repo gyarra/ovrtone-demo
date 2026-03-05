@@ -2,636 +2,649 @@
 
 import { useState } from "react";
 
-// ─── Palette ────────────────────────────────────────────────────────────────
-const W = {
-  bg: "#f5f5f5",
-  surface: "#ffffff",
-  border: "#d1d5db",
-  borderDark: "#9ca3af",
-  muted: "#e5e7eb",
-  mutedDark: "#9ca3af",
-  text: "#374151",
-  textLight: "#6b7280",
-  accent: "#3b82f6",
-  available: "#bbf7d0",
-  availableBorder: "#16a34a",
-  unavailable: "#e5e7eb",
-  placeholder: "#f3f4f6",
-};
-
-// ─── Primitive Components ────────────────────────────────────────────────────
-const WBox = ({ children, style = {}, dashed = false }) => (
-  <div style={{
-    border: `1px ${dashed ? "dashed" : "solid"} ${W.border}`,
-    borderRadius: 4,
-    padding: 12,
-    background: W.surface,
-    ...style
-  }}>{children}</div>
-);
-
-const WImage = ({ label, w = "100%", h = 80 }) => (
-  <div style={{
-    width: w, height: h, background: W.muted,
-    border: `1px solid ${W.border}`, borderRadius: 4,
-    display: "flex", alignItems: "center", justifyContent: "center",
-    flexDirection: "column", gap: 4, flexShrink: 0
-  }}>
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={W.mutedDark} strokeWidth="1.5">
-      <line x1="3" y1="3" x2="21" y2="21" /><line x1="21" y1="3" x2="3" y2="21" />
-      <rect x="3" y="3" width="18" height="18" rx="2" />
-    </svg>
-    <span style={{ fontSize: 10, color: W.textLight, fontFamily: "monospace" }}>{label}</span>
-  </div>
-);
-
-const WButton = ({ children, primary = false, full = false, small = false, style = {}, onClick }) => (
-  <button onClick={onClick} style={{
-    padding: small ? "6px 12px" : "10px 16px",
-    background: primary ? W.text : W.surface,
-    color: primary ? "#fff" : W.text,
-    border: `1px solid ${primary ? W.text : W.border}`,
-    borderRadius: 4,
-    fontSize: small ? 11 : 13,
-    fontFamily: "monospace",
-    cursor: "pointer",
-    width: full ? "100%" : "auto",
-    fontWeight: primary ? 600 : 400,
-    ...style
-  }}>{children}</button>
-);
-
-const WInput = ({ placeholder, value, style = {} }) => (
-  <div style={{
-    border: `1px solid ${W.border}`, borderRadius: 4,
-    padding: "8px 10px", background: W.placeholder,
-    fontSize: 12, fontFamily: "monospace", color: W.textLight,
-    ...style
-  }}>{value || placeholder}</div>
-);
-
-const WSelect = ({ label, value }) => (
-  <div style={{
-    border: `1px solid ${W.border}`, borderRadius: 4,
-    padding: "8px 10px", background: W.placeholder,
-    fontSize: 12, fontFamily: "monospace", color: value ? W.text : W.textLight,
-    display: "flex", justifyContent: "space-between", alignItems: "center"
-  }}>
-    <span>{value || label}</span>
-    <span style={{ color: W.mutedDark }}>▾</span>
-  </div>
-);
-
-const WLabel = ({ children, style = {} }) => (
-  <div style={{ fontSize: 11, fontFamily: "monospace", color: W.textLight, marginBottom: 4, ...style }}>
+const WireframeBox = ({ children, className = "", dashed = false, label, height, onClick, style = {} }) => (
+  <div
+    onClick={onClick}
+    className={`relative ${className}`}
+    style={{
+      border: dashed ? "2px dashed #94a3b8" : "1.5px solid #cbd5e1",
+      borderRadius: 8,
+      background: dashed ? "repeating-linear-gradient(45deg, #f8fafc, #f8fafc 4px, #f1f5f9 4px, #f1f5f9 8px)" : "#f8fafc",
+      minHeight: height || "auto",
+      cursor: onClick ? "pointer" : "default",
+      ...style,
+    }}
+  >
+    {label && (
+      <span style={{
+        position: "absolute", top: -10, left: 12,
+        background: "#fff", padding: "0 6px",
+        fontSize: 10, fontWeight: 700, letterSpacing: 1.2,
+        color: "#64748b", textTransform: "uppercase",
+      }}>{label}</span>
+    )}
     {children}
   </div>
 );
 
-const WHeading = ({ children, size = 14, style = {} }) => (
-  <div style={{ fontSize: size, fontFamily: "monospace", fontWeight: 700, color: W.text, ...style }}>
-    {children}
-  </div>
-);
-
-const WDivider = ({ style = {} }) => (
-  <div style={{ height: 1, background: W.muted, margin: "12px 0", ...style }} />
-);
-
-const WAnnotation = ({ number, children, style = {} }) => (
-  <div style={{
-    display: "flex", gap: 8, alignItems: "flex-start",
-    fontSize: 11, fontFamily: "monospace", color: W.text, ...style
-  }}>
-    <span style={{
-      background: W.accent, color: "#fff", borderRadius: "50%",
-      width: 18, height: 18, display: "flex", alignItems: "center",
-      justifyContent: "center", fontSize: 10, fontWeight: 700, flexShrink: 0, marginTop: 1
-    }}>{number}</span>
-    <span style={{ lineHeight: 1.5 }}>{children}</span>
-  </div>
-);
-
-const WCheckbox = ({ label }) => (
-  <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
-    <div style={{
-      width: 14, height: 14, border: `1px solid ${W.border}`,
-      borderRadius: 2, background: W.surface, flexShrink: 0, marginTop: 2
-    }} />
-    <span style={{ fontSize: 11, fontFamily: "monospace", color: W.textLight, lineHeight: 1.5 }}>{label}</span>
-  </div>
-);
-
-const WTag = ({ children, color = W.muted, textColor = W.textLight }) => (
+const Tag = ({ children, color = "#e2e8f0", textColor = "#334155" }) => (
   <span style={{
-    background: color, color: textColor, padding: "2px 8px",
-    borderRadius: 12, fontSize: 11, fontFamily: "monospace"
+    display: "inline-block", padding: "3px 10px", borderRadius: 20,
+    background: color, color: textColor, fontSize: 11, fontWeight: 600,
+    marginRight: 4, marginBottom: 4, letterSpacing: 0.3,
   }}>{children}</span>
 );
 
-// ─── Mini Calendar ───────────────────────────────────────────────────────────
-const MiniCalendar = ({ onSelectDate, selectedDate }) => {
-  const [month, setMonth] = useState("March 2026");
-  const days = [
-    null, null, null, null, null, null, 1,
-    2, 3, 4, 5, 6, 7, 8,
-    9, 10, 11, 12, 13, 14, 15,
-    16, 17, 18, 19, 20, 21, 22,
-    23, 24, 25, 26, 27, 28, 29,
-    30, 31
-  ];
-  const unavailable = new Set([3, 8, 9, 15, 22, 29]);
+const SectionLabel = ({ children, number }) => (
+  <div style={{ display: "flex", alignItems: "center", gap: 10, margin: "28px 0 12px" }}>
+    <span style={{
+      width: 26, height: 26, borderRadius: "50%", background: "#1e293b",
+      color: "#fff", display: "flex", alignItems: "center", justifyContent: "center",
+      fontSize: 12, fontWeight: 700, flexShrink: 0,
+    }}>{number}</span>
+    <span style={{ fontSize: 14, fontWeight: 700, color: "#1e293b", letterSpacing: 0.5, textTransform: "uppercase" }}>
+      {children}
+    </span>
+    <div style={{ flex: 1, height: 1, background: "#e2e8f0" }} />
+  </div>
+);
+
+const Annotation = ({ children }) => (
+  <div style={{
+    fontSize: 10, color: "#f59e0b", fontWeight: 600, fontStyle: "italic",
+    padding: "4px 8px", background: "#fffbeb", borderRadius: 4, border: "1px solid #fde68a",
+    marginTop: 6, lineHeight: 1.4,
+  }}>
+    ⚡ {children}
+  </div>
+);
+
+const Note = ({ children }) => (
+  <div style={{
+    fontSize: 10, color: "#6366f1", fontWeight: 500,
+    padding: "4px 8px", background: "#eef2ff", borderRadius: 4, border: "1px solid #c7d2fe",
+    marginTop: 4, lineHeight: 1.4,
+  }}>
+    📝 {children}
+  </div>
+);
+
+const FieldLabel = ({ children, required }) => (
+  <div style={{ fontSize: 11, fontWeight: 700, color: "#475569", marginBottom: 4 }}>
+    {children} {required && <span style={{ color: "#ef4444" }}>*</span>}
+  </div>
+);
+
+const SelectField = ({ label, value, hint }) => (
+  <WireframeBox style={{ padding: "8px 12px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+    <span style={{ fontSize: 12, color: value ? "#334155" : "#94a3b8", fontWeight: value ? 600 : 400 }}>{value || label}</span>
+    <span style={{ fontSize: 10, color: "#94a3b8" }}>▾</span>
+  </WireframeBox>
+);
+
+const CalendarGrid = () => {
+  const days = ["M","T","W","T","F","S","S"];
+  const cells = Array.from({ length: 35 }, (_, i) => {
+    const day = i - 2;
+    if (day < 1 || day > 31) return null;
+    const booked = [5, 12, 13, 19, 26].includes(day);
+    const blocked = [8, 9, 22, 23, 24].includes(day);
+    const selected = day === 15;
+    const available = !booked && !blocked && !selected;
+    return { day, booked, blocked, available, selected };
+  });
   return (
-    <div style={{ border: `1px solid ${W.border}`, borderRadius: 4, background: W.surface }}>
-      <div style={{
-        display: "flex", justifyContent: "space-between", alignItems: "center",
-        padding: "8px 12px", borderBottom: `1px solid ${W.muted}`
-      }}>
-        <button onClick={() => {}} style={{ background: "none", border: "none", cursor: "pointer", color: W.textLight, fontSize: 14 }}>‹</button>
-        <span style={{ fontSize: 12, fontFamily: "monospace", fontWeight: 700, color: W.text }}>{month}</span>
-        <button onClick={() => {}} style={{ background: "none", border: "none", cursor: "pointer", color: W.textLight, fontSize: 14 }}>›</button>
+    <div style={{ padding: 12 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+        <span style={{ fontSize: 10, color: "#94a3b8", cursor: "pointer" }}>◀</span>
+        <span style={{ fontSize: 12, fontWeight: 700, color: "#334155" }}>March 2026</span>
+        <span style={{ fontSize: 10, color: "#94a3b8", cursor: "pointer" }}>▶</span>
       </div>
-      <div style={{ padding: 8 }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(7,1fr)", gap: 2, marginBottom: 4 }}>
-          {["Su","Mo","Tu","We","Th","Fr","Sa"].map(d => (
-            <div key={d} style={{ textAlign: "center", fontSize: 9, fontFamily: "monospace", color: W.textLight, padding: "2px 0" }}>{d}</div>
-          ))}
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(7,1fr)", gap: 2 }}>
-          {days.map((d, i) => {
-            if (!d) return <div key={i} />;
-            const isUnavail = unavailable.has(d);
-            const isSelected = selectedDate === d;
-            return (
-              <div key={i} onClick={() => !isUnavail && onSelectDate(d)} style={{
-                textAlign: "center", fontSize: 10, fontFamily: "monospace",
-                padding: "4px 2px", borderRadius: 3, cursor: isUnavail ? "not-allowed" : "pointer",
-                background: isSelected ? W.text : isUnavail ? W.unavailable : W.available,
-                color: isSelected ? "#fff" : isUnavail ? W.mutedDark : "#166534",
-                border: `1px solid ${isSelected ? W.text : isUnavail ? W.border : W.availableBorder}`,
-                opacity: isUnavail ? 0.6 : 1,
-              }}>{d}</div>
-            );
-          })}
-        </div>
-        <div style={{ display: "flex", gap: 12, marginTop: 8, padding: "4px 0" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-            <div style={{ width: 10, height: 10, background: W.available, border: `1px solid ${W.availableBorder}`, borderRadius: 2 }} />
-            <span style={{ fontSize: 9, fontFamily: "monospace", color: W.textLight }}>Available</span>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 2, textAlign: "center" }}>
+        {days.map((d, i) => (
+          <div key={i} style={{ fontSize: 9, fontWeight: 700, color: "#94a3b8", padding: 3 }}>{d}</div>
+        ))}
+        {cells.map((c, i) => (
+          <div key={i} style={{
+            fontSize: 10, padding: 4, borderRadius: 4,
+            background: c
+              ? (c.selected ? "#1e293b" : c.booked ? "#e2e8f0" : c.blocked ? "#fee2e2" : "#dcfce7")
+              : "transparent",
+            color: c
+              ? (c.selected ? "#fff" : c.booked ? "#94a3b8" : c.blocked ? "#ef4444" : "#16a34a")
+              : "transparent",
+            fontWeight: c?.available || c?.selected ? 600 : 400,
+            cursor: c?.available ? "pointer" : "default",
+          }}>
+            {c?.day || ""}
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-            <div style={{ width: 10, height: 10, background: W.unavailable, border: `1px solid ${W.border}`, borderRadius: 2 }} />
-            <span style={{ fontSize: 9, fontFamily: "monospace", color: W.textLight }}>Unavailable</span>
+        ))}
+      </div>
+      <div style={{ display: "flex", gap: 12, marginTop: 8, justifyContent: "center" }}>
+        {[["#dcfce7", "Available"], ["#e2e8f0", "Booked"], ["#fee2e2", "Blocked"], ["#1e293b", "Selected"]].map(([bg, label]) => (
+          <div key={label} style={{ display: "flex", alignItems: "center", gap: 4 }}>
+            <div style={{ width: 8, height: 8, borderRadius: 2, background: bg, border: "1px solid #cbd5e1" }} />
+            <span style={{ fontSize: 9, color: "#64748b" }}>{label}</span>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );
 };
 
-// ─── Price Breakdown ─────────────────────────────────────────────────────────
-const PriceBreakdown = ({ hours }) => {
-  const rate = 250;
-  const subtotal = rate * hours;
-  const fee = 0; // TBD
-  const total = subtotal + fee;
-  return (
-    <WBox style={{ background: W.placeholder }}>
-      <WHeading size={12} style={{ marginBottom: 8 }}>Price Breakdown</WHeading>
-      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, fontFamily: "monospace", color: W.text }}>
-          <span>${rate}/hr × {hours} hour{hours > 1 ? "s" : ""}</span>
-          <span>${subtotal.toLocaleString()}</span>
-        </div>
-        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, fontFamily: "monospace", color: W.textLight }}>
-          <span>Platform fee</span>
-          <span style={{ color: W.mutedDark }}>TBD</span>
-        </div>
-        <WDivider style={{ margin: "4px 0" }} />
-        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, fontFamily: "monospace", color: W.text, fontWeight: 700 }}>
-          <span>Total</span>
-          <span>${total.toLocaleString()}</span>
-        </div>
-      </div>
-    </WBox>
-  );
-};
+export default function BookAnArtistWireframe() {
+  const [view, setView] = useState("desktop");
+  const [screen, setScreen] = useState("booking");
 
-// ─── Screen 1: Booking Flow ──────────────────────────────────────────────────
-const BookingScreen = ({ onBook, breakpoint }) => {
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [hours, setHours] = useState(2);
-  const isDesktop = breakpoint === "desktop";
+  const isMobile = view === "mobile";
+  const containerWidth = isMobile ? 375 : 820;
 
-  const ArtistCard = () => (
-    <WBox>
-      <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-        <WImage label="artist_photo" w={64} h={64} />
-        <div style={{ flex: 1 }}>
-          <WHeading size={13}>Jazz Ensemble Name</WHeading>
-          <div style={{ fontSize: 12, fontFamily: "monospace", color: W.textLight, marginTop: 2 }}>Jazz, Soul</div>
-          <div style={{ fontSize: 13, fontFamily: "monospace", color: W.text, marginTop: 4, fontWeight: 600 }}>$250 / hr</div>
-        </div>
-      </div>
-    </WBox>
-  );
-
-  const DateTimeSection = () => (
-    <WBox>
-      <WHeading size={12} style={{ marginBottom: 10 }}>Select Date &amp; Time</WHeading>
-      <MiniCalendar onSelectDate={setSelectedDate} selectedDate={selectedDate} />
-      {selectedDate && (
-        <div style={{ marginTop: 10, padding: "6px 10px", background: W.available, border: `1px solid ${W.availableBorder}`, borderRadius: 4, fontSize: 11, fontFamily: "monospace", color: "#166534" }}>
-          ✓ Selected: March {selectedDate}, 2026
-        </div>
-      )}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginTop: 10 }}>
-        <div>
-          <WLabel>Start Time</WLabel>
-          <WSelect label="Select time..." value="7:00 PM" />
-        </div>
-        <div>
-          <WLabel>Duration</WLabel>
-          <WSelect label="# hours..." value={`${hours} hours`} />
-        </div>
-      </div>
-      <div style={{ display: "flex", gap: 8, marginTop: 8, flexWrap: "wrap" }}>
-        {[1, 2, 3, 4].map(h => (
-          <button key={h} onClick={() => setHours(h)} style={{
-            padding: "4px 12px", borderRadius: 12,
-            background: hours === h ? W.text : W.surface,
-            color: hours === h ? "#fff" : W.textLight,
-            border: `1px solid ${hours === h ? W.text : W.border}`,
-            fontSize: 11, fontFamily: "monospace", cursor: "pointer"
-          }}>{h} hr{h > 1 ? "s" : ""}</button>
-        ))}
-        <button onClick={() => setHours(5)} style={{
-          padding: "4px 12px", borderRadius: 12,
-          background: hours === 5 ? W.text : W.surface,
-          color: hours === 5 ? "#fff" : W.textLight,
-          border: `1px solid ${hours === 5 ? W.text : W.border}`,
-          fontSize: 11, fontFamily: "monospace", cursor: "pointer"
-        }}>4+ hrs</button>
-      </div>
-    </WBox>
-  );
-
-  const PaymentSection = () => (
-    <WBox>
-      <WHeading size={12} style={{ marginBottom: 10 }}>Payment</WHeading>
-      <div style={{
-        background: "#fffbeb", border: "1px solid #fcd34d",
-        borderRadius: 4, padding: "8px 10px", marginBottom: 10,
-        fontSize: 11, fontFamily: "monospace", color: "#92400e"
-      }}>
-        🔒 Your payment is held securely and released to the artist 24 hours after your event.
-      </div>
-      <WLabel>Card Number</WLabel>
-      <WInput placeholder="•••• •••• •••• ••••" style={{ marginBottom: 8 }} />
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 8 }}>
-        <div>
-          <WLabel>Expiration</WLabel>
-          <WInput placeholder="MM / YY" />
-        </div>
-        <div>
-          <WLabel>CVC</WLabel>
-          <WInput placeholder="•••" />
-        </div>
-      </div>
-      <WLabel>Billing ZIP</WLabel>
-      <WInput placeholder="10001" style={{ marginBottom: 8 }} />
-      <div style={{
-        display: "flex", gap: 6, alignItems: "center",
-        padding: "6px 8px", background: W.placeholder,
-        border: `1px solid ${W.border}`, borderRadius: 4, marginBottom: 8
-      }}>
-        <span style={{ fontSize: 11, fontFamily: "monospace", color: W.textLight }}>Powered by</span>
-        <span style={{ fontSize: 11, fontFamily: "monospace", fontWeight: 700, color: W.text }}>Stripe</span>
-        <span style={{ fontSize: 11, fontFamily: "monospace", color: W.mutedDark, marginLeft: "auto" }}>[ Apple Pay ] [ Google Pay ] — TBD</span>
-      </div>
-    </WBox>
-  );
-
-  const TermsSection = () => (
-    <WBox>
-      <WCheckbox label="I have read and agree to the Cancellation Policy. [Policy details TBD — link to Terms of Service]" />
-      <div style={{ marginTop: 8 }}>
-        <WCheckbox label="I agree to the OVRTØNE Terms of Service and Privacy Policy." />
-      </div>
-    </WBox>
-  );
-
-  if (isDesktop) {
-    return (
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 360px", gap: 16, alignItems: "start" }}>
-        {/* Left column */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          <DateTimeSection />
-          <PaymentSection />
-          <TermsSection />
-          <WButton primary full onClick={onBook}>Instant Book</WButton>
-          <div style={{ textAlign: "center", fontSize: 10, fontFamily: "monospace", color: W.textLight }}>
-            By clicking Instant Book, you agree to the booking terms above.
-          </div>
-        </div>
-        {/* Right column — sticky summary */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, position: "sticky", top: 0 }}>
-          <ArtistCard />
-          <PriceBreakdown hours={hours} />
-        </div>
-      </div>
-    );
-  }
-
-  // Mobile — stacked
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-      <ArtistCard />
-      <DateTimeSection />
-      <PriceBreakdown hours={hours} />
-      <PaymentSection />
-      <TermsSection />
-      <WButton primary full onClick={onBook}>Instant Book</WButton>
-      <div style={{ textAlign: "center", fontSize: 10, fontFamily: "monospace", color: W.textLight }}>
-        By clicking Instant Book, you agree to the booking terms above.
-      </div>
-    </div>
-  );
-};
-
-// ─── Screen 2: Confirmation ──────────────────────────────────────────────────
-const ConfirmationScreen = ({ onMessages }) => (
-  <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-    <WBox style={{ textAlign: "center", padding: 24 }}>
-      <div style={{ fontSize: 32, marginBottom: 8 }}>✓</div>
-      <WHeading size={16} style={{ marginBottom: 4 }}>Booking Confirmed!</WHeading>
-      <div style={{ fontSize: 12, fontFamily: "monospace", color: W.textLight }}>
-        A confirmation email has been sent to your inbox.
-      </div>
-    </WBox>
-    <WBox>
-      <WHeading size={12} style={{ marginBottom: 10 }}>Booking Details</WHeading>
-      <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 12 }}>
-        <WImage label="artist_photo" w={52} h={52} />
-        <div>
-          <WHeading size={12}>Jazz Ensemble Name</WHeading>
-          <div style={{ fontSize: 11, fontFamily: "monospace", color: W.textLight }}>Jazz, Soul</div>
-        </div>
-      </div>
-      <WDivider />
-      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-        {[
-          ["Booking ID", "#OVR-20260315-0042"],
-          ["Date", "March 15, 2026"],
-          ["Time", "7:00 PM – 9:00 PM"],
-          ["Duration", "2 hours"],
-          ["Total Paid", "$500.00"],
-        ].map(([label, value]) => (
-          <div key={label} style={{ display: "flex", justifyContent: "space-between", fontSize: 12, fontFamily: "monospace" }}>
-            <span style={{ color: W.textLight }}>{label}</span>
-            <span style={{ color: W.text, fontWeight: label === "Total Paid" ? 700 : 400 }}>{value}</span>
-          </div>
-        ))}
-      </div>
-    </WBox>
-    <WBox style={{ background: W.placeholder }}>
-      <WHeading size={12} style={{ marginBottom: 6 }}>What Happens Next</WHeading>
-      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-        {[
-          "Messaging with your artist is now unlocked.",
-          "Your payment is held securely until 24 hours after your event.",
-          "You may initiate a cancellation from the Messages page.",
-        ].map((item, i) => (
-          <div key={i} style={{ display: "flex", gap: 8, fontSize: 11, fontFamily: "monospace", color: W.textLight }}>
-            <span style={{ color: W.accent, fontWeight: 700 }}>→</span>
-            <span>{item}</span>
-          </div>
-        ))}
-      </div>
-    </WBox>
-    <WButton primary full onClick={onMessages}>Go to Messages</WButton>
-    <WButton full>Back to Artist Profile</WButton>
-  </div>
-);
-
-// ─── Screen 3: Payment Error State ──────────────────────────────────────────
-const ErrorScreen = ({ onRetry }) => (
-  <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-    <WBox style={{ textAlign: "center", padding: 24, borderColor: "#fca5a5" }}>
-      <div style={{ fontSize: 28, marginBottom: 8 }}>✗</div>
-      <WHeading size={14} style={{ marginBottom: 4, color: "#dc2626" }}>Payment Failed</WHeading>
-      <div style={{ fontSize: 12, fontFamily: "monospace", color: W.textLight, marginBottom: 12 }}>
-        Your payment could not be processed. Please check your card details and try again.
-      </div>
-      <div style={{
-        display: "inline-block", padding: "6px 12px",
-        background: "#fef2f2", border: "1px solid #fca5a5",
-        borderRadius: 4, fontSize: 11, fontFamily: "monospace", color: "#dc2626"
-      }}>
-        Error: Card declined — Insufficient funds
-      </div>
-    </WBox>
-    <WBox>
-      <WHeading size={12} style={{ marginBottom: 10 }}>Your selections are preserved</WHeading>
-      <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-        {[["Date", "March 15, 2026"], ["Time", "7:00 PM"], ["Duration", "2 hours"], ["Total", "$500.00"]].map(([k, v]) => (
-          <div key={k} style={{ display: "flex", justifyContent: "space-between", fontSize: 12, fontFamily: "monospace" }}>
-            <span style={{ color: W.textLight }}>{k}</span>
-            <span style={{ color: W.text }}>{v}</span>
-          </div>
-        ))}
-      </div>
-    </WBox>
-    <WButton primary full onClick={onRetry}>Try Again with New Card</WButton>
-    <WButton full>Use Saved Card on File</WButton>
-  </div>
-);
-
-// ─── Annotation Panel ────────────────────────────────────────────────────────
-const AnnotationPanel = ({ screen }) => {
-  const notes = {
-    booking: {
-      title: "Book an Artist — Single Page Flow",
-      flow: "Artist Profile → [Booking Flow] → Confirmation",
-      items: [
-        { n: 1, text: "Back arrow navigates to artist profile. Artist info is read-only (name, genre, hourly rate, photo)." },
-        { n: 2, text: "Calendar shows green (available) and grey (unavailable) dates. Only green dates are selectable. Clicking grey = no-op. Range: up to 1 year." },
-        { n: 3, text: "Duration dropdown (1, 2, 3, 4+ hours). Price breakdown updates dynamically as duration changes." },
-        { n: 4, text: "Platform fee line item reserved — rate TBD, may be zero or hidden at launch." },
-        { n: 5, text: "Fund-hold message: 'Held securely, released 24hrs after event.' Never use the word 'escrow'." },
-        { n: 6, text: "Stripe embedded form (Elements). Apple Pay / Google Pay support TBD. Card fields: number, expiry, CVC, billing ZIP." },
-        { n: 7, text: "Cancellation policy checkbox — policy text TBD, links to Terms of Service." },
-        { n: 8, text: "Desktop: two-column layout (form left, summary card sticky right). Mobile: stacked single column." },
-      ],
-      open: [
-        "Deposit vs. full payment — SOW page 3 says 'deposit/full' but page 9 does not list deposits. Needs resolution.",
-        "Apple Pay / Google Pay — include if Stripe Elements supports with minimal added complexity.",
-        "Saved payment methods — requires Stripe customer object; improve repeat-client UX.",
-        "Race condition: if a date is booked between page load and submission, show error and refresh calendar.",
-        "Single-page flow assumes Stripe embedded form is compatible — confirm during implementation.",
-      ]
-    },
-    confirmation: {
-      title: "Booking Confirmation Screen",
-      flow: "Booking Flow → [Confirmation] → Messages",
-      items: [
-        { n: 1, text: "Confirmation email sent automatically on successful booking." },
-        { n: 2, text: "Booking ID displayed for reference (format: OVR-[date]-[sequence])." },
-        { n: 3, text: "'Go to Messages' CTA is the primary action — messaging is unlocked immediately after booking." },
-        { n: 4, text: "'What Happens Next' section sets expectations for fund-hold timeline and cancellation path." },
-        { n: 5, text: "ICS calendar download — TBD. Low-effort, high-value; recommend including if straightforward." },
-      ],
-      open: [
-        "ICS calendar file download — confirm implementation effort.",
-        "Should artist receive a notification at this point? (implied yes — email notifications are in scope).",
-      ]
-    },
-    error: {
-      title: "Payment Error State",
-      flow: "Booking Flow → [Payment Failed] → Retry",
-      items: [
-        { n: 1, text: "Card-specific error messages via Stripe (e.g., 'Insufficient funds', 'Card declined')." },
-        { n: 2, text: "All date/time selections are preserved — client should not need to re-select." },
-        { n: 3, text: "Two retry paths: try a new card, or use a saved card on file (if saved cards are supported)." },
-      ],
-      open: [
-        "Saved cards on file — depends on whether Stripe customer objects are implemented.",
-        "How many retry attempts before the booking attempt is cleared?",
-      ]
-    }
-  };
-
-  const n = notes[screen];
   return (
     <div style={{
-      borderTop: `2px solid ${W.border}`, marginTop: 24,
-      paddingTop: 16, display: "flex", flexDirection: "column", gap: 12
+      fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif",
+      background: "#f1f5f9",
+      minHeight: "100vh",
+      padding: isMobile ? "16px 8px" : "24px 16px",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
     }}>
-      <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-        <div style={{ flex: 1, minWidth: 240 }}>
-          <WHeading size={11} style={{ marginBottom: 8, color: W.accent }}>ANNOTATIONS</WHeading>
-          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-            {n.items.map(item => <WAnnotation key={item.n} number={item.n}>{item.text}</WAnnotation>)}
+      {/* Header */}
+      <div style={{ width: "100%", maxWidth: 880, marginBottom: 20 }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
+          <div>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, color: "#64748b", textTransform: "uppercase", marginBottom: 2 }}>
+              OVRTØNE · Wireframe
+            </div>
+            <h1 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0, letterSpacing: -0.5 }}>
+              Book an Artist — {screen === "booking" ? "Booking Flow" : "Confirmation"}
+            </h1>
+            <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}>Single-page flow · Authenticated clients only · Airbnb-inspired</div>
+          </div>
+          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+            {/* Screen toggle */}
+            <div style={{ display: "flex", gap: 4, background: "#e2e8f0", borderRadius: 8, padding: 3 }}>
+              {["booking", "confirmation"].map(s => (
+                <button key={s} onClick={() => setScreen(s)} style={{
+                  padding: "6px 12px", borderRadius: 6, border: "none", cursor: "pointer",
+                  fontSize: 11, fontWeight: 600, textTransform: "capitalize",
+                  background: screen === s ? "#fff" : "transparent",
+                  color: screen === s ? "#0f172a" : "#64748b",
+                  boxShadow: screen === s ? "0 1px 3px rgba(0,0,0,0.1)" : "none",
+                }}>{s}</button>
+              ))}
+            </div>
+            {/* View toggle */}
+            <div style={{ display: "flex", gap: 4, background: "#e2e8f0", borderRadius: 8, padding: 3 }}>
+              {["desktop", "mobile"].map(v => (
+                <button key={v} onClick={() => setView(v)} style={{
+                  padding: "6px 12px", borderRadius: 6, border: "none", cursor: "pointer",
+                  fontSize: 11, fontWeight: 600, textTransform: "capitalize",
+                  background: view === v ? "#fff" : "transparent",
+                  color: view === v ? "#0f172a" : "#64748b",
+                  boxShadow: view === v ? "0 1px 3px rgba(0,0,0,0.1)" : "none",
+                }}>{v}</button>
+              ))}
+            </div>
           </div>
         </div>
-        <div style={{ flex: 1, minWidth: 240 }}>
-          <WHeading size={11} style={{ marginBottom: 8, color: "#f59e0b" }}>OPEN QUESTIONS</WHeading>
-          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-            {n.open.map((q, i) => (
-              <div key={i} style={{ display: "flex", gap: 8, fontSize: 11, fontFamily: "monospace", color: W.text }}>
-                <span style={{ color: "#f59e0b", fontWeight: 700, flexShrink: 0 }}>?</span>
-                <span style={{ lineHeight: 1.5 }}>{q}</span>
+      </div>
+
+      {/* ═══════════════ BOOKING FLOW ═══════════════ */}
+      {screen === "booking" && (
+        <div style={{
+          width: containerWidth, maxWidth: "100%",
+          background: "#fff", borderRadius: 12, padding: isMobile ? 16 : 28,
+          boxShadow: "0 4px 24px rgba(0,0,0,0.08)",
+          border: "1px solid #e2e8f0",
+          transition: "width 0.3s ease",
+        }}>
+
+          {/* ── BACK NAVIGATION ── */}
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+            <span style={{ fontSize: 16, color: "#94a3b8", cursor: "pointer" }}>←</span>
+            <span style={{ fontSize: 11, color: "#94a3b8", fontWeight: 500 }}>Back to artist profile</span>
+          </div>
+          <Note>Back arrow navigates to the artist's profile page (per Q2). Info on this page is read-only.</Note>
+
+          {/* ── 1. ARTIST SUMMARY CARD ── */}
+          <SectionLabel number="1">Artist Summary Card</SectionLabel>
+          <WireframeBox style={{ padding: isMobile ? 12 : 16 }}>
+            <div style={{
+              display: "flex", gap: isMobile ? 10 : 16, alignItems: "center",
+            }}>
+              {/* Thumbnail */}
+              <WireframeBox dashed style={{ width: isMobile ? 64 : 80, height: isMobile ? 64 : 80, flexShrink: 0 }}>
+                <div style={{
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  height: "100%", fontSize: 9, color: "#94a3b8", textAlign: "center", padding: 4,
+                }}>Artist Image</div>
+              </WireframeBox>
+              {/* Info */}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: isMobile ? 16 : 20, fontWeight: 800, color: "#0f172a" }}>The Blue Note Trio</div>
+                <div style={{ fontSize: 12, color: "#64748b", marginTop: 2 }}>Jazz</div>
+                <div style={{
+                  marginTop: 6, padding: "4px 10px", background: "#f1f5f9", borderRadius: 6,
+                  fontSize: 13, fontWeight: 700, color: "#0f172a", display: "inline-block",
+                }}>
+                  $250 / hour
+                </div>
+              </div>
+            </div>
+          </WireframeBox>
+          <Note>Matches SOW wireframe layout: square thumbnail, artist name, genre (plain text per Q3), and hourly rate. No rating (Q5) or badges (Q6) in MVP.</Note>
+          <Annotation>Genre as plain text, not tag/pill — matches Reverbnation style per Q3.</Annotation>
+
+          {/* ── 2. DATE SELECTION ── */}
+          <SectionLabel number="2">Date Selection</SectionLabel>
+          <WireframeBox label="Availability Calendar · OpenTable-style">
+            <CalendarGrid />
+          </WireframeBox>
+          <Note>Calendar picker (Q7) showing next 12 months (Q8, Q15). Green = available, grey = booked/blocked. Only green dates selectable. Single date only — multiple dates out of scope (Q9, SOW p.14).</Note>
+          <Annotation>Race condition handling (Q14): if date becomes unavailable between page load and submission, booking fails gracefully with error message. Grey dates unclickable.</Annotation>
+
+          {/* ── 3. TIME & DURATION ── */}
+          <SectionLabel number="3">Time & Duration Selection</SectionLabel>
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr 1fr",
+            gap: 10,
+          }}>
+            <div>
+              <FieldLabel required>Start Time</FieldLabel>
+              <SelectField value="7:00 PM" />
+            </div>
+            <div>
+              <FieldLabel required>Duration</FieldLabel>
+              <SelectField value="3 hours" />
+            </div>
+            <div>
+              <FieldLabel>End Time</FieldLabel>
+              <WireframeBox style={{
+                padding: "8px 12px", background: "#f1f5f9",
+                display: "flex", alignItems: "center",
+              }}>
+                <span style={{ fontSize: 12, fontWeight: 600, color: "#334155" }}>10:00 PM</span>
+                <span style={{ fontSize: 9, color: "#94a3b8", marginLeft: 6 }}>auto-calculated</span>
+              </WireframeBox>
+            </div>
+          </div>
+          <Note>Start time + duration dropdowns (Q10, Q11, Q12). Time in 30-min increments. Duration dropdown: 1hr, 2hr, 3hr, 4+hr. End time auto-calculated and read-only.</Note>
+          <Annotation>Duration dropdown preferred over start/end time pickers (Q12) — prevents illogical selections and simplifies billing calc.</Annotation>
+
+          {/* ── 4. PRICE BREAKDOWN ── */}
+          <SectionLabel number="4">Price Breakdown</SectionLabel>
+          <WireframeBox style={{ padding: isMobile ? 12 : 16 }} label="Dynamic · Updates in Real Time">
+            <div style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 10 }}>
+              Order Summary
+            </div>
+            {[
+              ["Artist Rate", "$250 / hr"],
+              ["Duration", "3 hours"],
+              ["Subtotal", "$750.00"],
+            ].map(([k, v]) => (
+              <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", borderBottom: "1px solid #f1f5f9" }}>
+                <span style={{ fontSize: 12, color: "#64748b" }}>{k}</span>
+                <span style={{ fontSize: 12, fontWeight: 600, color: "#334155" }}>{v}</span>
               </div>
             ))}
-          </div>
-          <WHeading size={11} style={{ marginTop: 12, marginBottom: 6, color: W.mutedDark }}>FLOW</WHeading>
-          <div style={{ fontSize: 11, fontFamily: "monospace", color: W.textLight }}>{n.flow}</div>
-        </div>
-      </div>
-    </div>
-  );
-};
+            {/* Platform fee — reserved space */}
+            <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", borderBottom: "1px solid #f1f5f9" }}>
+              <span style={{ fontSize: 12, color: "#94a3b8", fontStyle: "italic" }}>Platform Fee</span>
+              <span style={{ fontSize: 12, color: "#94a3b8", fontStyle: "italic" }}>TBD</span>
+            </div>
+            {/* Total */}
+            <div style={{ display: "flex", justifyContent: "space-between", padding: "10px 0 4px", marginTop: 4 }}>
+              <span style={{ fontSize: 14, fontWeight: 800, color: "#0f172a" }}>Total</span>
+              <span style={{ fontSize: 14, fontWeight: 800, color: "#0f172a" }}>$750.00</span>
+            </div>
+            {/* Fund hold message */}
+            <div style={{
+              marginTop: 10, padding: "8px 10px", background: "#eef2ff", borderRadius: 6,
+              fontSize: 11, color: "#475569", lineHeight: 1.5,
+            }}>
+              🔒 Your payment is held securely and released to the artist 24 hours after your event.
+            </div>
+          </WireframeBox>
+          <Note>Price updates dynamically as duration changes (Q13). Format: "$250/hr × 3 hours = $750" (Q19). Reserve space for platform fee line — rate TBD, may be zero or hidden at launch.</Note>
+          <Annotation>Commission rates undecided (Q40 from contextual notes). Platform fee line should be conditionally visible — hide if zero, show if non-zero.</Annotation>
 
-// ─── Main App ────────────────────────────────────────────────────────────────
-export default function BookingPage() {
-  const [screen, setScreen] = useState("booking");
-  const [breakpoint, setBreakpoint] = useState("mobile");
+          {/* ── 5. CANCELLATION POLICY ── */}
+          <SectionLabel number="5">Cancellation Policy</SectionLabel>
+          <WireframeBox style={{ padding: isMobile ? 12 : 16 }}>
+            <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+              <WireframeBox style={{
+                width: 20, height: 20, flexShrink: 0, borderRadius: 4,
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
+                <span style={{ fontSize: 10, color: "#94a3b8" }}>☐</span>
+              </WireframeBox>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 12, fontWeight: 600, color: "#334155", lineHeight: 1.5 }}>
+                  I acknowledge and agree to the cancellation policy.
+                </div>
+                <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 4, lineHeight: 1.5 }}>
+                  Cancellation policy text goes here. Specific rules are TBD — placeholder for Airbnb/Rover-style tiered policy.
+                </div>
+                <div style={{ marginTop: 6 }}>
+                  <span style={{ fontSize: 11, color: "#3b82f6", fontWeight: 600, cursor: "pointer" }}>View full cancellation policy →</span>
+                </div>
+              </div>
+            </div>
+          </WireframeBox>
+          <Note>Checkbox acknowledgment required before payment (per contextual notes). Policy text is undefined — will be added to Terms of Service. Founder wants Airbnb/Rover-style policies.</Note>
+          <Annotation>Cancellation initiated manually via Messages page "Initiate Cancellation" button — no auto-cancel logic in MVP (SOW p.9). Artist can also deny post-booking for valid reasons only (Q22).</Annotation>
 
-  const bpWidth = { mobile: 375, tablet: 520, desktop: "100%" };
-  const screenLabels = { booking: "Book an Artist", confirmation: "Confirmation", error: "Payment Error" };
+          {/* ── 6. TERMS AGREEMENT ── */}
+          <SectionLabel number="6">Terms Agreement</SectionLabel>
+          <WireframeBox style={{ padding: isMobile ? 12 : 16 }}>
+            <div style={{ fontSize: 11, color: "#64748b", lineHeight: 1.6 }}>
+              By clicking "Instant Book", I agree to OVRTØNE's{" "}
+              <span style={{ color: "#3b82f6", fontWeight: 600, cursor: "pointer" }}>Terms of Service</span>,{" "}
+              <span style={{ color: "#3b82f6", fontWeight: 600, cursor: "pointer" }}>Privacy Policy</span>, and{" "}
+              <span style={{ color: "#3b82f6", fontWeight: 600, cursor: "pointer" }}>Booking Terms</span>.
+            </div>
+          </WireframeBox>
+          <Note>No pre-booking messaging allowed — communication restricted until after payment (contextual notes). Do NOT include a "Message the artist first" option anywhere in this flow.</Note>
 
-  return (
-    <div style={{ minHeight: "100vh", background: "#e5e7eb", padding: 16, fontFamily: "monospace" }}>
+          {/* ── 7. STRIPE PAYMENT FORM ── */}
+          <SectionLabel number="7">Payment Information</SectionLabel>
+          <WireframeBox style={{ padding: isMobile ? 12 : 16 }} label="Stripe Embedded Form">
+            <div style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 12 }}>
+              Payment Method
+            </div>
+            {/* Card number */}
+            <FieldLabel required>Card Number</FieldLabel>
+            <WireframeBox style={{ padding: "10px 12px", marginBottom: 10 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ fontSize: 12, color: "#94a3b8" }}>1234 5678 9012 3456</span>
+                <div style={{ display: "flex", gap: 4 }}>
+                  {["💳"].map((c, i) => (
+                    <span key={i} style={{ fontSize: 14, opacity: 0.4 }}>{c}</span>
+                  ))}
+                </div>
+              </div>
+            </WireframeBox>
 
-      {/* ── Toolbar ── */}
-      <div style={{
-        background: W.surface, border: `1px solid ${W.border}`, borderRadius: 6,
-        padding: "10px 16px", marginBottom: 16,
-        display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap"
-      }}>
-        <span style={{ fontSize: 13, fontWeight: 700, color: W.text }}>
-          OVRTØNE / {screenLabels[screen]}
-        </span>
+            {/* Exp / CVC / Zip row */}
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: isMobile ? "1fr 1fr" : "1fr 1fr 1fr",
+              gap: 10,
+            }}>
+              <div>
+                <FieldLabel required>Expiration</FieldLabel>
+                <WireframeBox style={{ padding: "10px 12px" }}>
+                  <span style={{ fontSize: 12, color: "#94a3b8" }}>MM / YY</span>
+                </WireframeBox>
+              </div>
+              <div>
+                <FieldLabel required>CVC</FieldLabel>
+                <WireframeBox style={{ padding: "10px 12px" }}>
+                  <span style={{ fontSize: 12, color: "#94a3b8" }}>123</span>
+                </WireframeBox>
+              </div>
+              {!isMobile && (
+                <div>
+                  <FieldLabel required>Billing Zip</FieldLabel>
+                  <WireframeBox style={{ padding: "10px 12px" }}>
+                    <span style={{ fontSize: 12, color: "#94a3b8" }}>10001</span>
+                  </WireframeBox>
+                </div>
+              )}
+            </div>
+            {isMobile && (
+              <div style={{ marginTop: 10 }}>
+                <FieldLabel required>Billing Zip</FieldLabel>
+                <WireframeBox style={{ padding: "10px 12px" }}>
+                  <span style={{ fontSize: 12, color: "#94a3b8" }}>10001</span>
+                </WireframeBox>
+              </div>
+            )}
 
-        {/* Screen switcher */}
-        <div style={{ display: "flex", gap: 4, marginLeft: "auto" }}>
-          {Object.entries(screenLabels).map(([key, label]) => (
-            <button key={key} onClick={() => setScreen(key)} style={{
-              padding: "4px 10px", fontSize: 11, fontFamily: "monospace",
-              background: screen === key ? W.text : W.surface,
-              color: screen === key ? "#fff" : W.textLight,
-              border: `1px solid ${screen === key ? W.text : W.border}`,
-              borderRadius: 4, cursor: "pointer"
-            }}>{label}</button>
-          ))}
-        </div>
+            {/* Accepted cards */}
+            <div style={{ marginTop: 12, display: "flex", gap: 6, alignItems: "center" }}>
+              <span style={{ fontSize: 9, color: "#94a3b8" }}>Accepted:</span>
+              {["Visa", "MC", "Amex", "Discover"].map(c => (
+                <Tag key={c} color="#f1f5f9" textColor="#94a3b8">{c}</Tag>
+              ))}
+            </div>
+          </WireframeBox>
+          <Note>Stripe Elements embedded form preferred to keep client within OVRTØNE UI (Q16). Standard fields: card number, expiration, CVC, billing zip (Q17). USD only for NYC launch (Q25).</Note>
+          <Annotation>Stripe integration method TBD during implementation — Elements embedded preferred over Checkout redirect or Payment Sheet (Q16). Visual layout here is representative; actual form rendered by Stripe SDK.</Annotation>
 
-        {/* Breakpoint switcher */}
-        <div style={{ display: "flex", gap: 4 }}>
-          {["mobile", "tablet", "desktop"].map(bp => (
-            <button key={bp} onClick={() => setBreakpoint(bp)} style={{
-              padding: "4px 10px", fontSize: 11, fontFamily: "monospace",
-              background: breakpoint === bp ? W.accent : W.surface,
-              color: breakpoint === bp ? "#fff" : W.textLight,
-              border: `1px solid ${breakpoint === bp ? W.accent : W.border}`,
-              borderRadius: 4, cursor: "pointer"
-            }}>{bp === "mobile" ? "📱 375" : bp === "tablet" ? "📟 520" : "🖥 full"}</button>
-          ))}
-        </div>
-      </div>
-
-      {/* ── Canvas ── */}
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <div style={{
-          width: bpWidth[breakpoint],
-          maxWidth: "100%",
-          border: `2px solid ${W.borderDark}`,
-          borderRadius: 8,
-          background: W.surface,
-          overflow: "hidden"
-        }}>
-          {/* Page header / nav bar */}
-          <div style={{
-            background: W.bg, borderBottom: `1px solid ${W.border}`,
-            padding: "10px 16px", display: "flex", alignItems: "center", gap: 10
+          {/* ── 8. INSTANT BOOK CTA ── */}
+          <SectionLabel number="8">Instant Book CTA</SectionLabel>
+          <WireframeBox style={{
+            padding: isMobile ? 12 : 16,
+            background: "#0f172a", borderColor: "#0f172a",
+            borderRadius: 10,
           }}>
-            <button style={{
-              background: "none", border: `1px solid ${W.border}`, borderRadius: 4,
-              padding: "4px 8px", fontSize: 12, cursor: "pointer", color: W.text
-            }}>← Back</button>
-            <span style={{ fontSize: 13, fontWeight: 700, color: W.text }}>
-              {screenLabels[screen]}
-            </span>
+            <div style={{
+              display: "flex", alignItems: "center", justifyContent: "space-between",
+              flexDirection: isMobile ? "column" : "row", gap: 10,
+            }}>
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#fff" }}>
+                  Total: $750.00
+                </div>
+                <div style={{ fontSize: 10, color: "#64748b" }}>
+                  The Blue Note Trio · Sat, Mar 15 · 7:00–10:00 PM
+                </div>
+              </div>
+              <div style={{
+                padding: "12px 40px", background: "#3b82f6", borderRadius: 8,
+                color: "#fff", fontSize: 14, fontWeight: 700, textAlign: "center",
+                width: isMobile ? "100%" : "auto",
+              }}>
+                Instant Book
+              </div>
+            </div>
+          </WireframeBox>
+          <Annotation>Button text confirmed as "Instant Book" per SOW p.9 and flow step 7 (Q32). Single-page vertical flow: artist info → date/time → price → payment → this button.</Annotation>
+          <Note>On payment failure: display clear error via Stripe (e.g. "Insufficient funds", "Card declined"). Allow retry without losing date/time selections (Q31).</Note>
+
+          {/* ── ERROR STATE EXAMPLE ── */}
+          <div style={{ marginTop: 16 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "#475569", marginBottom: 6 }}>
+              Error State <span style={{ fontWeight: 400, color: "#94a3b8" }}>(shown on payment failure)</span>
+            </div>
+            <WireframeBox style={{ padding: 12, borderColor: "#fca5a5", background: "#fef2f2" }}>
+              <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
+                <span style={{ fontSize: 14 }}>⚠️</span>
+                <div>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: "#dc2626" }}>Payment could not be processed</div>
+                  <div style={{ fontSize: 11, color: "#64748b", marginTop: 2 }}>Please check your card details and try again. Your date and time selections have been preserved.</div>
+                </div>
+              </div>
+            </WireframeBox>
           </div>
 
-          {/* Page content */}
-          <div style={{ padding: 16, background: W.bg }}>
-            {screen === "booking" && (
-              <BookingScreen
-                breakpoint={breakpoint}
-                onBook={() => setScreen("confirmation")}
-              />
-            )}
-            {screen === "confirmation" && (
-              <ConfirmationScreen onMessages={() => {}} />
-            )}
-            {screen === "error" && (
-              <ErrorScreen onRetry={() => setScreen("booking")} />
-            )}
+        </div>
+      )}
+
+      {/* ═══════════════ CONFIRMATION SCREEN ═══════════════ */}
+      {screen === "confirmation" && (
+        <div style={{
+          width: containerWidth, maxWidth: "100%",
+          background: "#fff", borderRadius: 12, padding: isMobile ? 16 : 28,
+          boxShadow: "0 4px 24px rgba(0,0,0,0.08)",
+          border: "1px solid #e2e8f0",
+          transition: "width 0.3s ease",
+        }}>
+
+          {/* ── 9. CONFIRMATION HEADER ── */}
+          <SectionLabel number="9">Booking Confirmation</SectionLabel>
+
+          {/* Success banner */}
+          <WireframeBox style={{
+            padding: isMobile ? 16 : 24,
+            background: "#f0fdf4", borderColor: "#86efac",
+            textAlign: "center",
+          }}>
+            <div style={{ fontSize: 36, marginBottom: 8 }}>✓</div>
+            <div style={{ fontSize: isMobile ? 18 : 22, fontWeight: 800, color: "#0f172a" }}>Booking Confirmed!</div>
+            <div style={{ fontSize: 12, color: "#64748b", marginTop: 4 }}>
+              Booking ID: <span style={{ fontWeight: 700, color: "#334155" }}>OVR-2026-03-15-A7X</span>
+            </div>
+          </WireframeBox>
+
+          {/* Booking details card */}
+          <div style={{ marginTop: 16 }}>
+            <WireframeBox style={{ padding: isMobile ? 12 : 16 }}>
+              <div style={{ display: "flex", gap: 14, alignItems: "center", marginBottom: 16 }}>
+                <WireframeBox dashed style={{ width: 56, height: 56, flexShrink: 0 }}>
+                  <div style={{
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    height: "100%", fontSize: 8, color: "#94a3b8", textAlign: "center",
+                  }}>Image</div>
+                </WireframeBox>
+                <div>
+                  <div style={{ fontSize: 16, fontWeight: 800, color: "#0f172a" }}>The Blue Note Trio</div>
+                  <div style={{ fontSize: 11, color: "#64748b" }}>Jazz</div>
+                </div>
+              </div>
+              {[
+                ["Date", "Saturday, March 15, 2026"],
+                ["Time", "7:00 PM – 10:00 PM (3 hours)"],
+                ["Total Paid", "$750.00"],
+                ["Payment", "Visa ending in 3456"],
+                ["Status", "Confirmed — Payment held securely"],
+              ].map(([k, v]) => (
+                <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "7px 0", borderBottom: "1px solid #f1f5f9" }}>
+                  <span style={{ fontSize: 12, color: "#64748b" }}>{k}</span>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: "#334155", textAlign: "right" }}>{v}</span>
+                </div>
+              ))}
+            </WireframeBox>
           </div>
+          <Note>Confirmation fields per Q27: Booking ID, artist name/image, date/time, total paid. Confirmation email also sent (Q29).</Note>
+
+          {/* ── 10. NEXT STEPS ── */}
+          <SectionLabel number="10">Next Steps</SectionLabel>
+          <WireframeBox style={{ padding: isMobile ? 12 : 16 }}>
+            <div style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 10 }}>
+              What's Next
+            </div>
+            <div style={{ fontSize: 12, color: "#475569", lineHeight: 1.8 }}>
+              <div>💬 <strong>Message your artist</strong> — Discuss event details, set list preferences, and logistics.</div>
+              <div>📅 <strong>Add to calendar</strong> — Download an ICS file with your booking details.</div>
+              <div>📋 <strong>View your bookings</strong> — See all upcoming and past bookings in one place.</div>
+              <div>❌ <strong>Need to cancel?</strong> — Initiate cancellation from the Messages page.</div>
+            </div>
+          </WireframeBox>
+          <Annotation>ICS calendar download is TBD — recommended if technically straightforward (Q30). Low-effort, high-value addition.</Annotation>
+          <Note>Messaging unlocked immediately after booking (Q28). No pre-booking communication allowed. Tipping happens post-event during review — not here.</Note>
+
+          {/* Primary CTA: Go to Messages */}
+          <div style={{
+            marginTop: 16, padding: "12px 0",
+            display: "flex", gap: 10,
+            flexDirection: isMobile ? "column" : "row",
+          }}>
+            <div style={{
+              flex: 1, padding: "12px 24px", background: "#3b82f6", borderRadius: 8,
+              color: "#fff", fontSize: 14, fontWeight: 700, textAlign: "center", cursor: "pointer",
+            }}>
+              Go to Messages
+            </div>
+            <div style={{
+              flex: isMobile ? 1 : "none", padding: "12px 24px", background: "#f1f5f9", borderRadius: 8,
+              color: "#334155", fontSize: 14, fontWeight: 600, textAlign: "center", cursor: "pointer",
+              border: "1.5px solid #cbd5e1",
+            }}>
+              View Bookings
+            </div>
+          </div>
+          <Annotation>Prominent "Go to Messages" CTA per Q28. Secondary "View Bookings" links to booking history.</Annotation>
+
+        </div>
+      )}
+
+      {/* ═══════════════ FLOW DIAGRAM ═══════════════ */}
+      <div style={{
+        width: containerWidth, maxWidth: "100%", marginTop: 20,
+        background: "#fff", borderRadius: 10, padding: 16,
+        border: "1px solid #e2e8f0",
+      }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: "#334155", marginBottom: 10, textTransform: "uppercase", letterSpacing: 0.8 }}>
+          End-to-End Flow (10 Steps)
+        </div>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 4, alignItems: "center" }}>
+          {[
+            "① Land on booking",
+            "② See artist info",
+            "③ Select date",
+            "④ Choose time + duration",
+            "⑤ Review price",
+            "⑥ Acknowledge cancellation",
+            "⑦ Enter payment",
+            "⑧ Click Instant Book",
+            "⑨ Confirmation page",
+            "⑩ Messaging unlocked",
+          ].map((step, i) => (
+            <div key={i} style={{ display: "flex", alignItems: "center", gap: 4 }}>
+              <Tag color={i < 8 ? "#e2e8f0" : i === 8 ? "#dcfce7" : "#dbeafe"} textColor={i < 8 ? "#334155" : i === 8 ? "#166534" : "#1e40af"}>
+                {step}
+              </Tag>
+              {i < 9 && <span style={{ fontSize: 10, color: "#cbd5e1" }}>→</span>}
+            </div>
+          ))}
+        </div>
+        <div style={{ marginTop: 8, fontSize: 10, color: "#94a3b8" }}>
+          Post-event: 24hrs after event → payment released to artist (Step 11, automated via Stripe)
         </div>
       </div>
 
-      {/* ── Annotations ── */}
+      {/* ═══════════════ OUT OF SCOPE ═══════════════ */}
       <div style={{
-        background: W.surface, border: `1px solid ${W.border}`,
-        borderRadius: 6, padding: 16, marginTop: 16,
-        maxWidth: bpWidth[breakpoint] === "100%" ? "100%" : "max-content",
-        margin: "16px auto 0"
+        width: containerWidth, maxWidth: "100%", marginTop: 12,
+        background: "#fff", borderRadius: 10, padding: 16,
+        border: "1px solid #e2e8f0",
       }}>
-        <AnnotationPanel screen={screen} />
+        <div style={{ fontSize: 11, fontWeight: 700, color: "#334155", marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.8 }}>
+          Out of Scope (MVP)
+        </div>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+          {[
+            "Automatic Cancellation", "Recurring Booking", "Multiple Date Booking",
+            "Invoicing", "Automated Disputes", "50% Deposits", "Pre-Booking Messaging", "Tipping at Booking",
+          ].map(item => (
+            <Tag key={item} color="#fee2e2" textColor="#dc2626">{item}</Tag>
+          ))}
+        </div>
+        <div style={{ fontSize: 9, color: "#94a3b8", marginTop: 6 }}>Per SOW pages 9 & 14 + contextual notes from founder questionnaire</div>
       </div>
 
+      {/* Legend */}
+      <div style={{
+        width: containerWidth, maxWidth: "100%", marginTop: 12,
+        background: "#fff", borderRadius: 10, padding: 16,
+        border: "1px solid #e2e8f0",
+      }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: "#334155", marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.8 }}>
+          Wireframe Legend
+        </div>
+        <div style={{ display: "flex", gap: 16, flexWrap: "wrap", fontSize: 10, color: "#64748b" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <div style={{ width: 20, height: 14, border: "1.5px solid #cbd5e1", borderRadius: 3, background: "#f8fafc" }} />
+            Content block
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <div style={{ width: 20, height: 14, border: "2px dashed #94a3b8", borderRadius: 3, background: "repeating-linear-gradient(45deg, #f8fafc, #f8fafc 2px, #f1f5f9 2px, #f1f5f9 4px)" }} />
+            Media placeholder
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <div style={{ width: 20, height: 14, borderRadius: 3, background: "#fffbeb", border: "1px solid #fde68a" }} />
+            ⚡ Design decision
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <div style={{ width: 20, height: 14, borderRadius: 3, background: "#eef2ff", border: "1px solid #c7d2fe" }} />
+            📝 Implementation note
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

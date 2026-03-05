@@ -11,7 +11,7 @@ export default function Home() {
         OVRTØNE
       </h1>
       <p className="text-lg text-white/60 tracking-wide">
-        where performance meets resonance.
+        Where performance meets resonance.
       </p>
       <Link
         href="/artists"
