@@ -19,6 +19,24 @@ export default function Home() {
       >
         Search
       </Link>
+
+      <nav className="mt-8 flex flex-col items-center gap-2">
+        {[
+          { href: "/artists", label: "Artist Search" },
+          { href: "/artists/band-1", label: "Artist Profile" },
+          { href: "/booking", label: "Booking" },
+          { href: "/messages", label: "Messages" },
+          { href: "/reverbnation", label: "ReverbNation" },
+        ].map(({ href, label }) => (
+          <Link
+            key={href}
+            href={href}
+            className="text-sm text-white/50 hover:text-white transition-colors underline underline-offset-2"
+          >
+            {label}
+          </Link>
+        ))}
+      </nav>
     </div>
   );
 }

@@ -135,12 +135,12 @@ export default function ArtistProfileWireframe() {
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
           <div>
             <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, color: "#64748b", textTransform: "uppercase", marginBottom: 2 }}>
-              OVRTØNE · Wireframe
+              <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>OVRTØNE</Link> · Wireframe
             </div>
             <h1 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0, letterSpacing: -0.5 }}>
               Artist Profile Page
             </h1>
-            <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}>Public view · Client-facing · Read-only</div>
+            <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}><Link href="/artists" style={{ color: "#3b82f6", textDecoration: "none", fontWeight: 600 }}>← Back to search</Link></div>
           </div>
           <div style={{ display: "flex", gap: 4, background: "#e2e8f0", borderRadius: 8, padding: 3 }}>
             {["desktop", "mobile"].map(v => (
@@ -221,20 +221,17 @@ export default function ArtistProfileWireframe() {
                 </div>
               ))}
             </div>
-            <Note>Pricing NOT visible to non-logged-in users. Show &quot;$X/hr&quot; only to authenticated clients.</Note>
             <div style={{
               marginTop: 8, padding: "6px 12px", background: "#f1f5f9", borderRadius: 6,
               fontSize: 13, fontWeight: 700, color: "#0f172a", display: "inline-block",
             }}>
               $250 / hour <span style={{ fontWeight: 400, fontSize: 11, color: "#64748b" }}>· 2hr minimum</span>
             </div>
-            <Annotation>Minimum booking hours: artist toggles yes/no. If yes → shows minimum.</Annotation>
           </div>
         </div>
 
         {/* ── 2. MEDIA GALLERY ── */}
         <SectionLabel number="2">Media Gallery</SectionLabel>
-        <Note>Videos first, then photos (per SOW). Artists can reorder within each section.</Note>
 
         {/* Videos */}
         <div style={{ fontSize: 11, fontWeight: 700, color: "#475569", marginBottom: 6, marginTop: 8 }}>
@@ -254,7 +251,6 @@ export default function ArtistProfileWireframe() {
             </WireframeBox>
           ))}
         </div>
-        <Annotation>YouTube integration: embed within Ovrtone (no redirect). Self-hosted preferred for UX consistency.</Annotation>
 
         {/* Photos */}
         <div style={{ fontSize: 11, fontWeight: 700, color: "#475569", marginBottom: 6, marginTop: 16 }}>
@@ -272,7 +268,6 @@ export default function ArtistProfileWireframe() {
             </WireframeBox>
           ))}
         </div>
-        <Note>Hero image is within the gallery. Artist selects one as &quot;primary&quot; (shown in Hero Section above).</Note>
 
         {/* ── 3. KEY DETAILS BAR ── */}
         <SectionLabel number="3">Key Details Bar</SectionLabel>
@@ -304,7 +299,6 @@ export default function ArtistProfileWireframe() {
           <div style={{ height: 60, background: "#f1f5f9", borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <span style={{ fontSize: 11, color: "#94a3b8" }}>Free-text description · Multiple paragraphs</span>
           </div>
-          <Note>Separate tagline field vs. About Us body text. Character limit TBD.</Note>
         </WireframeBox>
 
         {/* ── 5. SET LISTS ── */}
@@ -319,7 +313,6 @@ export default function ArtistProfileWireframe() {
               </WireframeBox>
             ))}
           </div>
-          <Annotation>Format: PDF/JPEG uploads. Multiple set lists with duration indicators. Custom requests via post-booking messaging.</Annotation>
         </WireframeBox>
 
         {/* ── 6. GIG REQUIREMENTS ── */}
@@ -332,7 +325,6 @@ export default function ArtistProfileWireframe() {
               <div key={r}>{r}</div>
             ))}
           </div>
-          <Note>Free-text with bullet points. Platform provides common requirement suggestions as prompts.</Note>
         </WireframeBox>
 
         {/* ── 7. AVAILABILITY CALENDAR ── */}
@@ -344,7 +336,6 @@ export default function ArtistProfileWireframe() {
             <div style={{ fontSize: 12, color: "#334155", fontWeight: 600 }}>6:00 PM – 11:00 PM</div>
             <div style={{ fontSize: 9, color: "#94a3b8" }}>One set of available hours per day (no multiple time slots)</div>
           </div>
-          <Annotation>Up to 1 year out. Past dates hidden. Booking indicators visible to logged-in users only. Auto-hide from search when unavailable.</Annotation>
         </WireframeBox>
 
         {/* ── 8. REVIEWS ── */}
@@ -456,34 +447,6 @@ export default function ArtistProfileWireframe() {
 
       </div>
 
-      {/* Legend */}
-      <div style={{
-        width: containerWidth, maxWidth: "100%", marginTop: 20,
-        background: "#fff", borderRadius: 10, padding: 16,
-        border: "1px solid #e2e8f0",
-      }}>
-        <div style={{ fontSize: 11, fontWeight: 700, color: "#334155", marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.8 }}>
-          Wireframe Legend
-        </div>
-        <div style={{ display: "flex", gap: 16, flexWrap: "wrap", fontSize: 10, color: "#64748b" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <div style={{ width: 20, height: 14, border: "1.5px solid #cbd5e1", borderRadius: 3, background: "#f8fafc" }} />
-            Content block
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <div style={{ width: 20, height: 14, border: "2px dashed #94a3b8", borderRadius: 3, background: "repeating-linear-gradient(45deg, #f8fafc, #f8fafc 2px, #f1f5f9 2px, #f1f5f9 4px)" }} />
-            Media placeholder
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <div style={{ width: 20, height: 14, borderRadius: 3, background: "#fffbeb", border: "1px solid #fde68a" }} />
-            ⚡ Design decision
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <div style={{ width: 20, height: 14, borderRadius: 3, background: "#eef2ff", border: "1px solid #c7d2fe" }} />
-            📝 Implementation note
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

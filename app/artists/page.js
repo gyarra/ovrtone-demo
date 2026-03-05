@@ -185,7 +185,7 @@ const MiniCalendar = () => {
 export default function ArtistSearchWireframe() {
   const [view, setView] = useState("desktop");
   const [openFilter, setOpenFilter] = useState(null);
-  const [pageState, setPageState] = useState("filtered");
+  const [pageState, setPageState] = useState("default");
   const [sortOption, setSortOption] = useState("low");
   const [sortOpen, setSortOpen] = useState(false);
 
@@ -217,12 +217,12 @@ export default function ArtistSearchWireframe() {
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
           <div>
             <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, color: "#64748b", textTransform: "uppercase", marginBottom: 2 }}>
-              OVRTØNE · Wireframe
+              <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>OVRTØNE</Link> · Wireframe
             </div>
             <h1 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0, letterSpacing: -0.5 }}>
               Search for Artist
             </h1>
-            <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}>Client-facing · Discovery &amp; filtering</div>
+            <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}><Link href="/" style={{ color: "#3b82f6", textDecoration: "none", fontWeight: 600 }}>← Back to home</Link></div>
           </div>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             {/* View toggle */}
@@ -264,7 +264,6 @@ export default function ArtistSearchWireframe() {
 
         {/* ── 1. FILTER BAR ── */}
         <SectionLabel number="1">Filter Bar</SectionLabel>
-        <Note>Horizontal button bar (Airbnb-style). Filters apply immediately — no &quot;Apply&quot; button needed.</Note>
 
         <div style={{
           display: "flex", gap: 8, flexWrap: "wrap", alignItems: "flex-start",
@@ -310,7 +309,6 @@ export default function ArtistSearchWireframe() {
                 <br />Artists unavailable on selected date(s) are hidden from results.
               </div>
             </div>
-            <Annotation>Support single date AND date range (Kayak-style). Multi-date selection allowed to check availability across dates. Unavailable artists hidden, or greyed with indicator for partial availability.</Annotation>
           </FilterButton>
 
           {/* Price Filter */}
@@ -367,9 +365,6 @@ export default function ArtistSearchWireframe() {
           )}
         </div>
 
-        {isMobile && (
-          <Annotation>Mobile: filters open as bottom sheet or full-screen modal (Airbnb-style).</Annotation>
-        )}
 
         {/* ── 3. RESULTS HEADER ── */}
         <SectionLabel number="2">Results Header</SectionLabel>
@@ -427,7 +422,6 @@ export default function ArtistSearchWireframe() {
             )}
           </div>
         </div>
-        <Note>Sort options for MVP: &quot;Price: Low to High&quot; and &quot;Price: High to Low.&quot; More sorts post-MVP.</Note>
 
         {/* Active Filters Chips (when filtered) */}
         {pageState === "filtered" && (
@@ -515,81 +509,6 @@ export default function ArtistSearchWireframe() {
           </div>
         )}
 
-        {/* Card detail annotations */}
-        {pageState !== "empty" && (
-          <>
-            <SectionLabel number="4">Card Design Notes</SectionLabel>
-            <WireframeBox style={{ padding: isMobile ? 12 : 16 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: "#334155", marginBottom: 8 }}>Each card displays:</div>
-              <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 6, fontSize: 11, color: "#475569" }}>
-                {[
-                  ["Thumbnail", "Primary photo from artist profile"],
-                  ["Artist / Band Name", "With verified badge if applicable"],
-                  ["Genre Tags", "Multi-select genres as pills"],
-                  ["Price", "$X/hr — visible to logged-in users only"],
-                  ["Rating", "👍 thumbs up % + review count"],
-                  ["Band Size", "Solo / Duo / Trio / 4-piece / etc."],
-                  ["Booking Count", "\"Booked 24×\" — social proof"],
-                ].map(([label, desc]) => (
-                  <div key={label} style={{ display: "flex", gap: 6, padding: "3px 0" }}>
-                    <span style={{ fontWeight: 700, color: "#1e293b", minWidth: 100 }}>{label}</span>
-                    <span>{desc}</span>
-                  </div>
-                ))}
-              </div>
-              <Annotation>Card click → opens artist profile in same tab. Filter state + scroll position must be preserved on back navigation.</Annotation>
-              <Note>Pagination vs. infinite scroll vs. &quot;Load More&quot; — needs discussion. Layout is list view per SOW.</Note>
-            </WireframeBox>
-          </>
-        )}
-
-        {/* ── 6. PAGE STATES REFERENCE ── */}
-        <SectionLabel number="5">Page States Reference</SectionLabel>
-        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 8 }}>
-          {[
-            ["Default (No Filters)", "All artists shown. Default sort TBD (subscription tiers, boosts, popularity, ratings — needs discussion).", "#f0fdf4", "#166534"],
-            ["Filtered", "Subset matching filters. Active filter chips visible with × to remove. Results count updates.", "#eff6ff", "#1d4ed8"],
-            ["No Results", "Empty state with suggestions to broaden. Clear All + specific filter removal buttons.", "#fef2f2", "#991b1b"],
-            ["Few Results (1–3)", "Show results + a \"Broaden your search\" prompt below. Suggest filter removal.", "#fffbeb", "#92400e"],
-            ["Loading", "Skeleton cards / loading spinner while results fetch.", "#f8fafc", "#64748b"],
-            ["Error", "\"Something went wrong\" with retry button.", "#fef2f2", "#991b1b"],
-          ].map(([title, desc, bg, color]) => (
-            <WireframeBox key={title} style={{ padding: 10, background: bg, borderColor: color + "33" }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color }}>{title}</div>
-              <div style={{ fontSize: 10, color: "#475569", marginTop: 3, lineHeight: 1.5 }}>{desc}</div>
-            </WireframeBox>
-          ))}
-        </div>
-
-      </div>
-
-      {/* Legend */}
-      <div style={{
-        width: containerWidth, maxWidth: "100%", marginTop: 20,
-        background: "#fff", borderRadius: 10, padding: 16,
-        border: "1px solid #e2e8f0",
-      }}>
-        <div style={{ fontSize: 11, fontWeight: 700, color: "#334155", marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.8 }}>
-          Wireframe Legend
-        </div>
-        <div style={{ display: "flex", gap: 16, flexWrap: "wrap", fontSize: 10, color: "#64748b" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <div style={{ width: 20, height: 14, border: "1.5px solid #cbd5e1", borderRadius: 3, background: "#f8fafc" }} />
-            Content block
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <div style={{ width: 20, height: 14, border: "2px dashed #94a3b8", borderRadius: 3, background: "repeating-linear-gradient(45deg, #f8fafc, #f8fafc 2px, #f1f5f9 2px, #f1f5f9 4px)" }} />
-            Placeholder / prompt
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <div style={{ width: 20, height: 14, borderRadius: 3, background: "#fffbeb", border: "1px solid #fde68a" }} />
-            ⚡ Design decision
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <div style={{ width: 20, height: 14, borderRadius: 3, background: "#eef2ff", border: "1px solid #c7d2fe" }} />
-            📝 Implementation note
-          </div>
-        </div>
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 const WireframeBox = ({ children, className = "", dashed = false, label, height, onClick, style = {} }) => (
   <div
@@ -120,12 +121,12 @@ export default function BookingsMessagesWireframe() {
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
           <div>
             <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, color: "#64748b", textTransform: "uppercase", marginBottom: 2 }}>
-              OVRTØNE · Wireframe
+              <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>OVRTØNE</Link> · Wireframe
             </div>
             <h1 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0, letterSpacing: -0.5 }}>
               Bookings / Messages
             </h1>
-            <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}>Three-panel layout · Airbnb Messages-style · Authenticated users only</div>
+            <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}><Link href="/booking" style={{ color: "#3b82f6", textDecoration: "none", fontWeight: 600 }}>← Back to booking</Link></div>
           </div>
           <div style={{ display: "flex", gap: 4, background: "#e2e8f0", borderRadius: 8, padding: 3 }}>
             {["desktop", "mobile"].map(v => (
@@ -399,11 +400,7 @@ export default function BookingsMessagesWireframe() {
             </div>
           </div>
 
-          {/* Desktop annotations */}
-          <div style={{ width: containerWidth, maxWidth: "100%", marginTop: 8 }}>
-            <Note>Three-panel layout per Q1: conversation list (left), message thread (center), booking info (right). Modeled after Airbnb Messages page.</Note>
-            <Annotation>Conversation list sorted by most recent message (Q5). No search or filter — out of scope (Q6). Read/unread via bold text + blue dot + yellow highlight (Q4).</Annotation>
-          </div>
+
         </>
       )}
 
@@ -593,10 +590,7 @@ export default function BookingsMessagesWireframe() {
             )}
           </div>
 
-          <div style={{ width: containerWidth, maxWidth: "100%", marginTop: 8 }}>
-            <Note>Mobile: conversation list is default view. Tap → full-screen thread. "View Booking" link in thread header opens booking info (Q2).</Note>
-            <Annotation>Mobile panel transitions and back navigation need confirmation during UX design. Back arrow returns to previous panel.</Annotation>
-          </div>
+
         </>
       )}
 
@@ -674,8 +668,6 @@ export default function BookingsMessagesWireframe() {
             ))}
           </div>
         </WireframeBox>
-        <Note>Sorted by most recent message first (Q5). No search/filter/archive — out of scope (Q6). Each booking = one conversation (Q27).</Note>
-        <Annotation>If client re-books same artist for different date, that creates a new separate conversation (Q27). Confirm whether to reuse threads — Airbnb creates separate threads per reservation.</Annotation>
 
         {/* ── 3. EMPTY STATES ── */}
         <SectionLabel number="3">Empty States</SectionLabel>
@@ -706,7 +698,6 @@ export default function BookingsMessagesWireframe() {
             <div style={{ fontSize: 9, color: "#cbd5e1", marginTop: 8 }}>Artist empty state</div>
           </WireframeBox>
         </div>
-        <Note>Different empty state messages for clients vs. artists (Q7). CTA links to Browse Artists or Edit Profile respectively.</Note>
 
         {/* ── 4. SYSTEM MESSAGES ── */}
         <SectionLabel number="4">System Messages</SectionLabel>
@@ -727,8 +718,6 @@ export default function BookingsMessagesWireframe() {
             </div>
           ))}
         </WireframeBox>
-        <Note>System messages are non-editable, centered, visually distinct from user messages. Minimum set: booking confirmed, cancellation requested, cancellation completed (Q15).</Note>
-        <Annotation>Exact set of system message types needs to be finalized. Consider adding: "Payment released to artist" as post-event system message.</Annotation>
 
         {/* ── 5. BOOKING STATUS LIFECYCLE ── */}
         <SectionLabel number="5">Booking Status Lifecycle</SectionLabel>
@@ -747,7 +736,6 @@ export default function BookingsMessagesWireframe() {
             ))}
           </div>
         </WireframeBox>
-        <Note>Confirmed → Completed is automatic after event end time (Q28). Messaging stays open after completion for follow-ups (Q29). Messaging is read-only for cancelled bookings.</Note>
 
         {/* ── 6. CANCELLATION FLOW ── */}
         <SectionLabel number="6">Cancellation Flow</SectionLabel>
@@ -771,8 +759,6 @@ export default function BookingsMessagesWireframe() {
             ))}
           </div>
         </WireframeBox>
-        <Note>"Initiate Cancellation" button located in booking info panel (Q19). Both artist and client can cancel (Q20). Button hidden for past events (Q23). Refunds handled by admins in Stripe (SOW p.11).</Note>
-        <Annotation>Cancellation policy rules (refund amounts, time windows) still TBD per SOW p.15. Modal should reference policy but specific rules defined separately.</Annotation>
 
         {/* ── 7. EMAIL NOTIFICATIONS ── */}
         <SectionLabel number="7">Email Notifications</SectionLabel>
@@ -792,59 +778,6 @@ export default function BookingsMessagesWireframe() {
             ))}
           </div>
         </WireframeBox>
-        <Note>Users can toggle notifications on/off in User Account / Preferences (Q25). Granularity of per-type toggles vs. single on/off TBD during implementation.</Note>
-      </div>
-
-      {/* ═══════════════════════════════════════════
-           OUT OF SCOPE + LEGEND
-         ═══════════════════════════════════════════ */}
-      <div style={{
-        width: Math.min(containerWidth, 960), maxWidth: "100%", marginTop: 12,
-        background: "#fff", borderRadius: 10, padding: 16,
-        border: "1px solid #e2e8f0",
-      }}>
-        <div style={{ fontSize: 11, fontWeight: 700, color: "#334155", marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.8 }}>
-          Out of Scope (MVP)
-        </div>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
-          {[
-            "Group Messages", "Archive / Star / Mark Unread", "Search Messages",
-            "SMS / WhatsApp", "Pre-Booking Messaging", "Image / File Attachments",
-            "Typing Indicators", "Message Edit / Delete", "Read Receipts (per-message)",
-          ].map(item => (
-            <Tag key={item} color="#fee2e2" textColor="#dc2626">{item}</Tag>
-          ))}
-        </div>
-        <div style={{ fontSize: 9, color: "#94a3b8", marginTop: 6 }}>Per SOW page 8 + brainstorm exclusions</div>
-      </div>
-
-      {/* Legend */}
-      <div style={{
-        width: Math.min(containerWidth, 960), maxWidth: "100%", marginTop: 12,
-        background: "#fff", borderRadius: 10, padding: 16,
-        border: "1px solid #e2e8f0",
-      }}>
-        <div style={{ fontSize: 11, fontWeight: 700, color: "#334155", marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.8 }}>
-          Wireframe Legend
-        </div>
-        <div style={{ display: "flex", gap: 16, flexWrap: "wrap", fontSize: 10, color: "#64748b" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <div style={{ width: 20, height: 14, border: "1.5px solid #cbd5e1", borderRadius: 3, background: "#f8fafc" }} />
-            Content block
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <div style={{ width: 20, height: 14, border: "2px dashed #94a3b8", borderRadius: 3, background: "repeating-linear-gradient(45deg, #f8fafc, #f8fafc 2px, #f1f5f9 2px, #f1f5f9 4px)" }} />
-            Media placeholder
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <div style={{ width: 20, height: 14, borderRadius: 3, background: "#fffbeb", border: "1px solid #fde68a" }} />
-            ⚡ Design decision
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <div style={{ width: 20, height: 14, borderRadius: 3, background: "#eef2ff", border: "1px solid #c7d2fe" }} />
-            📝 Implementation note
-          </div>
-        </div>
       </div>
     </div>
   );

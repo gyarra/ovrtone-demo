@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 const WireframeBox = ({ children, className = "", dashed = false, label, height, onClick, style = {} }) => (
   <div
@@ -154,12 +155,12 @@ export default function BookAnArtistWireframe() {
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
           <div>
             <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, color: "#64748b", textTransform: "uppercase", marginBottom: 2 }}>
-              OVRTØNE · Wireframe
+              <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>OVRTØNE</Link> · Wireframe
             </div>
             <h1 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0, letterSpacing: -0.5 }}>
               Book an Artist — {screen === "booking" ? "Booking Flow" : "Confirmation"}
             </h1>
-            <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}>Single-page flow · Authenticated clients only · Airbnb-inspired</div>
+            <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}><Link href="/artists/band-1" style={{ color: "#3b82f6", textDecoration: "none", fontWeight: 600 }}>← Back to artist</Link></div>
           </div>
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
             {/* Screen toggle */}
@@ -205,7 +206,6 @@ export default function BookAnArtistWireframe() {
             <span style={{ fontSize: 16, color: "#94a3b8", cursor: "pointer" }}>←</span>
             <span style={{ fontSize: 11, color: "#94a3b8", fontWeight: 500 }}>Back to artist profile</span>
           </div>
-          <Note>Back arrow navigates to the artist's profile page (per Q2). Info on this page is read-only.</Note>
 
           {/* ── 1. ARTIST SUMMARY CARD ── */}
           <SectionLabel number="1">Artist Summary Card</SectionLabel>
@@ -233,16 +233,12 @@ export default function BookAnArtistWireframe() {
               </div>
             </div>
           </WireframeBox>
-          <Note>Matches SOW wireframe layout: square thumbnail, artist name, genre (plain text per Q3), and hourly rate. No rating (Q5) or badges (Q6) in MVP.</Note>
-          <Annotation>Genre as plain text, not tag/pill — matches Reverbnation style per Q3.</Annotation>
 
           {/* ── 2. DATE SELECTION ── */}
           <SectionLabel number="2">Date Selection</SectionLabel>
           <WireframeBox label="Availability Calendar · OpenTable-style">
             <CalendarGrid />
           </WireframeBox>
-          <Note>Calendar picker (Q7) showing next 12 months (Q8, Q15). Green = available, grey = booked/blocked. Only green dates selectable. Single date only — multiple dates out of scope (Q9, SOW p.14).</Note>
-          <Annotation>Race condition handling (Q14): if date becomes unavailable between page load and submission, booking fails gracefully with error message. Grey dates unclickable.</Annotation>
 
           {/* ── 3. TIME & DURATION ── */}
           <SectionLabel number="3">Time & Duration Selection</SectionLabel>
@@ -270,8 +266,6 @@ export default function BookAnArtistWireframe() {
               </WireframeBox>
             </div>
           </div>
-          <Note>Start time + duration dropdowns (Q10, Q11, Q12). Time in 30-min increments. Duration dropdown: 1hr, 2hr, 3hr, 4+hr. End time auto-calculated and read-only.</Note>
-          <Annotation>Duration dropdown preferred over start/end time pickers (Q12) — prevents illogical selections and simplifies billing calc.</Annotation>
 
           {/* ── 4. PRICE BREAKDOWN ── */}
           <SectionLabel number="4">Price Breakdown</SectionLabel>
@@ -307,8 +301,6 @@ export default function BookAnArtistWireframe() {
               🔒 Your payment is held securely and released to the artist 24 hours after your event.
             </div>
           </WireframeBox>
-          <Note>Price updates dynamically as duration changes (Q13). Format: "$250/hr × 3 hours = $750" (Q19). Reserve space for platform fee line — rate TBD, may be zero or hidden at launch.</Note>
-          <Annotation>Commission rates undecided (Q40 from contextual notes). Platform fee line should be conditionally visible — hide if zero, show if non-zero.</Annotation>
 
           {/* ── 5. CANCELLATION POLICY ── */}
           <SectionLabel number="5">Cancellation Policy</SectionLabel>
@@ -333,8 +325,6 @@ export default function BookAnArtistWireframe() {
               </div>
             </div>
           </WireframeBox>
-          <Note>Checkbox acknowledgment required before payment (per contextual notes). Policy text is undefined — will be added to Terms of Service. Founder wants Airbnb/Rover-style policies.</Note>
-          <Annotation>Cancellation initiated manually via Messages page "Initiate Cancellation" button — no auto-cancel logic in MVP (SOW p.9). Artist can also deny post-booking for valid reasons only (Q22).</Annotation>
 
           {/* ── 6. TERMS AGREEMENT ── */}
           <SectionLabel number="6">Terms Agreement</SectionLabel>
@@ -346,7 +336,6 @@ export default function BookAnArtistWireframe() {
               <span style={{ color: "#3b82f6", fontWeight: 600, cursor: "pointer" }}>Booking Terms</span>.
             </div>
           </WireframeBox>
-          <Note>No pre-booking messaging allowed — communication restricted until after payment (contextual notes). Do NOT include a "Message the artist first" option anywhere in this flow.</Note>
 
           {/* ── 7. STRIPE PAYMENT FORM ── */}
           <SectionLabel number="7">Payment Information</SectionLabel>
@@ -411,8 +400,6 @@ export default function BookAnArtistWireframe() {
               ))}
             </div>
           </WireframeBox>
-          <Note>Stripe Elements embedded form preferred to keep client within OVRTØNE UI (Q16). Standard fields: card number, expiration, CVC, billing zip (Q17). USD only for NYC launch (Q25).</Note>
-          <Annotation>Stripe integration method TBD during implementation — Elements embedded preferred over Checkout redirect or Payment Sheet (Q16). Visual layout here is representative; actual form rendered by Stripe SDK.</Annotation>
 
           {/* ── 8. INSTANT BOOK CTA ── */}
           <SectionLabel number="8">Instant Book CTA</SectionLabel>
@@ -433,17 +420,18 @@ export default function BookAnArtistWireframe() {
                   The Blue Note Trio · Sat, Mar 15 · 7:00–10:00 PM
                 </div>
               </div>
-              <div style={{
-                padding: "12px 40px", background: "#3b82f6", borderRadius: 8,
-                color: "#fff", fontSize: 14, fontWeight: 700, textAlign: "center",
-                width: isMobile ? "100%" : "auto",
-              }}>
+              <button
+                onClick={() => setScreen("confirmation")}
+                style={{
+                  padding: "12px 40px", background: "#3b82f6", borderRadius: 8,
+                  color: "#fff", fontSize: 14, fontWeight: 700, textAlign: "center",
+                  width: isMobile ? "100%" : "auto", cursor: "pointer", border: "none",
+                }}
+              >
                 Instant Book
-              </div>
+              </button>
             </div>
           </WireframeBox>
-          <Annotation>Button text confirmed as "Instant Book" per SOW p.9 and flow step 7 (Q32). Single-page vertical flow: artist info → date/time → price → payment → this button.</Annotation>
-          <Note>On payment failure: display clear error via Stripe (e.g. "Insufficient funds", "Card declined"). Allow retry without losing date/time selections (Q31).</Note>
 
           {/* ── ERROR STATE EXAMPLE ── */}
           <div style={{ marginTop: 16 }}>
@@ -519,23 +507,6 @@ export default function BookAnArtistWireframe() {
               ))}
             </WireframeBox>
           </div>
-          <Note>Confirmation fields per Q27: Booking ID, artist name/image, date/time, total paid. Confirmation email also sent (Q29).</Note>
-
-          {/* ── 10. NEXT STEPS ── */}
-          <SectionLabel number="10">Next Steps</SectionLabel>
-          <WireframeBox style={{ padding: isMobile ? 12 : 16 }}>
-            <div style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 10 }}>
-              What's Next
-            </div>
-            <div style={{ fontSize: 12, color: "#475569", lineHeight: 1.8 }}>
-              <div>💬 <strong>Message your artist</strong> — Discuss event details, set list preferences, and logistics.</div>
-              <div>📅 <strong>Add to calendar</strong> — Download an ICS file with your booking details.</div>
-              <div>📋 <strong>View your bookings</strong> — See all upcoming and past bookings in one place.</div>
-              <div>❌ <strong>Need to cancel?</strong> — Initiate cancellation from the Messages page.</div>
-            </div>
-          </WireframeBox>
-          <Annotation>ICS calendar download is TBD — recommended if technically straightforward (Q30). Low-effort, high-value addition.</Annotation>
-          <Note>Messaging unlocked immediately after booking (Q28). No pre-booking communication allowed. Tipping happens post-event during review — not here.</Note>
 
           {/* Primary CTA: Go to Messages */}
           <div style={{
@@ -543,108 +514,17 @@ export default function BookAnArtistWireframe() {
             display: "flex", gap: 10,
             flexDirection: isMobile ? "column" : "row",
           }}>
-            <div style={{
+            <Link href="/messages" style={{
               flex: 1, padding: "12px 24px", background: "#3b82f6", borderRadius: 8,
               color: "#fff", fontSize: 14, fontWeight: 700, textAlign: "center", cursor: "pointer",
+              textDecoration: "none",
             }}>
               Go to Messages
-            </div>
-            <div style={{
-              flex: isMobile ? 1 : "none", padding: "12px 24px", background: "#f1f5f9", borderRadius: 8,
-              color: "#334155", fontSize: 14, fontWeight: 600, textAlign: "center", cursor: "pointer",
-              border: "1.5px solid #cbd5e1",
-            }}>
-              View Bookings
-            </div>
+            </Link>
           </div>
-          <Annotation>Prominent "Go to Messages" CTA per Q28. Secondary "View Bookings" links to booking history.</Annotation>
-
         </div>
       )}
 
-      {/* ═══════════════ FLOW DIAGRAM ═══════════════ */}
-      <div style={{
-        width: containerWidth, maxWidth: "100%", marginTop: 20,
-        background: "#fff", borderRadius: 10, padding: 16,
-        border: "1px solid #e2e8f0",
-      }}>
-        <div style={{ fontSize: 11, fontWeight: 700, color: "#334155", marginBottom: 10, textTransform: "uppercase", letterSpacing: 0.8 }}>
-          End-to-End Flow (10 Steps)
-        </div>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 4, alignItems: "center" }}>
-          {[
-            "① Land on booking",
-            "② See artist info",
-            "③ Select date",
-            "④ Choose time + duration",
-            "⑤ Review price",
-            "⑥ Acknowledge cancellation",
-            "⑦ Enter payment",
-            "⑧ Click Instant Book",
-            "⑨ Confirmation page",
-            "⑩ Messaging unlocked",
-          ].map((step, i) => (
-            <div key={i} style={{ display: "flex", alignItems: "center", gap: 4 }}>
-              <Tag color={i < 8 ? "#e2e8f0" : i === 8 ? "#dcfce7" : "#dbeafe"} textColor={i < 8 ? "#334155" : i === 8 ? "#166534" : "#1e40af"}>
-                {step}
-              </Tag>
-              {i < 9 && <span style={{ fontSize: 10, color: "#cbd5e1" }}>→</span>}
-            </div>
-          ))}
-        </div>
-        <div style={{ marginTop: 8, fontSize: 10, color: "#94a3b8" }}>
-          Post-event: 24hrs after event → payment released to artist (Step 11, automated via Stripe)
-        </div>
-      </div>
-
-      {/* ═══════════════ OUT OF SCOPE ═══════════════ */}
-      <div style={{
-        width: containerWidth, maxWidth: "100%", marginTop: 12,
-        background: "#fff", borderRadius: 10, padding: 16,
-        border: "1px solid #e2e8f0",
-      }}>
-        <div style={{ fontSize: 11, fontWeight: 700, color: "#334155", marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.8 }}>
-          Out of Scope (MVP)
-        </div>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
-          {[
-            "Automatic Cancellation", "Recurring Booking", "Multiple Date Booking",
-            "Invoicing", "Automated Disputes", "50% Deposits", "Pre-Booking Messaging", "Tipping at Booking",
-          ].map(item => (
-            <Tag key={item} color="#fee2e2" textColor="#dc2626">{item}</Tag>
-          ))}
-        </div>
-        <div style={{ fontSize: 9, color: "#94a3b8", marginTop: 6 }}>Per SOW pages 9 & 14 + contextual notes from founder questionnaire</div>
-      </div>
-
-      {/* Legend */}
-      <div style={{
-        width: containerWidth, maxWidth: "100%", marginTop: 12,
-        background: "#fff", borderRadius: 10, padding: 16,
-        border: "1px solid #e2e8f0",
-      }}>
-        <div style={{ fontSize: 11, fontWeight: 700, color: "#334155", marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.8 }}>
-          Wireframe Legend
-        </div>
-        <div style={{ display: "flex", gap: 16, flexWrap: "wrap", fontSize: 10, color: "#64748b" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <div style={{ width: 20, height: 14, border: "1.5px solid #cbd5e1", borderRadius: 3, background: "#f8fafc" }} />
-            Content block
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <div style={{ width: 20, height: 14, border: "2px dashed #94a3b8", borderRadius: 3, background: "repeating-linear-gradient(45deg, #f8fafc, #f8fafc 2px, #f1f5f9 2px, #f1f5f9 4px)" }} />
-            Media placeholder
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <div style={{ width: 20, height: 14, borderRadius: 3, background: "#fffbeb", border: "1px solid #fde68a" }} />
-            ⚡ Design decision
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <div style={{ width: 20, height: 14, borderRadius: 3, background: "#eef2ff", border: "1px solid #c7d2fe" }} />
-            📝 Implementation note
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
