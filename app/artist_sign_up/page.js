@@ -69,8 +69,8 @@ const CalendarGrid = () => {
   const cells = Array.from({ length: 35 }, (_, i) => {
     const day = i - 2;
     if (day < 1 || day > 31) return null;
-    const blocked = [8, 9, 22, 23].includes(day);
-    return day >= 1 && day <= 31 ? { day, blocked } : null;
+    const unavailable = [8, 9, 22, 23].includes(day);
+    return day >= 1 && day <= 31 ? { day, unavailable } : null;
   });
   return (
     <div style={{ padding: 12 }}>
@@ -86,16 +86,16 @@ const CalendarGrid = () => {
         {cells.map((c, i) => (
           <div key={i} style={{
             fontSize: 10, padding: 4, borderRadius: 4,
-            background: c ? (c.blocked ? "#fee2e2" : "#dcfce7") : "transparent",
-            color: c ? (c.blocked ? "#ef4444" : "#16a34a") : "transparent",
-            fontWeight: c && !c.blocked ? 600 : 400,
+            background: c ? (c.unavailable ? "#e2e8f0" : "#dcfce7") : "transparent",
+            color: c ? (c.unavailable ? "#94a3b8" : "#16a34a") : "transparent",
+            fontWeight: c && !c.unavailable ? 600 : 400,
           }}>
             {c?.day || ""}
           </div>
         ))}
       </div>
       <div style={{ display: "flex", gap: 12, marginTop: 8, justifyContent: "center" }}>
-        {[["#dcfce7", "Available"], ["#fee2e2", "Blocked"]].map(([bg, label]) => (
+        {[["#dcfce7", "Available"], ["#e2e8f0", "Unavailable"]].map(([bg, label]) => (
           <div key={label} style={{ display: "flex", alignItems: "center", gap: 4 }}>
             <div style={{ width: 8, height: 8, borderRadius: 2, background: bg, border: "1px solid #cbd5e1" }} />
             <span style={{ fontSize: 9, color: "#64748b" }}>{label}</span>
@@ -114,12 +114,11 @@ const CalendarGrid = () => {
 const steps = [
   { id: 1, name: "Create Account", required: true },
   { id: 2, name: "Artist Identity", required: true },
-  { id: 3, name: "Genre & Pricing", required: true },
-  { id: 4, name: "Upload Media", required: true },
-  { id: 5, name: "About & Gig Req.", required: false },
-  { id: 6, name: "Set Lists", required: false },
-  { id: 7, name: "Availability", required: false },
-  { id: 8, name: "Review & Publish", required: true },
+  { id: 3, name: "Upload Media", required: true },
+  { id: 4, name: "Pricing", required: true },
+  { id: 5, name: "Set Lists", required: true },
+  { id: 6, name: "Availability", required: true },
+  { id: 7, name: "Review", required: true },
 ];
 
 // ── Step Content ─────────────────────────────────────────────────
@@ -156,46 +155,37 @@ function StepContent({ step, isMobile }) {
     <>
       <SectionLabel number="2">Artist Identity</SectionLabel>
       <WireframeBox style={{ padding: isMobile ? 12 : 20 }}>
-        <div style={{ fontSize: 10, color: "#64748b", marginBottom: 12, fontStyle: "italic" }}>
-          Public-facing name and avatar — appears in search results, messaging, and profile header.
+        <FieldRow label="Artist / Band Name *" placeholder="e.g. The Brooklyn Jazz Collective" />
+        {/* Band size */}
+        <div style={{ marginTop: 4 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "#475569", marginBottom: 3 }}>Band Size</div>
+          <WireframeBox style={{ padding: "0 12px", minHeight: 36, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <span style={{ fontSize: 11, color: "#94a3b8" }}>Select band size</span>
+            <span style={{ fontSize: 11, color: "#94a3b8" }}>▾</span>
+          </WireframeBox>
+          <div style={{ fontSize: 9, color: "#94a3b8", marginTop: 3 }}>Options: Solo · Duo · Trio · 4-piece · 5+ piece</div>
         </div>
-        <FieldRow label="Artist / Band Name *" placeholder="e.g. The Brooklyn Jazz Collective" note="Public display name · Can differ from personal name" />
-        {/* Profile photo + band size */}
-        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 10, marginTop: 4 }}>
-          <div>
-            <div style={{ fontSize: 11, fontWeight: 700, color: "#475569", marginBottom: 3 }}>Profile Photo *</div>
-            <WireframeBox dashed height={120} style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 6 }}>
-              <div style={{ fontSize: 28, opacity: 0.35 }}>📷</div>
-              <div style={{ fontSize: 10, color: "#94a3b8", textAlign: "center" }}>Square avatar / thumbnail<br />JPG · PNG · WebP</div>
-              <div style={{ padding: "4px 14px", border: "1.5px solid #cbd5e1", borderRadius: 6, fontSize: 10, color: "#64748b" }}>Browse files</div>
-            </WireframeBox>
-            <div style={{ fontSize: 9, color: "#94a3b8", marginTop: 3 }}>Strongly encouraged · Profiles without photo reduce trust</div>
+        {/* Tagline */}
+        <div style={{ marginTop: 10, marginBottom: 10 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "#475569", marginBottom: 3 }}>
+            Tagline / Headline <span style={{ fontWeight: 400, color: "#94a3b8" }}>(optional · max 100 chars)</span>
           </div>
-          <div>
-            <div style={{ fontSize: 11, fontWeight: 700, color: "#475569", marginBottom: 3 }}>Band Size</div>
-            <WireframeBox style={{ padding: "0 12px", minHeight: 36, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <span style={{ fontSize: 11, color: "#94a3b8" }}>Select band size</span>
-              <span style={{ fontSize: 11, color: "#94a3b8" }}>▾</span>
-            </WireframeBox>
-            <div style={{ fontSize: 9, color: "#94a3b8", marginTop: 3 }}>Options: Solo · Duo · Trio · 4-piece · 5+ piece</div>
-            <div style={{ marginTop: 8, fontSize: 10, color: "#64748b", background: "#f8fafc", border: "1.5px solid #e2e8f0", borderRadius: 6, padding: "6px 10px" }}>
-              ℹ️ Not in SOW · High value for client decision-making · Confirm scope
+          <WireframeBox style={{ padding: "0 12px", minHeight: 36, display: "flex", alignItems: "center" }}>
+            <span style={{ fontSize: 11, color: "#94a3b8" }}>e.g. NYC&apos;s Premier Jazz Trio</span>
+          </WireframeBox>
+          <div style={{ fontSize: 9, color: "#94a3b8", marginTop: 2 }}>Not in SOW · Significantly improves search result card · Confirm scope</div>
+        </div>
+        {/* About Us */}
+        <div style={{ marginBottom: 10 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "#475569", marginBottom: 3 }}>About Us <span style={{ fontWeight: 400, color: "#94a3b8" }}>(500–1000 chars)</span></div>
+          <WireframeBox style={{ padding: 10, minHeight: 80 }}>
+            <div style={{ height: 60, background: "#f1f5f9", borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span style={{ fontSize: 10, color: "#94a3b8" }}>Free-text · Single paragraph for MVP · Plain text</span>
             </div>
-          </div>
-        </div>
-      </WireframeBox>
-    </>
-  );
-
-  if (step === 3) return (
-    <>
-      <SectionLabel number="3">Genre & Pricing</SectionLabel>
-      <WireframeBox style={{ padding: isMobile ? 12 : 20 }}>
-        <div style={{ fontSize: 10, color: "#64748b", marginBottom: 12, fontStyle: "italic" }}>
-          Primary search and filter criteria — two most critical fields for discoverability.
+          </WireframeBox>
         </div>
         {/* Genre */}
-        <div style={{ marginBottom: 14 }}>
+        <div style={{ marginBottom: 0 }}>
           <div style={{ fontSize: 11, fontWeight: 700, color: "#475569", marginBottom: 6 }}>Genre * <span style={{ fontWeight: 400, color: "#94a3b8" }}>(multi-select · max 5)</span></div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
             {["Jazz", "Rock", "Pop", "R&B", "Soul", "Funk", "Latin", "Classical", "Country", "Electronic", "Hip-Hop", "Reggae", "Blues", "Folk", "Indie", "World", "Afrobeats"].map((g, i) => (
@@ -207,32 +197,23 @@ function StepContent({ step, isMobile }) {
               }}>{g}</div>
             ))}
           </div>
-          <div style={{ fontSize: 9, color: "#94a3b8", marginTop: 4 }}>Pill/tag selectors · Selected shown in blue · Sub-genres deferred to post-launch</div>
-        </div>
-        {/* Pricing */}
-        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 10 }}>
-          <div>
-            <FieldRow label="Hourly Rate * (USD)" placeholder="$250 / hr" note="Minimum $50/hr floor enforced · No upper ceiling · Visible to logged-in users only" />
-          </div>
-          <div>
-            <div style={{ fontSize: 11, fontWeight: 700, color: "#475569", marginBottom: 3 }}>Minimum Hours</div>
-            <WireframeBox style={{ padding: "0 12px", minHeight: 36, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <span style={{ fontSize: 11, color: "#94a3b8" }}>No minimum (default)</span>
-              <span style={{ fontSize: 11, color: "#94a3b8" }}>▾</span>
-            </WireframeBox>
-            <div style={{ fontSize: 9, color: "#94a3b8", marginTop: 2 }}>Options: No min · 1hr · 2hr · 3hr · 4hr</div>
-          </div>
         </div>
       </WireframeBox>
     </>
   );
 
-  if (step === 4) return (
+  if (step === 3) return (
     <>
-      <SectionLabel number="4">Upload Media</SectionLabel>
+      <SectionLabel number="3">Upload Media</SectionLabel>
       <WireframeBox style={{ padding: isMobile ? 12 : 20 }}>
-        <div style={{ fontSize: 10, color: "#64748b", marginBottom: 12, fontStyle: "italic" }}>
-          Most critical step for profile quality — clients use media to evaluate artists. Min 1 item required.
+        {/* Profile Photo */}
+        <div style={{ marginBottom: 14 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "#475569", marginBottom: 3 }}>Profile Photo *</div>
+          <WireframeBox dashed height={120} style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 6 }}>
+            <div style={{ fontSize: 28, opacity: 0.35 }}>📷</div>
+            <div style={{ fontSize: 10, color: "#94a3b8", textAlign: "center" }}>Square avatar / thumbnail<br />JPG · PNG · WebP</div>
+            <div style={{ padding: "4px 14px", border: "1.5px solid #cbd5e1", borderRadius: 6, fontSize: 10, color: "#64748b" }}>Browse files</div>
+          </WireframeBox>
         </div>
         {/* Videos */}
         <div style={{ marginBottom: 14 }}>
@@ -256,11 +237,10 @@ function StepContent({ step, isMobile }) {
               </WireframeBox>
             ))}
           </div>
-          <div style={{ fontSize: 9, color: "#94a3b8", marginTop: 3 }}>YouTube only for MVP · Reorderable via drag handles · Click-to-play on profile</div>
         </div>
         {/* Photos */}
         <div>
-          <div style={{ fontSize: 11, fontWeight: 700, color: "#475569", marginBottom: 6 }}>Photos <span style={{ fontWeight: 400, color: "#94a3b8" }}>(max 5 · JPEG · PNG · WebP)</span></div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "#475569", marginBottom: 6 }}>Additional Photos <span style={{ fontWeight: 400, color: "#94a3b8" }}>(max 5 · JPEG · PNG · WebP)</span></div>
           <WireframeBox dashed height={70} style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 4, marginBottom: 8 }}>
             <div style={{ fontSize: 18, opacity: 0.35 }}>📁</div>
             <div style={{ fontSize: 10, color: "#94a3b8" }}>Drag & drop or Browse files · Max 10 MB/image · Auto-compressed</div>
@@ -272,14 +252,39 @@ function StepContent({ step, isMobile }) {
               </WireframeBox>
             ))}
           </div>
-          <div style={{ fontSize: 9, color: "#94a3b8", marginTop: 3 }}>★ = Primary / hero image · Reorderable · Upload progress per file</div>
         </div>
-        {/* Minimum note */}
-        <div style={{ marginTop: 10, padding: 10, background: "#f0fdf4", border: "1.5px solid #bbf7d0", borderRadius: 6 }}>
-          <div style={{ fontSize: 10, fontWeight: 700, color: "#166534" }}>✓ Minimum Requirement</div>
-          <div style={{ fontSize: 10, color: "#15803d", marginTop: 2 }}>
-            At least 1 video or photo required to proceed · Profile completeness indicator nudges artists to add more
+      </WireframeBox>
+    </>
+  );
+
+  if (step === 4) return (
+    <>
+      <SectionLabel number="4">Pricing & Gig Requirements</SectionLabel>
+      <WireframeBox style={{ padding: isMobile ? 12 : 20 }}>
+        {/* Pricing */}
+        <div style={{ marginBottom: 14 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 10 }}>
+            <div>
+              <FieldRow label="Hourly Rate * (USD)" placeholder="$250 / hr" note="Minimum $50/hr floor enforced · No upper ceiling · Visible to logged-in users only" />
+            </div>
+            <div>
+              <div style={{ fontSize: 11, fontWeight: 700, color: "#475569", marginBottom: 3 }}>Minimum Hours</div>
+              <WireframeBox style={{ padding: "0 12px", minHeight: 36, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <span style={{ fontSize: 11, color: "#94a3b8" }}>1hr (default)</span>
+                <span style={{ fontSize: 11, color: "#94a3b8" }}>▾</span>
+              </WireframeBox>
+              <div style={{ fontSize: 9, color: "#94a3b8", marginTop: 2 }}>Options: 1hr · 2hr · 3hr · 4hr</div>
+            </div>
           </div>
+        </div>
+        {/* Gig Requirements */}
+        <div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "#475569", marginBottom: 6 }}>Gig Requirements</div>
+          <WireframeBox style={{ padding: 10, minHeight: 50 }}>
+            <div style={{ height: 36, background: "#f1f5f9", borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span style={{ fontSize: 10, color: "#94a3b8" }}>(free text)</span>
+            </div>
+          </WireframeBox>
         </div>
       </WireframeBox>
     </>
@@ -287,62 +292,7 @@ function StepContent({ step, isMobile }) {
 
   if (step === 5) return (
     <>
-      <SectionLabel number="5">About & Gig Requirements <span style={{ fontSize: 11, fontWeight: 500, color: "#94a3b8", textTransform: "none" }}>(optional)</span></SectionLabel>
-      <WireframeBox style={{ padding: isMobile ? 12 : 20 }}>
-        <div style={{ fontSize: 10, color: "#64748b", marginBottom: 12, fontStyle: "italic" }}>
-          Helps clients understand the artist and logistical needs. Can be skipped and filled in later from Edit Profile.
-        </div>
-        {/* Tagline */}
-        <div style={{ marginBottom: 10 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: "#475569", marginBottom: 3 }}>
-            Tagline / Headline <span style={{ fontWeight: 400, color: "#94a3b8" }}>(optional · max 100 chars)</span>
-          </div>
-          <WireframeBox style={{ padding: "0 12px", minHeight: 36, display: "flex", alignItems: "center" }}>
-            <span style={{ fontSize: 11, color: "#94a3b8" }}>e.g. NYC&apos;s Premier Jazz Trio</span>
-          </WireframeBox>
-          <div style={{ fontSize: 9, color: "#94a3b8", marginTop: 2 }}>Not in SOW · Significantly improves search result card · Confirm scope</div>
-        </div>
-        {/* About Us */}
-        <div style={{ marginBottom: 14 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: "#475569", marginBottom: 3 }}>About Us <span style={{ fontWeight: 400, color: "#94a3b8" }}>(500–1000 chars)</span></div>
-          <WireframeBox style={{ padding: 10, minHeight: 80 }}>
-            <div style={{ height: 60, background: "#f1f5f9", borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <span style={{ fontSize: 10, color: "#94a3b8" }}>Free-text · Single paragraph for MVP · Plain text</span>
-            </div>
-          </WireframeBox>
-        </div>
-        {/* Gig Requirements */}
-        <div>
-          <div style={{ fontSize: 11, fontWeight: 700, color: "#475569", marginBottom: 6 }}>Gig Requirements</div>
-          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 4, marginBottom: 8 }}>
-            {[
-              "⚡ Power supply needed",
-              "🏠 Covered performance area",
-              "🚪 Load-in access",
-              "🅿️ Parking for performers",
-              "📐 Minimum stage size",
-              "🎭 Green room / backstage",
-              "🎵 Sound check time",
-            ].map((r) => (
-              <div key={r} style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 0" }}>
-                <div style={{ width: 14, height: 14, border: "1.5px solid #cbd5e1", borderRadius: 3, flexShrink: 0 }} />
-                <span style={{ fontSize: 11, color: "#475569" }}>{r}</span>
-              </div>
-            ))}
-          </div>
-          <WireframeBox style={{ padding: 10, minHeight: 50 }}>
-            <div style={{ height: 36, background: "#f1f5f9", borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <span style={{ fontSize: 10, color: "#94a3b8" }}>Additional requirements (free text)</span>
-            </div>
-          </WireframeBox>
-        </div>
-      </WireframeBox>
-    </>
-  );
-
-  if (step === 6) return (
-    <>
-      <SectionLabel number="6">Set Lists <span style={{ fontSize: 11, fontWeight: 500, color: "#94a3b8", textTransform: "none" }}>(optional)</span></SectionLabel>
+      <SectionLabel number="5">Set Lists <span style={{ fontSize: 11, fontWeight: 500, color: "#94a3b8", textTransform: "none" }}>(optional)</span></SectionLabel>
       <WireframeBox style={{ padding: isMobile ? 12 : 20 }}>
         <div style={{ fontSize: 10, color: "#64748b", marginBottom: 12, fontStyle: "italic" }}>
           Named set lists that clients can browse. Can be skipped and added later from Edit Profile.
@@ -387,29 +337,21 @@ function StepContent({ step, isMobile }) {
     </>
   );
 
-  if (step === 7) return (
+  if (step === 6) return (
     <>
-      <SectionLabel number="7">Availability <span style={{ fontSize: 11, fontWeight: 500, color: "#94a3b8", textTransform: "none" }}>(optional)</span></SectionLabel>
+      <SectionLabel number="6">Availability <span style={{ fontSize: 11, fontWeight: 500, color: "#94a3b8", textTransform: "none" }}>(optional)</span></SectionLabel>
       <WireframeBox style={{ padding: isMobile ? 12 : 20 }}>
         <div style={{ fontSize: 10, color: "#64748b", marginBottom: 12, fontStyle: "italic" }}>
           If skipped, all future dates treated as available by default. Can be managed from Edit Profile later.
         </div>
         <CalendarGrid />
-        {/* Bulk actions */}
-        <div style={{ display: "flex", gap: 8, marginTop: 12, flexWrap: "wrap" }}>
-          {["Block all weekdays", "Block all weekends", "Clear all blocks"].map(a => (
-            <WireframeBox key={a} style={{ padding: "6px 12px" }}>
-              <span style={{ fontSize: 11, color: "#475569", fontWeight: 600 }}>{a}</span>
-            </WireframeBox>
-          ))}
-        </div>
       </WireframeBox>
     </>
   );
 
-  if (step === 8) return (
+  if (step === 7) return (
     <>
-      <SectionLabel number="8">Review & Publish</SectionLabel>
+      <SectionLabel number="7">Review & Publish</SectionLabel>
       <WireframeBox style={{ padding: isMobile ? 12 : 20 }}>
         <div style={{ fontSize: 10, color: "#64748b", marginBottom: 12, fontStyle: "italic" }}>
           Read-only preview of the profile as it will appear to clients. Edit buttons allow jumping back to any step.
@@ -438,11 +380,10 @@ function StepContent({ step, isMobile }) {
             {/* Review links for each section */}
             {[
               ["Artist Identity", "2"],
-              ["Genre & Pricing", "3"],
-              ["Media", "4"],
-              ["About & Gig Req.", "5"],
-              ["Set Lists", "6"],
-              ["Availability", "7"],
+              ["Media", "3"],
+              ["Gig Req.", "4"],
+              ["Set Lists", "5"],
+              ["Availability", "6"],
             ].map(([label, num]) => (
               <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "5px 0", borderBottom: "1px solid #f1f5f9" }}>
                 <span style={{ fontSize: 11, color: "#475569" }}>{label}</span>
@@ -451,17 +392,10 @@ function StepContent({ step, isMobile }) {
             ))}
           </div>
         </div>
-        {/* Draft note */}
-        <div style={{ padding: 10, background: "#f8fafc", border: "1.5px solid #e2e8f0", borderRadius: 6, marginBottom: 12 }}>
-          <div style={{ fontSize: 10, fontWeight: 700, color: "#475569" }}>💾 Auto-save</div>
-          <div style={{ fontSize: 10, color: "#64748b", marginTop: 2 }}>Progress is auto-saved throughout wizard · Closing browser resumes from last step · Profile stays in &quot;draft&quot; (not visible) until published</div>
-        </div>
+
         {/* Stripe Connect nudge */}
         <div style={{ padding: 10, background: "#eff6ff", border: "1.5px solid #bfdbfe", borderRadius: 6, marginBottom: 12 }}>
-          <div style={{ fontSize: 10, fontWeight: 700, color: "#1e40af" }}>💳 Stripe Connect (Post-publish)</div>
-          <div style={{ fontSize: 10, color: "#1e3a8a", marginTop: 2 }}>
-            Stripe Connect onboarding happens after publish · Prompt: &quot;Set up your payment account to start getting paid.&quot;
-          </div>
+          <div style={{ fontSize: 10, fontWeight: 700, color: "#1e40af" }}>💳 Stripe Connect</div>
         </div>
         {/* Publish CTA */}
         <div style={{ background: "#0f172a", borderRadius: 10, padding: isMobile ? 12 : 16 }}>
@@ -474,11 +408,6 @@ function StepContent({ step, isMobile }) {
               Publish Profile
             </div>
           </div>
-        </div>
-        {/* Post-publish state */}
-        <div style={{ marginTop: 10, padding: 10, background: "#f0fdf4", border: "1.5px solid #bbf7d0", borderRadius: 6 }}>
-          <div style={{ fontSize: 10, fontWeight: 700, color: "#166534" }}>✓ After Publishing</div>
-          <div style={{ fontSize: 10, color: "#15803d", marginTop: 2 }}>Redirected to live public profile · Confirmation message · Nudge to complete any skipped optional steps</div>
         </div>
       </WireframeBox>
     </>
@@ -559,7 +488,7 @@ function ProgressIndicator({ currentStep, isMobile, onStepClick }) {
 function NavButtons({ currentStep, setStep, isMobile }) {
   const stepInfo = steps.find(s => s.id === currentStep);
   const isFirst = currentStep === 1;
-  const isLast = currentStep === 8;
+  const isLast = currentStep === 7;
   return (
     <div style={{
       display: "flex", justifyContent: "space-between", alignItems: "center",

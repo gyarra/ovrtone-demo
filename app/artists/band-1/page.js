@@ -75,10 +75,8 @@ const CalendarGrid = () => {
   const cells = Array.from({ length: 35 }, (_, i) => {
     const day = i - 2;
     if (day < 1 || day > 31) return null;
-    const booked = [5, 12, 19].includes(day);
-    const blocked = [8, 9, 22, 23, 24].includes(day);
-    const available = !booked && !blocked;
-    return { day, booked, blocked, available };
+    const unavailable = [5, 8, 9, 12, 19, 22, 23, 24].includes(day);
+    return { day, unavailable };
   });
   return (
     <div style={{ padding: 12 }}>
@@ -94,16 +92,16 @@ const CalendarGrid = () => {
         {cells.map((c, i) => (
           <div key={i} style={{
             fontSize: 10, padding: 4, borderRadius: 4,
-            background: c ? (c.booked ? "#e2e8f0" : c.blocked ? "#fee2e2" : "#dcfce7") : "transparent",
-            color: c ? (c.booked ? "#94a3b8" : c.blocked ? "#ef4444" : "#16a34a") : "transparent",
-            fontWeight: c?.available ? 600 : 400,
+            background: c ? (c.unavailable ? "#e2e8f0" : "#dcfce7") : "transparent",
+            color: c ? (c.unavailable ? "#94a3b8" : "#16a34a") : "transparent",
+            fontWeight: c && !c.unavailable ? 600 : 400,
           }}>
             {c?.day || ""}
           </div>
         ))}
       </div>
       <div style={{ display: "flex", gap: 12, marginTop: 8, justifyContent: "center" }}>
-        {[["#dcfce7", "Available"], ["#e2e8f0", "Booked"], ["#fee2e2", "Blocked"]].map(([bg, label]) => (
+        {[["#dcfce7", "Available"], ["#e2e8f0", "Unavailable"]].map(([bg, label]) => (
           <div key={label} style={{ display: "flex", alignItems: "center", gap: 4 }}>
             <div style={{ width: 8, height: 8, borderRadius: 2, background: bg, border: "1px solid #cbd5e1" }} />
             <span style={{ fontSize: 9, color: "#64748b" }}>{label}</span>
@@ -197,8 +195,6 @@ export default function ArtistProfileWireframe() {
             {/* Name + Badges */}
             <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
               <div style={{ fontSize: isMobile ? 18 : 22, fontWeight: 800, color: "#0f172a" }}>Band Name</div>
-              <Tag color="#dbeafe" textColor="#1e40af">✓ Verified</Tag>
-              <Tag color="#dcfce7" textColor="#166534">🛡 Insured</Tag>
             </div>
             {/* Tagline */}
             <div style={{ fontSize: 13, color: "#64748b", fontStyle: "italic", marginTop: 4 }}>
@@ -309,7 +305,6 @@ export default function ArtistProfileWireframe() {
             {["Cocktail Hour Set · 60min", "Dance Set · 90min", "Dinner Set · 60min"].map(s => (
               <WireframeBox key={s} dashed style={{ padding: "10px 14px", flex: isMobile ? "1 1 100%" : "1 1 auto" }}>
                 <div style={{ fontSize: 12, fontWeight: 600, color: "#334155" }}>{s}</div>
-                <div style={{ fontSize: 9, color: "#94a3b8", marginTop: 2 }}>📄 PDF / JPEG upload</div>
               </WireframeBox>
             ))}
           </div>
@@ -320,8 +315,8 @@ export default function ArtistProfileWireframe() {
         <WireframeBox style={{ padding: isMobile ? 12 : 16 }}>
           <div style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 8 }}>Gig Requirements</div>
           <div style={{ fontSize: 12, color: "#475569", lineHeight: 1.8 }}>
-            {["⚡ Power supply (2 standard outlets minimum)", "🅿️ Parking / load-in access", "📐 Minimum stage area: 10×8 ft",
-              "🔊 Sound check: 30 min before event", "🍽️ Meals provided for 5 performers"].map(r => (
+            {["Power supply (2 standard outlets minimum)", "Parking / load-in access", "Minimum stage area: 10×8 ft",
+              "Sound check: 30 min before event", "Meals provided for 5 performers"].map(r => (
               <div key={r}>{r}</div>
             ))}
           </div>
@@ -334,59 +329,16 @@ export default function ArtistProfileWireframe() {
           <div style={{ padding: "0 12px 8px", borderTop: "1px solid #f1f5f9", marginTop: 4, paddingTop: 8 }}>
             <div style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 }}>Available Hours</div>
             <div style={{ fontSize: 12, color: "#334155", fontWeight: 600 }}>6:00 PM – 11:00 PM</div>
-            <div style={{ fontSize: 9, color: "#94a3b8" }}>One set of available hours per day (no multiple time slots)</div>
           </div>
         </WireframeBox>
 
-        {/* ── 8. REVIEWS ── */}
-        <SectionLabel number="8">Reviews (Thumbs Up / Down)</SectionLabel>
-        <WireframeBox style={{ padding: isMobile ? 12 : 16 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: 28, fontWeight: 800, color: "#16a34a" }}>95%</div>
-              <div style={{ fontSize: 10, color: "#64748b" }}>positive</div>
-            </div>
-            <div style={{ flex: 1 }}>
-              <div style={{ display: "flex", gap: 4, marginBottom: 4 }}>
-                <div style={{ flex: 95, height: 8, background: "#dcfce7", borderRadius: 4 }} />
-                <div style={{ flex: 5, height: 8, background: "#fee2e2", borderRadius: 4 }} />
-              </div>
-              <div style={{ fontSize: 11, color: "#94a3b8" }}>👍 23 · 👎 1 · 24 total reviews</div>
-            </div>
-          </div>
-          {/* Individual reviews */}
-          <div style={{ marginTop: 12, borderTop: "1px solid #f1f5f9", paddingTop: 12 }}>
-            {[
-              { name: "The Velvet Lounge", thumb: "👍", text: "Placeholder review text", date: "Feb 2026" },
-              { name: "Sarah M.", thumb: "👍", text: "Placeholder review text", date: "Jan 2026" },
-            ].map((r, i) => (
-              <div key={i} style={{
-                display: "flex", gap: 10, alignItems: "flex-start",
-                padding: "8px 0", borderBottom: i < 1 ? "1px solid #f8fafc" : "none",
-              }}>
-                <div style={{ fontSize: 18 }}>{r.thumb}</div>
-                <div>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: "#334155" }}>{r.name}</div>
-                  <div style={{ fontSize: 10, color: "#94a3b8" }}>{r.date}</div>
-                  <div style={{
-                    fontSize: 11, color: "#64748b", marginTop: 2,
-                    height: 14, background: "#f1f5f9", borderRadius: 3, width: isMobile ? 160 : 300,
-                  }} />
-                </div>
-              </div>
-            ))}
-          </div>
-          <Note>Placement near header (summary) + full section here. Minimum bookings before display TBD.</Note>
-        </WireframeBox>
-
-        {/* ── 9. ADDITIONAL DETAILS ── */}
-        <SectionLabel number="9">Additional Details</SectionLabel>
+        {/* ── 8. ADDITIONAL DETAILS ── */}
+        <SectionLabel number="8">Additional Details</SectionLabel>
         <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 10 }}>
           <WireframeBox style={{ padding: 12 }}>
             <div style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 6 }}>Performance Details</div>
             {[
               ["Setup/Breakdown", "45 min before · 30 min after"],
-              ["Performers", "5 musicians"],
               ["Duration Options", "1hr · 2hr · 3hr · 4+hr"],
               ["Booking Lead Time", "Book at least 7 days in advance"],
             ].map(([k, v]) => (
@@ -410,8 +362,8 @@ export default function ArtistProfileWireframe() {
           </WireframeBox>
         </div>
 
-        {/* ── 10. STICKY BOOKING CTA ── */}
-        <SectionLabel number="10">Sticky Booking CTA</SectionLabel>
+        {/* ── 9. STICKY BOOKING CTA ── */}
+        <SectionLabel number="9">Sticky Booking CTA</SectionLabel>
         <WireframeBox style={{
           padding: isMobile ? 12 : 16,
           background: "#0f172a", borderColor: "#0f172a",

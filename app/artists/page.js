@@ -279,19 +279,11 @@ export default function ArtistSearchWireframe() {
             <div style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 8 }}>
               Select Genres <span style={{ fontWeight: 400 }}>(multi-select)</span>
             </div>
-            <div style={{ fontSize: 10, fontWeight: 600, color: "#f59e0b", marginBottom: 8 }}>Popular Genres</div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 10 }}>
-              {["Jazz (24)", "R&B (18)", "Soul (15)", "Rock (12)"].map(g => (
-                <Tag key={g} color="#eff6ff" textColor="#1d4ed8">{g}</Tag>
-              ))}
-            </div>
-            <div style={{ fontSize: 10, fontWeight: 600, color: "#64748b", marginBottom: 6 }}>All Genres</div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
-              {["Funk (8)", "Latin (11)", "Classical (3)", "Country (2)", "Electronic (6)", "Hip-Hop (9)", "Blues (7)", "Folk (5)", "Indie (4)", "Afrobeats (6)"].map(g => (
+              {["Jazz (24)", "R&B (18)", "Soul (15)", "Rock (12)", "Funk (8)", "Latin (11)", "Classical (3)", "Country (2)", "Electronic (6)", "Hip-Hop (9)", "Blues (7)", "Folk (5)", "Indie (4)", "Afrobeats (6)"].map(g => (
                 <Tag key={g}>{g}</Tag>
               ))}
             </div>
-            <Note>Genre counts shown. Same taxonomy as artist profile. Multi-select with immediate filtering.</Note>
           </FilterButton>
 
           {/* Date Filter */}
@@ -305,8 +297,7 @@ export default function ArtistSearchWireframe() {
             <MiniCalendar />
             <div style={{ marginTop: 10, paddingTop: 8, borderTop: "1px solid #f1f5f9" }}>
               <div style={{ fontSize: 10, color: "#64748b", lineHeight: 1.5 }}>
-                Select single date or date range (Kayak-style).
-                <br />Artists unavailable on selected date(s) are hidden from results.
+                Select single date Select
               </div>
             </div>
           </FilterButton>
@@ -350,15 +341,14 @@ export default function ArtistSearchWireframe() {
             <div style={{ textAlign: "center", fontSize: 10, color: "#94a3b8", marginTop: 6 }}>
               Default: &quot;Any price&quot; (no filter applied)
             </div>
-            <Note>Continuous slider with min/max handles. Default state: no maximum / any price.</Note>
           </FilterButton>
 
           {/* Clear All (only when filtered) */}
           {pageState === "filtered" && (
             <button style={{
               padding: "8px 14px", borderRadius: 8,
-              border: "1.5px solid #fee2e2", background: "#fff",
-              color: "#ef4444", fontSize: 11, fontWeight: 600, cursor: "pointer",
+              border: "1.5px solid #e2e8f0", background: "#fff",
+              color: "#94a3b8", fontSize: 11, fontWeight: 600, cursor: "pointer",
             }}>
               Clear All
             </button>

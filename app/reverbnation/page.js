@@ -242,9 +242,9 @@ export default function ReverbNationPage() {
                   </div>
 
                   <div className="flex gap-4 text-[13px] mb-4" style={{ color: C.blue }}>
-                    <span className="cursor-pointer">{"\u25B6"} play all</span>
-                    <span className="cursor-pointer">{"\u2197"} share all</span>
-                    <span className="cursor-pointer">&lt;/&gt; embed</span>
+                    <span className="cursor-pointer">play all</span>
+                    <span className="cursor-pointer">share all</span>
+                    <span className="cursor-pointer">embed</span>
                   </div>
 
                   <div className="divide-y divide-[#eee]">
@@ -264,7 +264,7 @@ export default function ReverbNationPage() {
                   </div>
 
                   <div className="mt-4">
-                    <span className="text-[14px] font-bold cursor-pointer" style={{ color: C.blue }}>All Music {"\u00BB"}</span>
+                    <span className="text-[14px] font-bold cursor-pointer" style={{ color: C.blue }}>All Music</span>
                   </div>
                 </div>
 
@@ -340,7 +340,7 @@ export default function ReverbNationPage() {
                   </p>
 
                   <div className="mt-4">
-                    <span className="text-[14px] font-bold cursor-pointer" style={{ color: C.blue }}>All Videos {"\u00BB"}</span>
+                    <span className="text-[14px] font-bold cursor-pointer" style={{ color: C.blue }}>All Videos</span>
                   </div>
                 </div>
 
@@ -368,7 +368,7 @@ export default function ReverbNationPage() {
                   </div>
 
                   <div className="mt-3">
-                    <span className="text-[14px] cursor-pointer" style={{ color: C.blue }}>All Past Events {"\u00BB"}</span>
+                    <span className="text-[14px] cursor-pointer" style={{ color: C.blue }}>All Past Events</span>
                   </div>
                 </div>
               </div>
@@ -439,7 +439,7 @@ export default function ReverbNationPage() {
                   <div key={i} className="flex items-center gap-2.5">
                     <span className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] flex-shrink-0"
                       style={{ backgroundColor: C.blue, color: "white" }}>
-                      {link.icon === "fb" ? "f" : "\u266A"}
+                      {link.icon === "fb" ? "f" : link.icon === "web" ? "W" : "M"}
                     </span>
                     <span className="text-[14px] text-white/80 truncate">{link.label}</span>
                   </div>
@@ -515,8 +515,8 @@ export default function ReverbNationPage() {
                 { label: "BLOG", bg: "#ff5722" },
                 { label: "f", bg: "#3b5998" },
                 { label: "X", bg: "#1da1f2" },
-                { label: "\u25B6", bg: "#ff0000" },
-                { label: "\uD83D\uDCF7", bg: "#c13584" },
+                { label: "YT", bg: "#ff0000" },
+                { label: "IG", bg: "#c13584" },
                 { label: "P", bg: "#bd081c" },
               ].map((icon, i) => (
                 <div

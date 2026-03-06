@@ -88,11 +88,10 @@ const CalendarGrid = () => {
   const cells = Array.from({ length: 35 }, (_, i) => {
     const day = i - 2;
     if (day < 1 || day > 31) return null;
-    const booked = [5, 12, 13, 19, 26].includes(day);
-    const blocked = [8, 9, 22, 23, 24].includes(day);
+    const unavailable = [5, 8, 9, 12, 13, 19, 22, 23, 24, 26].includes(day);
     const selected = day === 15;
-    const available = !booked && !blocked && !selected;
-    return { day, booked, blocked, available, selected };
+    const available = !unavailable && !selected;
+    return { day, unavailable, available, selected };
   });
   return (
     <div style={{ padding: 12 }}>
@@ -109,10 +108,10 @@ const CalendarGrid = () => {
           <div key={i} style={{
             fontSize: 10, padding: 4, borderRadius: 4,
             background: c
-              ? (c.selected ? "#1e293b" : c.booked ? "#e2e8f0" : c.blocked ? "#fee2e2" : "#dcfce7")
+              ? (c.selected ? "#1e293b" : c.unavailable ? "#e2e8f0" : "#dcfce7")
               : "transparent",
             color: c
-              ? (c.selected ? "#fff" : c.booked ? "#94a3b8" : c.blocked ? "#ef4444" : "#16a34a")
+              ? (c.selected ? "#fff" : c.unavailable ? "#94a3b8" : "#16a34a")
               : "transparent",
             fontWeight: c?.available || c?.selected ? 600 : 400,
             cursor: c?.available ? "pointer" : "default",
@@ -122,7 +121,7 @@ const CalendarGrid = () => {
         ))}
       </div>
       <div style={{ display: "flex", gap: 12, marginTop: 8, justifyContent: "center" }}>
-        {[["#dcfce7", "Available"], ["#e2e8f0", "Booked"], ["#fee2e2", "Blocked"], ["#1e293b", "Selected"]].map(([bg, label]) => (
+        {[["#dcfce7", "Available"], ["#e2e8f0", "Unavailable"], ["#1e293b", "Selected"]].map(([bg, label]) => (
           <div key={label} style={{ display: "flex", alignItems: "center", gap: 4 }}>
             <div style={{ width: 8, height: 8, borderRadius: 2, background: bg, border: "1px solid #cbd5e1" }} />
             <span style={{ fontSize: 9, color: "#64748b" }}>{label}</span>
