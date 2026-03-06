@@ -128,9 +128,6 @@ function StepContent({ step, isMobile }) {
     <>
       <SectionLabel number="1">Create Account</SectionLabel>
       <WireframeBox style={{ padding: isMobile ? 12 : 20 }}>
-        <div style={{ fontSize: 10, color: "#64748b", marginBottom: 12, fontStyle: "italic" }}>
-          Standard account creation — establishes credentials and user identity.
-        </div>
         <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 10 }}>
           <FieldRow label="First Name *" placeholder="First name" />
           <FieldRow label="Last Name *" placeholder="Last name" note="Used for account management & Stripe payouts" />

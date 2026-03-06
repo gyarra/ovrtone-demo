@@ -105,6 +105,20 @@ function WaveformBar() {
   );
 }
 
+function ContentBox({ children, className = "", style = {} }) {
+  return (
+    <div
+      className={className}
+      style={{
+        padding: 32,
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
 /* ─── MAIN PAGE ─────────────────────────────────────── */
 export default function ReverbNationPage() {
   const [activeTab, setActiveTab] = useState("Overview");
@@ -181,7 +195,6 @@ export default function ReverbNationPage() {
               </div>
               <p className="text-[16px] text-[#ccc]" style={{ fontWeight: 400 }}>
                 Pop / Singer-Songwriter / Experimental&nbsp;&nbsp;{"\u2022"}&nbsp;&nbsp;Manhattan Beach, CA&nbsp;
-                <span className="inline-block w-4 h-3 bg-blue-700 rounded-sm align-middle" title="US Flag" />
               </p>
             </div>
           </div>
@@ -221,12 +234,12 @@ export default function ReverbNationPage() {
       <main className="flex w-full">
         {/* Content area */}
         <div className="flex-1 bg-white align-top">
-          <div className="overflow-hidden p-6 px-6">
-            <div className="grid grid-cols-2 border-b border-[rgb(223,228,230)]">
+          <div>
+            <div className="border-b border-[rgb(223,228,230)]">
 
-              {/* LEFT COLUMN: Featured Songs + Community */}
-              <div className="px-3 border-r border-[rgb(223,228,230)]">
-                <div className="mb-6">
+              {/* ROW 1: Featured Songs + Featured Video */}
+              <div className="grid grid-cols-2">
+                <ContentBox>
                   <h4 className="text-[18px] text-black mb-2 font-medium">Featured Songs</h4>
 
                   <div className="flex items-center gap-3 mb-3">
@@ -266,10 +279,51 @@ export default function ReverbNationPage() {
                   <div className="mt-4">
                     <span className="text-[14px] font-bold cursor-pointer" style={{ color: C.blue }}>All Music</span>
                   </div>
-                </div>
+                </ContentBox>
 
-                {/* COMMUNITY */}
-                <div className="mt-8">
+                <ContentBox style={{ borderLeft: `1px solid ${C.sectionBorder}` }}>
+                  <h4 className="text-[18px] text-black mb-2 font-medium">Featured Video</h4>
+
+                  <div className="relative bg-[#1a1a1a] overflow-hidden mb-3" style={{ aspectRatio: "16/10" }}>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <PlaceholderImg w="100%" h="100%" style={{ backgroundColor: "#3a3a3a", position: "absolute", inset: 0 }} />
+                      <div className="relative z-10">
+                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" className="mx-auto opacity-80">
+                          <circle cx="30" cy="30" r="28" stroke="white" strokeWidth="2"/>
+                          <path d="M24 18l18 12-18 12z" fill="white"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div className="absolute bottom-2 left-2 bg-black/70 text-white text-[10px] font-bold px-2 py-0.5 rounded tracking-wider">
+                      vevo
+                    </div>
+                  </div>
+
+                  <h3 className="text-[16px] font-bold mb-1 cursor-pointer" style={{ color: C.blue }}>Cry</h3>
+                  <p className="text-[13px] text-[#999]">
+                    Duration - 4:16&nbsp;&nbsp;&nbsp;Views - 551.1K&nbsp;&nbsp;&nbsp;Likes - 1.3K
+                  </p>
+
+                  <div className="mt-4">
+                    <span className="text-[14px] font-bold cursor-pointer" style={{ color: C.blue }}>All Videos</span>
+                  </div>
+                </ContentBox>
+              </div>
+
+              {/* ROW 2: Photo Gallery */}
+              <div className="flex gap-3 py-8 overflow-x-auto px-8" style={{ borderTop: `1px solid ${C.sectionBorder}`, borderBottom: `1px solid ${C.sectionBorder}` }}>
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="flex-shrink-0 w-[190px] h-[130px] rounded overflow-hidden"
+                    style={{ backgroundColor: `hsl(${i * 30 + 190}, 25%, ${40 + i * 8}%)` }}
+                  />
+                ))}
+              </div>
+
+              {/* ROW 3: Community + Past Performances */}
+              <div className="grid grid-cols-2">
+                <ContentBox>
                   <h4 className="text-[18px] text-black mb-3 font-medium">Community</h4>
 
                   <h6 className="text-[14px] font-bold mb-1">Status</h6>
@@ -311,41 +365,9 @@ export default function ReverbNationPage() {
                       Add Comment
                     </button>
                   </div>
-                </div>
-              </div>
+                </ContentBox>
 
-              {/* RIGHT COLUMN: Featured Video + Past Performances */}
-              <div className="px-3">
-                <div className="mb-6">
-                  <h4 className="text-[18px] text-black mb-2 font-medium">Featured Video</h4>
-
-                  <div className="relative bg-[#1a1a1a] overflow-hidden mb-3" style={{ aspectRatio: "16/10" }}>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <PlaceholderImg w="100%" h="100%" style={{ backgroundColor: "#3a3a3a", position: "absolute", inset: 0 }} />
-                      <div className="relative z-10">
-                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" className="mx-auto opacity-80">
-                          <circle cx="30" cy="30" r="28" stroke="white" strokeWidth="2"/>
-                          <path d="M24 18l18 12-18 12z" fill="white"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <div className="absolute bottom-2 left-2 bg-black/70 text-white text-[10px] font-bold px-2 py-0.5 rounded tracking-wider">
-                      vevo
-                    </div>
-                  </div>
-
-                  <h3 className="text-[16px] font-bold mb-1 cursor-pointer" style={{ color: C.blue }}>Cry</h3>
-                  <p className="text-[13px] text-[#999]">
-                    Duration - 4:16&nbsp;&nbsp;&nbsp;Views - 551.1K&nbsp;&nbsp;&nbsp;Likes - 1.3K
-                  </p>
-
-                  <div className="mt-4">
-                    <span className="text-[14px] font-bold cursor-pointer" style={{ color: C.blue }}>All Videos</span>
-                  </div>
-                </div>
-
-                {/* PAST PERFORMANCES */}
-                <div className="mt-8">
+                <ContentBox style={{ borderLeft: `1px solid ${C.sectionBorder}` }}>
                   <h4 className="text-[18px] text-black mb-3 font-medium">Past Performances</h4>
 
                   <div className="divide-y divide-[#eee]">
@@ -370,19 +392,8 @@ export default function ReverbNationPage() {
                   <div className="mt-3">
                     <span className="text-[14px] cursor-pointer" style={{ color: C.blue }}>All Past Events</span>
                   </div>
-                </div>
+                </ContentBox>
               </div>
-            </div>
-
-            {/* PHOTO GALLERY ROW */}
-            <div className="flex gap-3 mt-8 mb-4 overflow-x-auto px-3">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="flex-shrink-0 w-[190px] h-[130px] rounded overflow-hidden"
-                  style={{ backgroundColor: `hsl(${i * 30 + 190}, 25%, ${40 + i * 8}%)` }}
-                />
-              ))}
             </div>
           </div>
         </div>
