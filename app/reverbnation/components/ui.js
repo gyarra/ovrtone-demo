@@ -38,11 +38,8 @@ export function WaveformBar() {
 export function ContentBox({ children, className = "", style = {} }) {
   return (
     <div
-      className={className}
-      style={{
-        padding: 32,
-        ...style,
-      }}
+      className={`px-4 py-5 md:p-8 ${className}`}
+      style={style}
     >
       {children}
     </div>

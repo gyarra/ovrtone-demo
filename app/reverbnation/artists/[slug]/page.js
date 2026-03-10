@@ -94,7 +94,7 @@ export default function ArtistProfilePage() {
     <>
       {/* HERO / COVER */}
       <section className="relative bg-[rgb(31,32,37)]">
-        <div className="relative w-full h-[350px]">
+        <div className="relative w-full h-[200px] md:h-[350px]">
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: "url('/ben_hazlewood/ben_hero')" }}
@@ -102,19 +102,19 @@ export default function ArtistProfilePage() {
           <div className="absolute inset-0 bg-gradient-to-t from-[rgba(0,0,0,0.6)] to-transparent" />
         </div>
 
-        <div className="mx-auto px-9 relative -mt-[120px]">
-          <div className="flex items-end gap-5 pb-4" style={{ paddingLeft: 260 }}>
+        <div className="mx-auto px-4 md:px-9 relative -mt-[80px] md:-mt-[120px]">
+          <div className="pb-4 md:pl-[260px]">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-1.5">
-                <h1 className="text-white text-[40px] leading-[52px]" style={{ fontWeight: 300 }}>
+                <h1 className="text-white text-[24px] md:text-[40px] leading-[32px] md:leading-[52px]" style={{ fontWeight: 300 }}>
                   {ARTIST.name}
                 </h1>
 
               </div>
-              <p className="text-[18px] text-white/70 italic mb-1" style={{ fontWeight: 300 }}>
+              <p className="text-[14px] md:text-[18px] text-white/70 italic mb-1" style={{ fontWeight: 300 }}>
                 Where performance meets resonance
               </p>
-              <p className="text-[16px] text-[#ccc]" style={{ fontWeight: 400 }}>
+              <p className="text-[13px] md:text-[16px] text-[#ccc]" style={{ fontWeight: 400 }}>
                 {ARTIST.genres}&nbsp;&nbsp;{"\u2022"}&nbsp;&nbsp;{ARTIST.location}
               </p>
             </div>
@@ -123,31 +123,55 @@ export default function ArtistProfilePage() {
       </section>
 
       {/* Profile photo bar + Key Details */}
-      <div className="relative bg-white h-[60px] pb-3">
-        <div className="mx-auto px-9 relative h-full flex items-center">
-          <div
-            className="absolute shrink-0 overflow-hidden w-[248px] h-[187px] border-2 border-white -top-[143px] left-9"
-          >
-            <img src="/ben_hazlewood/ben_avatar_1.jpg" alt={ARTIST.name} className="w-full h-full object-cover" />
+      <div className="relative bg-white pb-3">
+        <div className="mx-auto px-4 md:px-9 relative">
+          {/* Desktop: absolute avatar + inline details */}
+          <div className="hidden md:flex items-center h-[60px]">
+            <div
+              className="absolute shrink-0 overflow-hidden w-[248px] h-[187px] border-2 border-white -top-[143px] left-9"
+            >
+              <img src="/ben_hazlewood/ben_avatar_1.jpg" alt={ARTIST.name} className="w-full h-full object-cover" />
+            </div>
+            <div className="flex flex-1 justify-between" style={{ marginLeft: 272 }}>
+              {[
+                ["Band Size", ARTIST.bandSize],
+                ["Event Types", "Weddings · Corporate · Bars"],
+                ["Languages", "English · Spanish"],
+                ["Service Area", "Manhattan, Brooklyn, Queens"],
+              ].map(([label, value]) => (
+                <div key={label}>
+                  <div className="text-[10px] text-[#999] uppercase tracking-wide font-bold mb-0.5">{label}</div>
+                  <div className="text-[13px] font-semibold text-[#1e293b]">{value}</div>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="flex flex-1 justify-between" style={{ marginLeft: 272 }}>
-            {[
-              ["Band Size", ARTIST.bandSize],
-              ["Event Types", "Weddings · Corporate · Bars"],
-              ["Languages", "English · Spanish"],
-              ["Service Area", "Manhattan, Brooklyn, Queens"],
-            ].map(([label, value]) => (
-              <div key={label}>
-                <div className="text-[10px] text-[#999] uppercase tracking-wide font-bold mb-0.5">{label}</div>
-                <div className="text-[13px] font-semibold text-[#1e293b]">{value}</div>
+          {/* Mobile: stacked avatar + details */}
+          <div className="md:hidden">
+            <div className="flex items-center gap-3 mb-3 -mt-[40px]">
+              <div className="shrink-0 overflow-hidden w-[80px] h-[80px] rounded border-2 border-white">
+                <img src="/ben_hazlewood/ben_avatar_1.jpg" alt={ARTIST.name} className="w-full h-full object-cover" />
               </div>
-            ))}
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                ["Band Size", ARTIST.bandSize],
+                ["Event Types", "Weddings · Corporate · Bars"],
+                ["Languages", "English · Spanish"],
+                ["Service Area", "Manhattan, Brooklyn, Queens"],
+              ].map(([label, value]) => (
+                <div key={label}>
+                  <div className="text-[10px] text-[#999] uppercase tracking-wide font-bold mb-0.5">{label}</div>
+                  <div className="text-[13px] font-semibold text-[#1e293b]">{value}</div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
       {/* MAIN CONTENT */}
-      <main className="w-full">
+      <main className="w-full pb-16">
         <div className="bg-white">
 
           {/* 2. Media Gallery */}
@@ -155,7 +179,7 @@ export default function ArtistProfilePage() {
             <ContentBox>
 
               {/* Videos */}
-              <div className="grid grid-cols-2 gap-4 mb-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
                 <div className="relative bg-[#1a1a1a] overflow-hidden rounded" style={{ aspectRatio: "16/10" }}>
                   <iframe
                     className="absolute inset-0 w-full h-full"
@@ -252,9 +276,9 @@ export default function ArtistProfilePage() {
           </ContentBox>
 
           {/* Two-column layout */}
-          <div className="flex" style={{ borderBottom: `1px solid ${C.sectionBorder}` }}>
+          <div className="flex flex-col lg:flex-row" style={{ borderBottom: `1px solid ${C.sectionBorder}` }}>
             {/* Left column: Gig Requirements + Additional Details */}
-            <div className="flex-1" style={{ borderRight: `1px solid ${C.sectionBorder}` }}>
+            <div className="flex-1 lg:border-r" style={{ borderColor: C.sectionBorder }}>
               <ContentBox style={{ borderBottom: `1px solid ${C.sectionBorder}` }}>
                 <h4 className="text-[18px] text-black mb-3 font-medium">Gig Requirements</h4>
                 <div className="text-[14px] text-[#666] leading-[2]">
@@ -322,12 +346,12 @@ export default function ArtistProfilePage() {
             <div className="flex-1">
               <ContentBox>
                 <h4 className="text-[18px] text-black mb-3 font-medium">Set Lists</h4>
-                <div className="flex gap-2">
+                <div className="flex gap-2 overflow-x-auto">
                   {ARTIST.setLists.map((s, i) => (
                     <button
                       key={i}
                       onClick={() => setSelectedSet(i)}
-                      className="text-left rounded px-4 py-3 text-[14px] cursor-pointer transition-colors"
+                      className="text-left rounded px-3 md:px-4 py-2 md:py-3 text-[13px] md:text-[14px] cursor-pointer transition-colors whitespace-nowrap flex-shrink-0"
                       style={{
                         backgroundColor: selectedSet === i ? C.blue : "transparent",
                         color: selectedSet === i ? "#fff" : "#333",
@@ -361,7 +385,7 @@ export default function ArtistProfilePage() {
 
       {/* Sticky Booking CTA */}
       <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#0f172a] border-t border-[#1e293b]">
-        <div className="mx-auto px-9 py-3 flex items-center justify-between">
+        <div className="mx-auto px-4 md:px-9 py-3 flex items-center justify-between">
           <div className="text-[16px] font-bold text-white">
             {ARTIST.rate} <span className="text-[13px] font-normal text-[#94a3b8]">· {ARTIST.rateNote}</span>
           </div>
