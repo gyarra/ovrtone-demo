@@ -57,7 +57,7 @@ const COLLECTIONS = [
 ];
 
 const FOOTER_LINKS = {
-  ReverbNation: ["Blog", "Careers", "Need Help?", "Forgot Password", "CONNECT"],
+  Ovrtone: ["Blog", "Careers", "Need Help?", "Forgot Password", "CONNECT"],
   "Artist Membership": ["Overview", "Pricing", "Feature Index"],
   "Artist Development": ["Opportunity Submissions", "Gig Finder"],
   "Artist Tools": ["Advertise on Music Sites", "Sponsored Artists", "Digital Distribution", "Sell Direct", "Fan Reach", "Site Builder", "Marketplace", "Publishing Administration"],
@@ -120,7 +120,7 @@ function ContentBox({ children, className = "", style = {} }) {
 }
 
 /* ─── MAIN PAGE ─────────────────────────────────────── */
-export default function ReverbNationPage() {
+export default function OvrtonePage() {
   const [activeTab, setActiveTab] = useState("Overview");
   const [footerTab, setFooterTab] = useState("Artists");
 
@@ -131,27 +131,27 @@ export default function ReverbNationPage() {
       <header className="fixed top-0 left-0 right-0 z-[4003] bg-black h-[55px]">
         <div className="max-w-[1200px] mx-auto flex items-center h-full px-4 gap-4">
           <div className="flex items-center gap-1.5 flex-shrink-0">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke={C.blue} strokeWidth="2"/><circle cx="10" cy="10" r="4" fill={C.blue}/></svg>
-            <span className="text-white font-bold text-[15px] tracking-tight">ReverbNation</span>
+            <span className="text-[20px] font-bold leading-none" style={{ color: C.blue }}>Ø</span>
+            <span className="text-white font-bold text-[15px] tracking-tight">Ovrtone</span>
           </div>
 
           <div className="flex items-center bg-[#333] rounded px-3 py-1.5 gap-2 w-[200px]">
             <svg width="14" height="14" fill="none" stroke="#888" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
-            <span className="text-[13px] text-[#888]">Search ReverbNation</span>
+            <span className="text-[13px] text-[#888]">Search Ovrtone</span>
           </div>
 
           <nav className="flex items-center gap-5 ml-2">
             {NAV_ITEMS.map((item) => (
-              <span key={item} className="text-[14px] text-[#ccc] hover:text-white cursor-pointer whitespace-nowrap">
+              <span key={item} className="text-[16px] text-white cursor-pointer whitespace-nowrap">
                 {item}
               </span>
             ))}
           </nav>
 
           <div className="ml-auto flex items-center gap-3">
-            <span className="text-[14px] text-[#ccc] cursor-pointer">Log In</span>
+            <span className="text-[16px] text-white cursor-pointer">Log In</span>
             <button
-              className="text-[14px] font-medium text-white rounded-[3px] px-4 py-2 cursor-pointer"
+              className="text-[16px] font-medium text-white rounded-[3px] px-4 py-2 cursor-pointer"
               style={{ backgroundColor: C.blueBtnBg, border: `1px solid ${C.blueBtnBorder}` }}
             >
               Join For Free
@@ -562,7 +562,7 @@ export default function ReverbNationPage() {
         <div className="border-t border-[#ddd] py-4 text-center">
           <p className="text-[12px] text-[#999]">{"\u00A9"} 2006-2026 BandLab Singapore Pte. Ltd.</p>
           <p className="text-[11px] text-[#bbb] mt-1">
-            All third party trademarks are the property of the respective trademark owners. ReverbNation is not affiliated with those trademark owners.
+            All third party trademarks are the property of the respective trademark owners. Ovrtone is not affiliated with those trademark owners.
           </p>
         </div>
       </footer>
