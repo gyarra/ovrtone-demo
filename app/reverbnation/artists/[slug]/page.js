@@ -132,10 +132,10 @@ export default function ArtistProfilePage() {
           </div>
           <div className="flex flex-1 justify-between" style={{ marginLeft: 272 }}>
             {[
-              ["Genre", ARTIST.genres],
               ["Band Size", ARTIST.bandSize],
               ["Event Types", "Weddings · Corporate · Bars"],
               ["Languages", "English · Spanish"],
+              ["Service Area", "Manhattan, Brooklyn, Queens"],
             ].map(([label, value]) => (
               <div key={label}>
                 <div className="text-[10px] text-[#999] uppercase tracking-wide font-bold mb-0.5">{label}</div>
@@ -267,37 +267,62 @@ export default function ArtistProfilePage() {
 
               <ContentBox>
                 <h4 className="text-[18px] text-black mb-3 font-medium">Additional Details</h4>
-                <div className="grid grid-cols-2 gap-8">
-                  <div>
-                    <div className="text-[12px] text-[#94a3b8] uppercase tracking-wide font-bold mb-3">Performance Details</div>
-                    {[
-                      ["Setup/Breakdown", "45 min before · 30 min after"],
-                      ["Duration Options", "1hr · 2hr · 3hr · 4+hr"],
-                      ["Booking Lead Time", "Book at least 7 days in advance"],
-                    ].map(([k, v]) => (
-                      <div key={k} className="flex justify-between py-2 border-b border-[#f1f5f9]">
-                        <span className="text-[13px] text-[#64748b]">{k}</span>
-                        <span className="text-[13px] font-semibold text-[#334155]">{v}</span>
+                <div>
+                  <div className="text-[12px] text-[#94a3b8] uppercase tracking-wide font-bold mb-3">Performance Details</div>
+                  {[
+                    ["Setup/Breakdown", "45 min before · 30 min after"],
+                    ["Duration Options", "2hr · 3hr · 4+hr"],
+                    ["Booking Lead Time", "Book at least 7 days in advance"],
+                  ].map(([k, v]) => (
+                    <div key={k} className="flex justify-between py-2 border-b border-[#f1f5f9]">
+                      <span className="text-[13px] text-[#64748b]">{k}</span>
+                      <span className="text-[13px] font-semibold text-[#334155]">{v}</span>
+                    </div>
+                  ))}
+                </div>
+              </ContentBox>
+
+              <ContentBox style={{ borderTop: `1px solid ${C.sectionBorder}` }}>
+                <h4 className="text-[18px] text-black mb-3 font-medium">Availability</h4>
+                <div className="grid grid-cols-7 gap-1 text-center text-[12px]">
+                  {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(d => (
+                    <div key={d} className="text-[#94a3b8] font-bold py-1">{d}</div>
+                  ))}
+                  {Array.from({ length: 35 }, (_, i) => {
+                    const day = i - 5;
+                    const available = [1,2,6,7,8,13,14,15,20,21,22,27,28,29].includes(day);
+                    return (
+                      <div
+                        key={i}
+                        className="py-1.5 rounded"
+                        style={{
+                          color: day < 1 || day > 30 ? "transparent" : available ? "#334155" : "#cbd5e1",
+                          backgroundColor: day >= 1 && day <= 30 ? (available ? "rgba(34,197,94,0.15)" : "#f1f5f9") : "transparent",
+                        }}
+                      >
+                        {day >= 1 && day <= 30 ? day : ""}
                       </div>
-                    ))}
+                    );
+                  })}
+                </div>
+                <div className="flex items-center gap-4 mt-3 text-[11px] text-[#94a3b8]">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-3 h-3 rounded" style={{ backgroundColor: "rgba(34,197,94,0.15)" }} />
+                    Available
                   </div>
-                  <div>
-                    <div className="text-[12px] text-[#94a3b8] uppercase tracking-wide font-bold mb-3">Links &amp; Social</div>
-                    {["Website", "Instagram", "Spotify", "YouTube", "SoundCloud"].map(l => (
-                      <div key={l} className="py-2 text-[13px] text-[#475569] border-b border-[#f1f5f9]">{l}</div>
-                    ))}
-                    <div className="text-[12px] text-[#94a3b8] uppercase tracking-wide font-bold mt-4 mb-1">Service Area</div>
-                    <div className="text-[13px] text-[#475569]">Manhattan, Brooklyn, Queens</div>
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-3 h-3 rounded bg-[#f1f5f9]" />
+                    Unavailable
                   </div>
                 </div>
               </ContentBox>
             </div>
 
             {/* Right column: Set Lists */}
-            <div className="w-[340px] flex-shrink-0">
+            <div className="flex-1">
               <ContentBox>
                 <h4 className="text-[18px] text-black mb-3 font-medium">Set Lists</h4>
-                <div className="flex flex-col gap-2">
+                <div className="flex gap-2">
                   {ARTIST.setLists.map((s, i) => (
                     <button
                       key={i}
@@ -331,30 +356,23 @@ export default function ArtistProfilePage() {
             </div>
           </div>
 
-          {/* 9. Booking CTA */}
-          <ContentBox>
-            <div className="flex items-center justify-between bg-[#0f172a] rounded-lg px-6 py-4">
-              <div>
-                <div className="text-[16px] font-bold text-white">
-                  {ARTIST.rate} <span className="text-[13px] font-normal text-[#94a3b8]">· {ARTIST.rateNote}</span>
-                </div>
-              </div>
-              <button
-                className="text-[14px] font-bold text-white rounded px-6 py-2.5 cursor-pointer"
-                style={{ backgroundColor: C.blueBtnBg, border: `1px solid ${C.blueBtnBorder}` }}
-              >
-                Book This Artist
-              </button>
-            </div>
-          </ContentBox>
-
-          {/* Report */}
-          <div className="text-center py-4 border-t border-[#f1f5f9]">
-            <span className="text-[12px] text-[#cbd5e1] cursor-pointer">🚩 Report this profile</span>
-          </div>
-
         </div>
       </main>
+
+      {/* Sticky Booking CTA */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#0f172a] border-t border-[#1e293b]">
+        <div className="mx-auto px-9 py-3 flex items-center justify-between">
+          <div className="text-[16px] font-bold text-white">
+            {ARTIST.rate} <span className="text-[13px] font-normal text-[#94a3b8]">· {ARTIST.rateNote}</span>
+          </div>
+          <button
+            className="text-[14px] font-bold text-white rounded px-6 py-2.5 cursor-pointer"
+            style={{ backgroundColor: C.blueBtnBg, border: `1px solid ${C.blueBtnBorder}` }}
+          >
+            Book This Artist
+          </button>
+        </div>
+      </div>
     </>
   );
 }
