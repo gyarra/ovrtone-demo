@@ -1,27 +1,8 @@
 "use client";
 
 import { useState } from "react";
-
-/* ─── palette & tokens (extracted from live site) ──── */
-const C = {
-  black: "#000000",
-  sidebarBg: "rgb(31, 32, 37)",
-  coverBg: "rgb(31, 32, 37)",
-  white: "#ffffff",
-  pageBg: "#edf0f1",
-  contentBg: "#ffffff",
-  textPrimary: "rgb(51, 51, 51)",
-  textSecondary: "rgb(102, 102, 102)",
-  textMuted: "rgb(153, 153, 153)",
-  blue: "rgb(44, 156, 233)",
-  blueBtnBg: "rgb(58, 158, 224)",
-  blueBtnBorder: "rgb(31, 133, 200)",
-  fan: "#e8513d",
-  border: "#ddd",
-  sectionBorder: "rgb(223, 228, 230)",
-};
-
-const FONT = "'Roboto', 'Helvetica', Arial, sans-serif";
+import { C } from "./components/constants";
+import { Avatar, PlaceholderImg, WaveformBar, ContentBox } from "./components/ui";
 
 /* ─── mock data ─────────────────────────────────────── */
 const SONGS = [
@@ -56,112 +37,14 @@ const COLLECTIONS = [
   { name: "Dark Pop" },
 ];
 
-const FOOTER_LINKS = {
-  Ovrtone: ["Blog", "Careers", "Need Help?", "Forgot Password", "CONNECT"],
-  "Artist Membership": ["Overview", "Pricing", "Feature Index"],
-  "Artist Development": ["Opportunity Submissions", "Gig Finder"],
-  "Artist Tools": ["Advertise on Music Sites", "Sponsored Artists", "Digital Distribution", "Sell Direct", "Fan Reach", "Site Builder", "Marketplace", "Publishing Administration"],
-  Policies: ["Terms & Conditions", "Privacy", "Your California Privacy Rights", "Copyright", "Trademark", "Refunds", "Abuse"],
-};
-
-const NAV_ITEMS = ["Features", "Discover", "Crowd Picks", "Charts", "Opportunities", "Distribution", "Pricing"];
 const TABS = ["Overview", "Music", "Videos", "Events"];
-const FOOTER_TABS = ["Artists", "Music Industry", "Fans", "Venues"];
-
-/* ─── tiny components ───────────────────────────────── */
-
-function Avatar({ size = 40, color = "#ccc" }) {
-  return (
-    <div
-      className="rounded-full flex-shrink-0"
-      style={{ width: size, height: size, backgroundColor: color }}
-    />
-  );
-}
-
-function PlaceholderImg({ w, h, className = "", style = {} }) {
-  return (
-    <div
-      className={`bg-gray-300 ${className}`}
-      style={{ width: w, height: h, minHeight: h, ...style }}
-    />
-  );
-}
-
-function WaveformBar() {
-  return (
-    <div className="flex items-end gap-[2px] h-[30px]">
-      {Array.from({ length: 40 }).map((_, i) => {
-        const h = 6 + Math.floor(Math.random() * 24);
-        return (
-          <div
-            key={i}
-            className="w-[3px] rounded-sm"
-            style={{ height: h, backgroundColor: i < 12 ? C.blue : "#ccc" }}
-          />
-        );
-      })}
-    </div>
-  );
-}
-
-function ContentBox({ children, className = "", style = {} }) {
-  return (
-    <div
-      className={className}
-      style={{
-        padding: 32,
-        ...style,
-      }}
-    >
-      {children}
-    </div>
-  );
-}
 
 /* ─── MAIN PAGE ─────────────────────────────────────── */
 export default function OvrtonePage() {
   const [activeTab, setActiveTab] = useState("Overview");
-  const [footerTab, setFooterTab] = useState("Artists");
 
   return (
-    <div className="text-base text-[rgb(51,51,51)] bg-[#edf0f1]" style={{ fontFamily: FONT }}>
-
-      {/* HEADER NAV */}
-      <header className="fixed top-0 left-0 right-0 z-[4003] bg-black h-[55px]">
-        <div className="max-w-[1200px] mx-auto flex items-center h-full px-4 gap-4">
-          <div className="flex items-center gap-1.5 flex-shrink-0">
-            <span className="text-[20px] font-bold leading-none" style={{ color: C.blue }}>Ø</span>
-            <span className="text-white font-bold text-[15px] tracking-tight">Ovrtone</span>
-          </div>
-
-          <div className="flex items-center bg-[#333] rounded px-3 py-1.5 gap-2 w-[200px]">
-            <svg width="14" height="14" fill="none" stroke="#888" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
-            <span className="text-[13px] text-[#888]">Search Ovrtone</span>
-          </div>
-
-          <nav className="flex items-center gap-5 ml-2">
-            {NAV_ITEMS.map((item) => (
-              <span key={item} className="text-[16px] text-white cursor-pointer whitespace-nowrap">
-                {item}
-              </span>
-            ))}
-          </nav>
-
-          <div className="ml-auto flex items-center gap-3">
-            <span className="text-[16px] text-white cursor-pointer">Log In</span>
-            <button
-              className="text-[16px] font-medium text-white rounded-[3px] px-4 py-2 cursor-pointer"
-              style={{ backgroundColor: C.blueBtnBg, border: `1px solid ${C.blueBtnBorder}` }}
-            >
-              Join For Free
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <div className="h-[55px]" />
-
+    <>
       {/* HERO / COVER PHOTO */}
       <section className="relative bg-[rgb(31,32,37)]">
         <div className="relative w-full h-[430px]">
@@ -499,73 +382,6 @@ export default function OvrtonePage() {
           </div>
         </aside>
       </main>
-
-      {/* FOOTER */}
-      <footer className="border-t border-[#ddd]" style={{ backgroundColor: C.pageBg }}>
-        <div className="max-w-[1200px] mx-auto px-6 pt-6">
-          <div className="flex items-center gap-6 border-b border-[#ddd] pb-0">
-            <span className="text-[14px] font-bold text-[#333] pb-3">Tools For:</span>
-            {FOOTER_TABS.map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setFooterTab(tab)}
-                className="pb-3 text-[14px] cursor-pointer"
-                style={{
-                  color: footerTab === tab ? C.textPrimary : C.textMuted,
-                  borderBottom: footerTab === tab ? "2px solid #333" : "2px solid transparent",
-                  fontWeight: footerTab === tab ? 600 : 400,
-                  marginBottom: -1,
-                }}
-              >
-                {tab}
-              </button>
-            ))}
-
-            <div className="ml-auto flex gap-2">
-              {[
-                { label: "BLOG", bg: "#ff5722" },
-                { label: "f", bg: "#3b5998" },
-                { label: "X", bg: "#1da1f2" },
-                { label: "YT", bg: "#ff0000" },
-                { label: "IG", bg: "#c13584" },
-                { label: "P", bg: "#bd081c" },
-              ].map((icon, i) => (
-                <div
-                  key={i}
-                  className="w-[28px] h-[28px] rounded flex items-center justify-center text-white text-[11px] font-bold cursor-pointer"
-                  style={{ backgroundColor: icon.bg }}
-                >
-                  {icon.label}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="max-w-[1200px] mx-auto px-6 py-8">
-          <div className="grid grid-cols-5 gap-6">
-            {Object.entries(FOOTER_LINKS).map(([heading, links]) => (
-              <div key={heading}>
-                <h6 className="text-[16px] font-bold text-black mb-3">{heading}</h6>
-                <ul className="space-y-1.5">
-                  {links.map((link) => (
-                    <li key={link}>
-                      <span className="text-[13px] text-[#666] cursor-pointer hover:underline">{link}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="border-t border-[#ddd] py-4 text-center">
-          <p className="text-[12px] text-[#999]">{"\u00A9"} 2006-2026 BandLab Singapore Pte. Ltd.</p>
-          <p className="text-[11px] text-[#bbb] mt-1">
-            All third party trademarks are the property of the respective trademark owners. Ovrtone is not affiliated with those trademark owners.
-          </p>
-        </div>
-      </footer>
-    </div>
+    </>
   );
 }
