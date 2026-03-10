@@ -21,8 +21,7 @@ const PHOTOS = [
 
 const ARTIST = {
   name: "The Ben Hazlewood Experience",
-  tagline: "NYC's Premier Jazz Trio — Crafting Unforgettable Moments",
-  genres: "Jazz / Soul / Funk",
+  genres: "Rock / Soul / Funk",
   location: "New York, NY",
   bandSize: "5-piece",
   rate: "$250 / hour",
@@ -33,7 +32,49 @@ const ARTIST = {
   memberSince: "Jan 2026",
   about:
     "Ben Haxlewood combines daring vocals with masterful piano skills to create a sound that is both timeless and fresh. With a repertoire that spans sultry jazz standards, soulful originals, and irresistible funk grooves, Ben and his band bring an unforgettable energy to every performance. Whether you're looking for the perfect cocktail hour ambiance or a high-energy dance set, The Ben Hazlewood Experience delivers an unforgettable musical journey that will have your guests talking long after the last note is played.",
-  setLists: ["Cocktail Hour Set · 60min", "Dance Set · 90min", "Dinner Set · 60min"],
+  setLists: [
+    {
+      name: "Cocktail Hour Set · 60min",
+      songs: [
+        "Fly Me to the Moon",
+        "The Way You Look Tonight",
+        "Come Fly with Me",
+        "My Way",
+        "I've Got You Under My Skin",
+        "Witchcraft",
+        "The Girl from Ipanema",
+        "Summer Wind",
+      ],
+    },
+    {
+      name: "Dance Set · 90min",
+      songs: [
+        "Kiss – Prince",
+        "1999 – Prince",
+        "Get Up (I Feel Like Being a) Sex Machine – James Brown",
+        "I Got You (I Feel Good) – James Brown",
+        "When Doves Cry – Prince",
+        "Living in America – James Brown",
+        "Little Red Corvette – Prince",
+        "Papa's Got a Brand New Bag – James Brown",
+        "Raspberry Beret – Prince",
+        "It's a Man's Man's Man's World – James Brown",
+      ],
+    },
+    {
+      name: "90s Rock Set · 60min",
+      songs: [
+        "Are You Gonna Go My Way – Lenny Kravitz",
+        "Fly Away – Lenny Kravitz",
+        "Black Hole Sun – Soundgarden",
+        "Plush – Stone Temple Pilots",
+        "It Ain't Over 'til It's Over – Lenny Kravitz",
+        "Under the Bridge – Red Hot Chili Peppers",
+        "Alive – Pearl Jam",
+        "Again – Lenny Kravitz",
+      ],
+    },
+  ],
   links: [
     { icon: "web", label: "thevelvetgroove.com" },
     { icon: "music", label: "Spotify" },
@@ -44,6 +85,7 @@ const ARTIST = {
 
 export default function ArtistProfilePage() {
   const [activeIdx, setActiveIdx] = useState(null);
+  const [selectedSet, setSelectedSet] = useState(0);
 
   const next = useCallback(() => setActiveIdx(i => (i + 1) % PHOTOS.length), []);
   const prev = useCallback(() => setActiveIdx(i => ((i ?? 0) - 1 + PHOTOS.length) % PHOTOS.length), []);
@@ -80,13 +122,26 @@ export default function ArtistProfilePage() {
         </div>
       </section>
 
-      {/* Profile photo bar */}
-      <div className="relative bg-white h-[60px] border-b border-[rgb(223,228,230)]">
+      {/* Profile photo bar + Key Details */}
+      <div className="relative bg-white h-[60px] pb-3">
         <div className="mx-auto px-9 relative h-full flex items-center">
           <div
             className="absolute shrink-0 overflow-hidden w-[248px] h-[187px] border-2 border-white -top-[143px] left-9"
           >
             <img src="/ben_hazlewood/ben_avatar_1.jpg" alt={ARTIST.name} className="w-full h-full object-cover" />
+          </div>
+          <div className="flex flex-1 justify-between" style={{ marginLeft: 272 }}>
+            {[
+              ["Genre", ARTIST.genres],
+              ["Band Size", ARTIST.bandSize],
+              ["Event Types", "Weddings · Corporate · Bars"],
+              ["Languages", "English · Spanish"],
+            ].map(([label, value]) => (
+              <div key={label}>
+                <div className="text-[10px] text-[#999] uppercase tracking-wide font-bold mb-0.5">{label}</div>
+                <div className="text-[13px] font-semibold text-[#1e293b]">{value}</div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -95,25 +150,8 @@ export default function ArtistProfilePage() {
       <main className="w-full">
         <div className="bg-white">
 
-          {/* 3. Key Details Bar */}
-          <div className="border-b border-[rgb(223,228,230)] px-8 py-5">
-            <div className="grid grid-cols-4 gap-6">
-              {[
-                ["Genre", ARTIST.genres],
-                ["Band Size", ARTIST.bandSize],
-                ["Event Types", "Weddings · Corporate · Bars"],
-                ["Languages", "English · Spanish"],
-              ].map(([label, value]) => (
-                <div key={label}>
-                  <div className="text-[10px] text-[#999] uppercase tracking-wide font-bold mb-1">{label}</div>
-                  <div className="text-[14px] font-semibold text-[#1e293b]">{value}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-
           {/* 2. Media Gallery */}
-          <div className="border-b border-[rgb(223,228,230)]">
+          <div className="border-t border-b border-[rgb(223,228,230)]">
             <ContentBox>
 
               {/* Videos */}
@@ -121,7 +159,7 @@ export default function ArtistProfilePage() {
                 <div className="relative bg-[#1a1a1a] overflow-hidden rounded" style={{ aspectRatio: "16/10" }}>
                   <iframe
                     className="absolute inset-0 w-full h-full"
-                    src="https://www.youtube.com/embed/DbMWjkFTmvM?rel=0&modestbranding=1&showinfo=0"
+                    src="https://www.youtube.com/embed/DbMWjkFTmvM?rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&fs=0"
                     title="Video"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
@@ -130,7 +168,7 @@ export default function ArtistProfilePage() {
                 <div className="relative bg-[#1a1a1a] overflow-hidden rounded" style={{ aspectRatio: "16/10" }}>
                   <iframe
                     className="absolute inset-0 w-full h-full"
-                    src="https://www.youtube.com/embed/x_9uTApdOw0?rel=0&modestbranding=1&showinfo=0"
+                    src="https://www.youtube.com/embed/x_9uTApdOw0?rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&fs=0"
                     title="Video 2"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
@@ -213,103 +251,85 @@ export default function ArtistProfilePage() {
             <p className="text-[14px] text-[#666] leading-relaxed">{ARTIST.about}</p>
           </ContentBox>
 
-          {/* 5. Set Lists */}
-          <ContentBox style={{ borderBottom: `1px solid ${C.sectionBorder}` }}>
-            <h4 className="text-[18px] text-black mb-3 font-medium">Set Lists</h4>
-            <div className="flex gap-3 flex-wrap">
-              {ARTIST.setLists.map((s, i) => (
-                <div key={i} className="border border-[#ddd] rounded px-4 py-3 text-[14px] text-[#333]">
-                  {s}
+          {/* Two-column layout */}
+          <div className="flex" style={{ borderBottom: `1px solid ${C.sectionBorder}` }}>
+            {/* Left column: Gig Requirements + Additional Details */}
+            <div className="flex-1" style={{ borderRight: `1px solid ${C.sectionBorder}` }}>
+              <ContentBox style={{ borderBottom: `1px solid ${C.sectionBorder}` }}>
+                <h4 className="text-[18px] text-black mb-3 font-medium">Gig Requirements</h4>
+                <div className="text-[14px] text-[#666] leading-[2]">
+                  {["Power supply (2 standard outlets minimum)", "Parking / load-in access", "Minimum stage area: 10×8 ft",
+                    "Sound check: 30 min before event", "Meals provided for 5 performers"].map(r => (
+                    <div key={r}>{r}</div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </ContentBox>
+              </ContentBox>
 
-          {/* 6. Gig Requirements */}
-          <ContentBox style={{ borderBottom: `1px solid ${C.sectionBorder}` }}>
-            <h4 className="text-[18px] text-black mb-3 font-medium">Gig Requirements</h4>
-            <div className="text-[14px] text-[#666] leading-[2]">
-              {["Power supply (2 standard outlets minimum)", "Parking / load-in access", "Minimum stage area: 10×8 ft",
-                "Sound check: 30 min before event", "Meals provided for 5 performers"].map(r => (
-                <div key={r}>{r}</div>
-              ))}
+              <ContentBox>
+                <h4 className="text-[18px] text-black mb-3 font-medium">Additional Details</h4>
+                <div className="grid grid-cols-2 gap-8">
+                  <div>
+                    <div className="text-[12px] text-[#94a3b8] uppercase tracking-wide font-bold mb-3">Performance Details</div>
+                    {[
+                      ["Setup/Breakdown", "45 min before · 30 min after"],
+                      ["Duration Options", "1hr · 2hr · 3hr · 4+hr"],
+                      ["Booking Lead Time", "Book at least 7 days in advance"],
+                    ].map(([k, v]) => (
+                      <div key={k} className="flex justify-between py-2 border-b border-[#f1f5f9]">
+                        <span className="text-[13px] text-[#64748b]">{k}</span>
+                        <span className="text-[13px] font-semibold text-[#334155]">{v}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div>
+                    <div className="text-[12px] text-[#94a3b8] uppercase tracking-wide font-bold mb-3">Links &amp; Social</div>
+                    {["Website", "Instagram", "Spotify", "YouTube", "SoundCloud"].map(l => (
+                      <div key={l} className="py-2 text-[13px] text-[#475569] border-b border-[#f1f5f9]">{l}</div>
+                    ))}
+                    <div className="text-[12px] text-[#94a3b8] uppercase tracking-wide font-bold mt-4 mb-1">Service Area</div>
+                    <div className="text-[13px] text-[#475569]">Manhattan, Brooklyn, Queens</div>
+                  </div>
+                </div>
+              </ContentBox>
             </div>
-          </ContentBox>
 
-          {/* 7. Availability Calendar */}
-          <ContentBox style={{ borderBottom: `1px solid ${C.sectionBorder}` }}>
-            <h4 className="text-[18px] text-black mb-3 font-medium">Availability</h4>
-            <div className="max-w-[320px]">
-              <div className="flex justify-between items-center mb-3">
-                <span className="text-[13px] text-[#94a3b8] cursor-pointer">◀</span>
-                <span className="text-[14px] font-bold text-[#334155]">March 2026</span>
-                <span className="text-[13px] text-[#94a3b8] cursor-pointer">▶</span>
-              </div>
-              <div className="grid grid-cols-7 gap-1 text-center">
-                {["M","T","W","T","F","S","S"].map((d, i) => (
-                  <div key={i} className="text-[11px] font-bold text-[#94a3b8] py-1">{d}</div>
-                ))}
-                {Array.from({ length: 35 }, (_, i) => {
-                  const day = i - 2;
-                  if (day < 1 || day > 31) return <div key={i} />;
-                  const unavailable = [5, 8, 9, 12, 19, 22, 23, 24].includes(day);
-                  return (
-                    <div
+            {/* Right column: Set Lists */}
+            <div className="w-[340px] flex-shrink-0">
+              <ContentBox>
+                <h4 className="text-[18px] text-black mb-3 font-medium">Set Lists</h4>
+                <div className="flex flex-col gap-2">
+                  {ARTIST.setLists.map((s, i) => (
+                    <button
                       key={i}
-                      className="text-[12px] py-1.5 rounded"
+                      onClick={() => setSelectedSet(i)}
+                      className="text-left rounded px-4 py-3 text-[14px] cursor-pointer transition-colors"
                       style={{
-                        backgroundColor: unavailable ? "#e2e8f0" : "#dcfce7",
-                        color: unavailable ? "#94a3b8" : "#16a34a",
-                        fontWeight: unavailable ? 400 : 600,
+                        backgroundColor: selectedSet === i ? C.blue : "transparent",
+                        color: selectedSet === i ? "#fff" : "#333",
+                        border: selectedSet === i ? `1px solid ${C.blue}` : "1px solid #ddd",
+                        fontWeight: selectedSet === i ? 600 : 400,
                       }}
                     >
-                      {day}
+                      {s.name}
+                    </button>
+                  ))}
+                </div>
+                {ARTIST.setLists[selectedSet].songs.length > 0 && (
+                  <div className="mt-4 pt-3 border-t border-[#f1f5f9]">
+                    <div className="text-[11px] text-[#94a3b8] uppercase tracking-wide font-bold mb-2">Songs</div>
+                    <div className="divide-y divide-[#f1f5f9]">
+                      {ARTIST.setLists[selectedSet].songs.map((song, i) => (
+                        <div key={i} className="flex items-center gap-2.5 py-2">
+                          <span className="text-[12px] text-[#94a3b8] w-5 text-right tabular-nums">{i + 1}</span>
+                          <span className="text-[13px] text-[#334155]">{song}</span>
+                        </div>
+                      ))}
                     </div>
-                  );
-                })}
-              </div>
-              <div className="flex gap-4 mt-3 justify-center">
-                {[["#dcfce7", "Available"], ["#e2e8f0", "Unavailable"]].map(([bg, label]) => (
-                  <div key={label} className="flex items-center gap-1.5">
-                    <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: bg, border: "1px solid #cbd5e1" }} />
-                    <span className="text-[11px] text-[#64748b]">{label}</span>
                   </div>
-                ))}
-              </div>
-              <div className="mt-3 pt-3 border-t border-[#f1f5f9]">
-                <div className="text-[10px] text-[#94a3b8] uppercase tracking-wide font-bold mb-1">Available Hours</div>
-                <div className="text-[14px] font-semibold text-[#334155]">6:00 PM – 11:00 PM</div>
-              </div>
+                )}
+              </ContentBox>
             </div>
-          </ContentBox>
-
-          {/* 8. Additional Details */}
-          <ContentBox style={{ borderBottom: `1px solid ${C.sectionBorder}` }}>
-            <h4 className="text-[18px] text-black mb-3 font-medium">Additional Details</h4>
-            <div className="grid grid-cols-2 gap-8">
-              <div>
-                <div className="text-[12px] text-[#94a3b8] uppercase tracking-wide font-bold mb-3">Performance Details</div>
-                {[
-                  ["Setup/Breakdown", "45 min before · 30 min after"],
-                  ["Duration Options", "1hr · 2hr · 3hr · 4+hr"],
-                  ["Booking Lead Time", "Book at least 7 days in advance"],
-                ].map(([k, v]) => (
-                  <div key={k} className="flex justify-between py-2 border-b border-[#f1f5f9]">
-                    <span className="text-[13px] text-[#64748b]">{k}</span>
-                    <span className="text-[13px] font-semibold text-[#334155]">{v}</span>
-                  </div>
-                ))}
-              </div>
-              <div>
-                <div className="text-[12px] text-[#94a3b8] uppercase tracking-wide font-bold mb-3">Links &amp; Social</div>
-                {["🔗 Website", "📸 Instagram", "🎵 Spotify", "📺 YouTube", "🎶 SoundCloud"].map(l => (
-                  <div key={l} className="py-2 text-[13px] text-[#475569] border-b border-[#f1f5f9]">{l}</div>
-                ))}
-                <div className="text-[12px] text-[#94a3b8] uppercase tracking-wide font-bold mt-4 mb-1">Service Area</div>
-                <div className="text-[13px] text-[#475569]">📍 Manhattan, Brooklyn, Queens</div>
-              </div>
-            </div>
-          </ContentBox>
+          </div>
 
           {/* 9. Booking CTA */}
           <ContentBox>

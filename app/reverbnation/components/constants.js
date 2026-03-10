@@ -24,9 +24,5 @@ export const NAV_ITEMS = ["Features", "Discover", "Crowd Picks", "Charts", "Oppo
 export const FOOTER_LINKS = {
   Ovrtone: ["Blog", "Careers", "Need Help?", "Forgot Password", "CONNECT"],
   "Artist Membership": ["Overview", "Pricing", "Feature Index"],
-  "Artist Development": ["Opportunity Submissions", "Gig Finder"],
-  "Artist Tools": ["Advertise on Music Sites", "Sponsored Artists", "Digital Distribution", "Sell Direct", "Fan Reach", "Site Builder", "Marketplace", "Publishing Administration"],
-  Policies: ["Terms & Conditions", "Privacy", "Your California Privacy Rights", "Copyright", "Trademark", "Refunds", "Abuse"],
+  Policies: ["Terms & Conditions", "Privacy", "Copyright", "Trademark", "Refunds", "Abuse"],
 };
-
-export const FOOTER_TABS = ["Artists", "Music Industry", "Fans", "Venues"];
