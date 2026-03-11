@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { C } from "./components/constants";
 import { Avatar, PlaceholderImg, WaveformBar, ContentBox } from "./components/ui";
+import { SectionHeading } from "./components/shared";
 
 /* ─── mock data ─────────────────────────────────────── */
 const SONGS = [
@@ -123,7 +124,7 @@ export default function OvrtonePage() {
               {/* ROW 1: Featured Songs + Featured Video */}
               <div className="grid grid-cols-2">
                 <ContentBox>
-                  <h4 className="text-[18px] text-black mb-2 font-medium">Featured Songs</h4>
+                  <SectionHeading className="mb-2">Featured Songs</SectionHeading>
 
                   <div className="flex items-center gap-3 mb-3">
                     <button
@@ -165,7 +166,7 @@ export default function OvrtonePage() {
                 </ContentBox>
 
                 <ContentBox style={{ borderLeft: `1px solid ${C.sectionBorder}` }}>
-                  <h4 className="text-[18px] text-black mb-2 font-medium">Featured Video</h4>
+                  <SectionHeading className="mb-2">Featured Video</SectionHeading>
 
                   <div className="relative bg-[#1a1a1a] overflow-hidden mb-3" style={{ aspectRatio: "16/10" }}>
                     <div className="absolute inset-0 flex items-center justify-center">
@@ -207,7 +208,7 @@ export default function OvrtonePage() {
               {/* ROW 3: Community + Past Performances */}
               <div className="grid grid-cols-2">
                 <ContentBox>
-                  <h4 className="text-[18px] text-black mb-3 font-medium">Community</h4>
+                  <SectionHeading>Community</SectionHeading>
 
                   <h6 className="text-[14px] font-bold mb-1">Status</h6>
                   <p className="text-[14px] text-[#666] mb-5 leading-relaxed">
@@ -251,7 +252,7 @@ export default function OvrtonePage() {
                 </ContentBox>
 
                 <ContentBox style={{ borderLeft: `1px solid ${C.sectionBorder}` }}>
-                  <h4 className="text-[18px] text-black mb-3 font-medium">Past Performances</h4>
+                  <SectionHeading>Past Performances</SectionHeading>
 
                   <div className="divide-y divide-[#eee]">
                     {PERFORMANCES.map((p, i) => (

@@ -1,13 +1,10 @@
-"use client";
-
-import { useState } from "react";
-import { C, FOOTER_LINKS } from "./constants";
+import { FOOTER_LINKS } from "./constants";
 
 export default function Footer() {
 
   return (
-    <footer className="border-t border-[#ddd]" style={{ backgroundColor: C.pageBg }}>
-      <div className="max-w-[1200px] mx-auto px-6 py-8">
+    <footer style={{ backgroundColor: "var(--rn-page-bg)" }}>
+      <div className="max-w-[1200px] mx-auto px-6 pt-4 pb-8">
         <div className="flex justify-between">
           {Object.entries(FOOTER_LINKS).map(([heading, links]) => (
             <div key={heading}>

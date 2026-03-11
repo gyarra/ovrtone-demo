@@ -1,1 +1,118 @@
-/* ─── ReverbNation theme styles ─── */
+/* ─── Ovrtone theme: CSS custom properties ─── */
+
+:root {
+  --rn-black: #000000;
+  --rn-white: #ffffff;
+  --rn-sidebar-bg: rgb(31, 32, 37);
+  --rn-page-bg: #edf0f1;
+  --rn-content-bg: #ffffff;
+  --rn-blue: rgb(44, 156, 233);
+  --rn-blue-btn: rgb(58, 158, 224);
+  --rn-blue-btn-border: rgb(31, 133, 200);
+  --rn-fan: #e8513d;
+  --rn-border: #ddd;
+  --rn-section-border: rgb(223, 228, 230);
+  --rn-text-primary: rgb(51, 51, 51);
+  --rn-text-secondary: rgb(102, 102, 102);
+  --rn-text-muted: rgb(153, 153, 153);
+  --rn-font: 'Roboto', 'Helvetica', Arial, sans-serif;
+
+  /* Slate palette */
+  --rn-slate-100: #f1f5f9;
+  --rn-slate-300: #cbd5e1;
+  --rn-slate-400: #94a3b8;
+  --rn-slate-500: #64748b;
+  --rn-slate-600: #475569;
+  --rn-slate-700: #334155;
+  --rn-slate-800: #1e293b;
+  --rn-slate-900: #0f172a;
+
+  /* Calendar */
+  --rn-available: rgba(34, 197, 94, 0.15);
+  --rn-unavailable: #f1f5f9;
+}
+
+/* ─── Reusable classes ─── */
+
+.rn-section-heading {
+  font-size: 18px;
+  color: var(--rn-black);
+  font-weight: 500;
+}
+
+.rn-label {
+  font-size: 10px;
+  color: var(--rn-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
+
+.rn-sub-label {
+  font-size: 12px;
+  color: var(--rn-slate-400);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
+
+.rn-detail-key {
+  font-size: 13px;
+  color: var(--rn-slate-500);
+}
+
+.rn-detail-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--rn-slate-700);
+}
+
+.rn-body-text {
+  font-size: 14px;
+  color: var(--rn-text-secondary);
+  line-height: 1.625;
+}
+
+.rn-btn-blue {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--rn-white);
+  background-color: var(--rn-blue-btn);
+  border: 1px solid var(--rn-blue-btn-border);
+  border-radius: 3px;
+  padding: 10px 24px;
+  cursor: pointer;
+}
+
+/* Gallery nav */
+.rn-gallery-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 10;
+  border: none;
+}
+.rn-gallery-btn:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+/* Sticky booking bar */
+.rn-sticky-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background-color: var(--rn-slate-900);
+  border-top: 1px solid var(--rn-slate-800);
+}

@@ -1,14 +1,13 @@
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { FONT } from "./components/constants";
 
 export const metadata = {
-  title: "Ovrtone - ReverbNation",
+  title: "Ovrtone - Styled Demo",
 };
 
-export default function ReverbNationLayout({ children }) {
+export default function StyledDemoLayout({ children }) {
   return (
-    <div className="text-base text-[rgb(51,51,51)] bg-[#edf0f1]" style={{ fontFamily: FONT }}>
+    <div className="text-base text-[var(--rn-text-primary)] bg-[var(--rn-page-bg)]" style={{ fontFamily: "var(--rn-font)" }}>
       <Header />
       {children}
       <Footer />

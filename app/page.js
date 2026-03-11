@@ -20,24 +20,41 @@ export default function Home() {
         Search
       </Link>
 
-      <nav className="mt-8 flex flex-col items-center gap-2">
-        {[
-          { href: "/artists", label: "Artist Search" },
-          { href: "/artists/band-1", label: "Artist Profile" },
-          { href: "/booking", label: "Booking" },
-          { href: "/messages", label: "Messages" },
-          { href: "/artist_sign_up", label: "Artist Sign-Up" },
-          { href: "/client-profile-1", label: "Client Profile" },
-          { href: "/reverbnation", label: "ReverbNation" },
-        ].map(({ href, label }) => (
-          <Link
-            key={href}
-            href={href}
-            className="text-sm text-white/50 hover:text-white transition-colors underline underline-offset-2"
-          >
-            {label}
-          </Link>
-        ))}
+      <nav className="mt-8 flex flex-col items-center gap-4">
+        <div className="flex flex-col items-center gap-2">
+          {[
+            { href: "/artists", label: "Artist Search" },
+            { href: "/artists/band-1", label: "Artist Profile" },
+            { href: "/booking", label: "Booking" },
+            { href: "/messages", label: "Messages" },
+            { href: "/artist_sign_up", label: "Artist Sign-Up" },
+            { href: "/client-profile-1", label: "Client Profile" },
+          ].map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              className="text-sm text-white/50 hover:text-white transition-colors underline underline-offset-2"
+            >
+              {label}
+            </Link>
+          ))}
+        </div>
+
+        <div className="mt-4 flex flex-col items-center gap-2">
+          <h2 className="text-xs font-semibold tracking-widest uppercase text-white/30">Styled Mockups</h2>
+          {[
+            { href: "/reverbnation", label: "Ovrtone (Reverb Style)" },
+            { href: "/reverbnation/artists/ben-hazlewood", label: "Artist Profile" },
+          ].map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              className="text-sm text-white/50 hover:text-white transition-colors underline underline-offset-2"
+            >
+              {label}
+            </Link>
+          ))}
+        </div>
       </nav>
     </div>
   );

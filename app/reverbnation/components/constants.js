@@ -1,23 +1,25 @@
-/* ─── palette & tokens (extracted from live site) ──── */
+/* ─── palette & tokens ──── */
+/* Canonical values live in the CSS file as --rn-* custom properties.
+   This JS mirror is kept for inline styles that can't use CSS vars. */
 export const C = {
-  black: "#000000",
-  sidebarBg: "rgb(31, 32, 37)",
-  coverBg: "rgb(31, 32, 37)",
-  white: "#ffffff",
-  pageBg: "#edf0f1",
-  contentBg: "#ffffff",
-  textPrimary: "rgb(51, 51, 51)",
-  textSecondary: "rgb(102, 102, 102)",
-  textMuted: "rgb(153, 153, 153)",
-  blue: "rgb(44, 156, 233)",
-  blueBtnBg: "rgb(58, 158, 224)",
-  blueBtnBorder: "rgb(31, 133, 200)",
-  fan: "#e8513d",
-  border: "#ddd",
-  sectionBorder: "rgb(223, 228, 230)",
+  black: "var(--rn-black)",
+  sidebarBg: "var(--rn-sidebar-bg)",
+  coverBg: "var(--rn-sidebar-bg)",
+  white: "var(--rn-white)",
+  pageBg: "var(--rn-page-bg)",
+  contentBg: "var(--rn-content-bg)",
+  textPrimary: "var(--rn-text-primary)",
+  textSecondary: "var(--rn-text-secondary)",
+  textMuted: "var(--rn-text-muted)",
+  blue: "var(--rn-blue)",
+  blueBtnBg: "var(--rn-blue-btn)",
+  blueBtnBorder: "var(--rn-blue-btn-border)",
+  fan: "var(--rn-fan)",
+  border: "var(--rn-border)",
+  sectionBorder: "var(--rn-section-border)",
 };
 
-export const FONT = "'Roboto', 'Helvetica', Arial, sans-serif";
+export const FONT = "var(--rn-font)";
 
 export const NAV_ITEMS = ["Features", "Discover", "Crowd Picks", "Charts", "Opportunities", "Distribution", "Pricing"];
 
