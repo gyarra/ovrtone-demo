@@ -21,7 +21,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-[#ddd] py-4 text-center">
+      <div className="border-t border-[#ddd] py-4 pb-20 text-center">
         <p className="text-[12px] text-[#999]">{"\u00A9"} 2026 Ovrtone LLC</p>
         <p className="text-[11px] text-[#bbb] mt-1">
           All third party trademarks are the property of the respective trademark owners. Ovrtone is not affiliated with trademark owners.

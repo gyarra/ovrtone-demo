@@ -180,9 +180,9 @@ export default function ArtistProfilePage() {
           </div>
 
           {/* Two-column layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-2" style={{ borderBottom: `1px solid ${C.sectionBorder}` }}>
+          <div className="grid grid-cols-1 md:grid-cols-2" style={{ borderBottom: `1px solid ${C.sectionBorder}` }}>
             {/* Left column: About Us + Gig Requirements + Additional Details */}
-            <div className="flex-1 lg:border-r" style={{ borderColor: C.sectionBorder }}>
+            <div className="flex-1 md:border-r" style={{ borderColor: C.sectionBorder }}>
               <ContentBox style={{ borderBottom: `1px solid ${C.sectionBorder}` }}>
                 <SectionHeading>About Us</SectionHeading>
                 <p className="rn-body-text">{ARTIST.about}</p>
