@@ -42,6 +42,7 @@ export default function Home() {
             { href: "/styled/artists/ben-hazlewood", label: "Artist Profile" },
             { href: "/styled/booking", label: "Booking" },
             { href: "/styled/messages", label: "Messages" },
+            { href: "/styled/client-profile", label: "Client Profile" },
             { href: "/styled/sign-up", label: "Artist Sign-Up" },
           ].map(({ href, label }) => (
             <Link
