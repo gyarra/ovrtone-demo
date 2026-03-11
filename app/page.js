@@ -38,6 +38,7 @@ export default function Home() {
         <div className="flex flex-col items-center gap-2">
           <h2 className="text-xs font-semibold tracking-widest uppercase text-white/30">Styled Mocks</h2>
           {[
+            { href: "/styled/artists", label: "Artist Search" },
             { href: "/styled/artists/ben-hazlewood", label: "Artist Profile" },
             { href: "/styled/sign-up", label: "Artist Sign-Up" },
           ].map(({ href, label }) => (

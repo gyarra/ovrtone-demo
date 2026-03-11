@@ -16,10 +16,6 @@ import {
 const PHOTOS = [
   "/ben_hazlewood/web/DSC00209.jpg",
   "/ben_hazlewood/web/DSC00535.jpg",
-  "/ben_hazlewood/web/DSC00624.jpg",
-  "/ben_hazlewood/web/DSC00674.jpg",
-  "/ben_hazlewood/web/DSC00721.jpg",
-  "/ben_hazlewood/web/DSC02159.jpg",
   "/ben_hazlewood/web/DSC03770.jpg",
   "/ben_hazlewood/web/DSC03809.jpg",
   "/ben_hazlewood/web/DSC03816.jpg",
