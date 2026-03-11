@@ -22,18 +22,18 @@ export default function MediaStep() {
         </div>
       </div>
 
-      {/* Cover Photo */}
-      <div className="mb-6">
+      {/* Additional Photos */}
+      <div>
         <label className="rn-field-label block mb-2">
-          Cover Photo <span className="font-normal" style={{ color: "var(--rn-slate-400)" }}>(optional)</span>
+          Additional Photos <span className="font-normal" style={{ color: "var(--rn-slate-400)" }}>(up to 12)</span>
         </label>
         <div className="rn-upload-zone">
-          <div className="text-[28px] opacity-40 mb-2">🖼</div>
+          <div className="text-[28px] opacity-40 mb-2">📁</div>
           <div className="text-[13px] mb-2" style={{ color: "var(--rn-slate-500)" }}>
-            Wide banner image (recommended 1200×400)
+            Drag & drop or browse files
           </div>
           <div className="text-[11px]" style={{ color: "var(--rn-slate-400)" }}>
-            JPG, PNG, or WebP · Max 10 MB
+            JPG, PNG, or WebP · Max 10 MB each · Auto-compressed
           </div>
           <button className="rn-btn-back mt-3 text-[12px] px-4 py-1.5">Browse files</button>
         </div>
@@ -74,23 +74,6 @@ export default function MediaStep() {
             + Add another video
           </button>
         )}
-      </div>
-
-      {/* Additional Photos */}
-      <div>
-        <label className="rn-field-label block mb-2">
-          Additional Photos <span className="font-normal" style={{ color: "var(--rn-slate-400)" }}>(up to 12)</span>
-        </label>
-        <div className="rn-upload-zone">
-          <div className="text-[28px] opacity-40 mb-2">📁</div>
-          <div className="text-[13px] mb-2" style={{ color: "var(--rn-slate-500)" }}>
-            Drag & drop or browse files
-          </div>
-          <div className="text-[11px]" style={{ color: "var(--rn-slate-400)" }}>
-            JPG, PNG, or WebP · Max 10 MB each · Auto-compressed
-          </div>
-          <button className="rn-btn-back mt-3 text-[12px] px-4 py-1.5">Browse files</button>
-        </div>
       </div>
     </div>
   );

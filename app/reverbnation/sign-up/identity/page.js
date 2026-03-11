@@ -35,10 +35,6 @@ export default function IdentityStep() {
             <option>5+ piece</option>
           </select>
         </div>
-        <div>
-          <label className="rn-field-label block">Location *</label>
-          <input className="rn-field-input" placeholder="e.g. New York, NY" />
-        </div>
       </div>
 
       <div className="mb-4">

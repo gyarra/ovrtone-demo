@@ -9,8 +9,6 @@ const STEPS = [
   { id: 3, name: "Media", path: "/reverbnation/sign-up/media" },
   { id: 4, name: "Pricing", path: "/reverbnation/sign-up/pricing" },
   { id: 5, name: "Set Lists", path: "/reverbnation/sign-up/set-lists" },
-  { id: 6, name: "Availability", path: "/reverbnation/sign-up/availability" },
-  { id: 7, name: "Review", path: "/reverbnation/sign-up/review" },
 ];
 
 function ProgressBar({ currentIdx }) {
@@ -95,7 +93,9 @@ function NavButtons({ currentIdx }) {
           Next →
         </Link>
       ) : (
-        <button className="rn-btn-blue">Publish Profile</button>
+        <Link href="/reverbnation/artists/ben-hazlewood" className="rn-btn-blue no-underline">
+          View Profile →
+        </Link>
       )}
     </div>
   );

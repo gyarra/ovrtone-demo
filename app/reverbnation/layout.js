@@ -7,10 +7,12 @@ export const metadata = {
 
 export default function StyledDemoLayout({ children }) {
   return (
-    <div className="max-w-[1200px] mx-auto text-base text-[var(--rn-text-primary)] bg-[var(--rn-page-bg)]" style={{ fontFamily: "var(--rn-font)" }}>
-      <Header />
-      {children}
-      <Footer />
+    <div className="min-h-screen bg-[var(--rn-page-bg)]" style={{ fontFamily: "var(--rn-font)" }}>
+      <div className="max-w-[1200px] mx-auto text-base text-[var(--rn-text-primary)]">
+        <Header />
+        {children}
+        <Footer />
+      </div>
     </div>
   );
 }
