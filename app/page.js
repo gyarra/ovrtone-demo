@@ -13,15 +13,10 @@ export default function Home() {
       <p className="text-lg text-white/60 tracking-wide">
         Where performance meets resonance.
       </p>
-      <Link
-        href="/artists"
-        className="mt-6 px-8 py-3 border border-white/30 rounded-lg text-sm font-semibold tracking-widest uppercase hover:bg-white hover:text-black transition-colors"
-      >
-        Search
-      </Link>
 
-      <nav className="mt-8 flex flex-col items-center gap-4">
+      <nav className="mt-8 flex gap-16">
         <div className="flex flex-col items-center gap-2">
+          <h2 className="text-xs font-semibold tracking-widest uppercase text-white/30">Original Mocks</h2>
           {[
             { href: "/artists", label: "Artist Search" },
             { href: "/artists/band-1", label: "Artist Profile" },
@@ -40,12 +35,11 @@ export default function Home() {
           ))}
         </div>
 
-        <div className="mt-4 flex flex-col items-center gap-2">
-          <h2 className="text-xs font-semibold tracking-widest uppercase text-white/30">Styled Mockups</h2>
+        <div className="flex flex-col items-center gap-2">
+          <h2 className="text-xs font-semibold tracking-widest uppercase text-white/30">Styled Mocks</h2>
           {[
-            { href: "/reverbnation", label: "Ovrtone (Reverb Style)" },
-            { href: "/reverbnation/artists/ben-hazlewood", label: "Artist Profile" },
-            { href: "/reverbnation/sign-up", label: "Artist Sign-Up" },
+            { href: "/styled/artists/ben-hazlewood", label: "Artist Profile" },
+            { href: "/styled/sign-up", label: "Artist Sign-Up" },
           ].map(({ href, label }) => (
             <Link
               key={href}

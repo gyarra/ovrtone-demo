@@ -51,7 +51,7 @@ export default function OvrtonePage() {
         <div className="relative w-full h-[430px]">
           <div
             className="absolute inset-0 bg-cover bg-[rgb(31,32,37)]"
-            style={{ backgroundImage: "url('/reverb_background.jpeg')", backgroundPosition: "center top" }}
+            style={{ backgroundImage: "url('/hero_background.jpeg')", backgroundPosition: "center top" }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[rgba(0,0,0,0.6)] to-transparent" />
         </div>

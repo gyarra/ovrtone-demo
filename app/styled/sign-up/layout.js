@@ -4,11 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const STEPS = [
-  { id: 1, name: "Account", path: "/reverbnation/sign-up" },
-  { id: 2, name: "Identity", path: "/reverbnation/sign-up/identity" },
-  { id: 3, name: "Media", path: "/reverbnation/sign-up/media" },
-  { id: 4, name: "Pricing", path: "/reverbnation/sign-up/pricing" },
-  { id: 5, name: "Set Lists", path: "/reverbnation/sign-up/set-lists" },
+  { id: 1, name: "Account", path: "/styled/sign-up" },
+  { id: 2, name: "Identity", path: "/styled/sign-up/identity" },
+  { id: 3, name: "Media", path: "/styled/sign-up/media" },
+  { id: 4, name: "Pricing", path: "/styled/sign-up/pricing" },
+  { id: 5, name: "Set Lists", path: "/styled/sign-up/set-lists" },
 ];
 
 function ProgressBar({ currentIdx }) {
@@ -93,7 +93,7 @@ function NavButtons({ currentIdx }) {
           Next →
         </Link>
       ) : (
-        <Link href="/reverbnation/artists/ben-hazlewood" className="rn-btn-blue no-underline">
+        <Link href="/styled/artists/ben-hazlewood" className="rn-btn-blue no-underline">
           View Profile →
         </Link>
       )}
