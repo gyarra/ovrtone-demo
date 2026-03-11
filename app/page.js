@@ -45,6 +45,7 @@ export default function Home() {
           {[
             { href: "/reverbnation", label: "Ovrtone (Reverb Style)" },
             { href: "/reverbnation/artists/ben-hazlewood", label: "Artist Profile" },
+            { href: "/reverbnation/sign-up", label: "Artist Sign-Up" },
           ].map(({ href, label }) => (
             <Link
               key={href}

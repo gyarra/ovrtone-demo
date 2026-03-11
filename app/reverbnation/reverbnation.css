@@ -116,3 +116,83 @@
   background-color: var(--rn-slate-900);
   border-top: 1px solid var(--rn-slate-800);
 }
+
+/* Back button */
+.rn-btn-back {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--rn-slate-500);
+  border: 1px solid var(--rn-section-border);
+  border-radius: 3px;
+  padding: 10px 24px;
+  cursor: pointer;
+  background: var(--rn-white);
+}
+.rn-btn-back:hover {
+  background: var(--rn-slate-100);
+}
+
+/* Form field */
+.rn-field-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--rn-slate-600);
+  margin-bottom: 4px;
+}
+
+.rn-field-input {
+  width: 100%;
+  font-size: 14px;
+  color: var(--rn-text-primary);
+  border: 1px solid var(--rn-section-border);
+  border-radius: 3px;
+  padding: 8px 12px;
+  background: var(--rn-white);
+  outline: none;
+}
+.rn-field-input:focus {
+  border-color: var(--rn-blue);
+}
+.rn-field-input::placeholder {
+  color: var(--rn-slate-400);
+}
+
+.rn-field-note {
+  font-size: 11px;
+  color: var(--rn-slate-400);
+  margin-top: 2px;
+}
+
+.rn-textarea {
+  width: 100%;
+  font-size: 14px;
+  color: var(--rn-text-primary);
+  border: 1px solid var(--rn-section-border);
+  border-radius: 3px;
+  padding: 10px 12px;
+  background: var(--rn-white);
+  outline: none;
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+}
+.rn-textarea:focus {
+  border-color: var(--rn-blue);
+}
+.rn-textarea::placeholder {
+  color: var(--rn-slate-400);
+}
+
+/* Upload zone */
+.rn-upload-zone {
+  border: 2px dashed var(--rn-section-border);
+  border-radius: 6px;
+  padding: 24px;
+  text-align: center;
+  color: var(--rn-slate-400);
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.rn-upload-zone:hover {
+  border-color: var(--rn-blue);
+}

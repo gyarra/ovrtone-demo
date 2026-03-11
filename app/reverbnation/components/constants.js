@@ -24,7 +24,6 @@ export const FONT = "var(--rn-font)";
 export const NAV_ITEMS = ["Features", "Discover", "Crowd Picks", "Charts", "Opportunities", "Distribution", "Pricing"];
 
 export const FOOTER_LINKS = {
-  Ovrtone: ["Blog", "Careers", "Need Help?", "Forgot Password", "CONNECT"],
-  "Artist Membership": ["Overview", "Pricing", "Feature Index"],
-  Policies: ["Terms & Conditions", "Privacy", "Copyright", "Trademark", "Refunds", "Abuse"],
+  Ovrtone: ["Blog", "Careers", "Need Help?"],
+  Policies: ["Terms & Conditions", "Privacy", "Refunds"],
 };

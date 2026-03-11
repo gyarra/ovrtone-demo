@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <footer style={{ backgroundColor: "var(--rn-page-bg)" }}>
       <div className="max-w-[1200px] mx-auto px-6 pt-4 pb-8">
-        <div className="flex justify-between">
+        <div className="flex justify-center gap-32">
           {Object.entries(FOOTER_LINKS).map(([heading, links]) => (
             <div key={heading}>
               <h6 className="text-[16px] font-bold text-black mb-3">{heading}</h6>
