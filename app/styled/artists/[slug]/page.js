@@ -256,7 +256,7 @@ export default function ArtistProfilePage() {
         </div>
       </main>
 
-      <StickyBookingBar rate={ARTIST.rate} rateNote={ARTIST.rateNote} />
+      <StickyBookingBar rate={ARTIST.rate} rateNote={ARTIST.rateNote} href="/styled/booking" />
     </>
   );
 }

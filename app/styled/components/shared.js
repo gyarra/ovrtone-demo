@@ -138,14 +138,19 @@ export function AvailabilityCalendar({ availableDays = [], totalDays = 30, offse
 }
 
 /* ─── Sticky Booking Bar ─── */
-export function StickyBookingBar({ rate, rateNote, buttonText = "Book This Artist" }) {
+export function StickyBookingBar({ rate, rateNote, buttonText = "Book This Artist", href }) {
+  const btn = href ? (
+    <a href={href} className="rn-btn-blue no-underline">{buttonText}</a>
+  ) : (
+    <button className="rn-btn-blue">{buttonText}</button>
+  );
   return (
     <div className="rn-sticky-bar">
       <div className="mx-auto px-4 md:px-9 py-3 flex items-center justify-between">
         <div className="text-[16px] font-bold text-white">
           {rate} <span className="text-[13px] font-normal" style={{ color: "var(--rn-slate-400)" }}>· {rateNote}</span>
         </div>
-        <button className="rn-btn-blue">{buttonText}</button>
+        {btn}
       </div>
     </div>
   );

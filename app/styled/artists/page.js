@@ -11,6 +11,7 @@ const GENRES = [
 ];
 
 const SAMPLE_ARTISTS = [
+  { name: "The Ben Hazlewood Experience", genre: ["Rock", "Soul", "Funk"], price: 250, rating: 100, reviews: 11, bandSize: "5-piece", bookings: 14, image: "/ben_hazlewood/ben_avatar_1.jpg" },
   { name: "The Velvet Keys", genre: ["Jazz", "Soul"], price: 250, rating: 95, reviews: 24, bandSize: "5-piece", bookings: 18, image: "/bands/band_1.avif" },
   { name: "Neon Groove Collective", genre: ["Funk", "R&B"], price: 300, rating: 88, reviews: 12, bandSize: "4-piece", bookings: 9, image: "/bands/band_2.avif" },
   { name: "Burning Ember", genre: ["Folk", "Indie"], price: 150, rating: 100, reviews: 8, bandSize: "Duo", bookings: 14, image: "/bands/band_3.avif" },
