@@ -140,7 +140,7 @@ export default function BookingPage() {
 
           {/* CTA */}
           <Link
-            href="/styled"
+            href="/styled/messages"
             className="rn-btn-blue block text-center no-underline w-full py-3 text-[14px]"
           >
             Go to Messages
