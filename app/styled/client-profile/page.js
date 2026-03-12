@@ -1,9 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { C } from "../components/constants";
 import { ContentBox } from "../components/ui";
-import { SectionHeading, KeyDetailItem } from "../components/shared";
+import { SectionHeading, KeyDetailItem, PhotoGallery } from "../components/shared";
+
+const PHOTOS = [
+  "/client_photos/pexels-annamw-1047442.jpg",
+  "/client_photos/pexels-bence-szemerey-337043-6782458.jpg",
+  "/client_photos/pexels-danielnouri-8448547.jpg",
+  "/client_photos/pexels-introspectivedsgn-4065806.jpg",
+  "/client_photos/pexels-lstan-2147029.jpg",
+];
 
 const VENUE = {
   name: "The Velvet Lounge",
@@ -69,6 +77,11 @@ function EventTag({ children }) {
 }
 
 export default function ClientProfilePage() {
+  const [activeIdx, setActiveIdx] = useState(null);
+
+  const next = useCallback(() => setActiveIdx(i => (i + 1) % PHOTOS.length), []);
+  const prev = useCallback(() => setActiveIdx(i => ((i ?? 0) - 1 + PHOTOS.length) % PHOTOS.length), []);
+
   const completePct = Math.round(
     (completionItems.filter((i) => i.done).length / completionItems.length) * 100,
   );
@@ -114,20 +127,6 @@ export default function ClientProfilePage() {
             <KeyDetailItem label="Member Since" value={VENUE.stats.memberSince} />
             <KeyDetailItem label="Audience Size" value={VENUE.stats.audienceSize} />
             <div className="flex-1" />
-            <div className="flex gap-1">
-              <span
-                className="inline-block rounded-full text-[11px] font-semibold"
-                style={{ padding: "3px 10px", background: "#dcfce7", color: "#166534" }}
-              >
-                Verified Venue
-              </span>
-              <span
-                className="inline-block rounded-full text-[11px] font-semibold"
-                style={{ padding: "3px 10px", background: C.pageBg, color: C.textSecondary }}
-              >
-                Recurring Host
-              </span>
-            </div>
           </div>
           {/* Mobile stats */}
           <div className="md:hidden grid grid-cols-3 gap-3 pt-3">
@@ -141,12 +140,27 @@ export default function ClientProfilePage() {
       {/* MAIN CONTENT */}
       <main className="w-full pb-4">
         <div className="bg-white">
+
+          {/* Photo Gallery */}
+          <div className="border-t border-b border-[rgb(223,228,230)]">
+            <ContentBox>
+              <PhotoGallery
+                photos={PHOTOS}
+                activeIdx={activeIdx}
+                onSelect={(i) => setActiveIdx(activeIdx === i ? null : i)}
+                onPrev={prev}
+                onNext={next}
+                onClose={() => setActiveIdx(null)}
+              />
+            </ContentBox>
+          </div>
+
           {/* Two-column layout */}
           <div
             className="grid grid-cols-1 md:grid-cols-2"
             style={{ borderBottom: `1px solid ${C.sectionBorder}` }}
           >
-            {/* Left column: About + Working With Us */}
+            {/* Left column: About + Address */}
             <div className="flex-1 md:border-r" style={{ borderColor: C.sectionBorder }}>
               <ContentBox style={{ borderBottom: `1px solid ${C.sectionBorder}` }}>
                 <SectionHeading>Who Are We?</SectionHeading>
@@ -157,30 +171,6 @@ export default function ClientProfilePage() {
                 </div>
               </ContentBox>
 
-              <ContentBox style={{ borderBottom: `1px solid ${C.sectionBorder}` }}>
-                <SectionHeading>Working With Us</SectionHeading>
-                <div className="rn-body-text leading-[2]">
-                  {VENUE.workingWithUs.map((item, i) => (
-                    <div key={i}>{item}</div>
-                  ))}
-                </div>
-              </ContentBox>
-
-              <ContentBox>
-                <SectionHeading>Address</SectionHeading>
-                <div className="text-[14px] font-bold" style={{ color: C.textPrimary }}>
-                  {VENUE.name}
-                </div>
-                <div className="rn-body-text mt-1">
-                  {VENUE.address.map((line, i) => (
-                    <div key={i}>{line}</div>
-                  ))}
-                </div>
-              </ContentBox>
-            </div>
-
-            {/* Right column: Details + Links & Tags + Completeness */}
-            <div className="flex-1">
               <ContentBox style={{ borderBottom: `1px solid ${C.sectionBorder}` }}>
                 <SectionHeading>Venue Details</SectionHeading>
                 <div>
@@ -201,6 +191,18 @@ export default function ClientProfilePage() {
                   </span>
                 </div>
               </ContentBox>
+            </div>
+
+            {/* Right column: Working With Us + Genres + Completeness */}
+            <div className="flex-1">
+              <ContentBox style={{ borderBottom: `1px solid ${C.sectionBorder}` }}>
+                <SectionHeading>Working With Us</SectionHeading>
+                <div className="rn-body-text leading-[2]">
+                  {VENUE.workingWithUs.map((item, i) => (
+                    <div key={i}>{item}</div>
+                  ))}
+                </div>
+              </ContentBox>
 
               <ContentBox style={{ borderBottom: `1px solid ${C.sectionBorder}` }}>
                 <SectionHeading>Genres & Event Types</SectionHeading>
@@ -217,91 +219,10 @@ export default function ClientProfilePage() {
                   ))}
                 </div>
               </ContentBox>
-
-              <ContentBox>
-                <SectionHeading>Profile Completeness</SectionHeading>
-
-                {/* Progress header */}
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[13px] font-semibold" style={{ color: C.textPrimary }}>
-                    Your profile is {completePct}% complete
-                  </span>
-                  <span
-                    className="text-[12px] font-bold"
-                    style={{ color: completePct >= 80 ? "#16a34a" : "#f59e0b" }}
-                  >
-                    {completePct}%
-                  </span>
-                </div>
-
-                {/* Progress bar */}
-                <div
-                  className="flex h-2 rounded-full overflow-hidden mb-4"
-                  style={{ background: C.pageBg }}
-                >
-                  <div
-                    className="rounded-full transition-all"
-                    style={{
-                      width: `${completePct}%`,
-                      background: completePct >= 80 ? "#16a34a" : "#f59e0b",
-                    }}
-                  />
-                </div>
-
-                {/* Checklist */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1">
-                  {completionItems.map(({ label, done }) => (
-                    <div
-                      key={label}
-                      className="flex items-center gap-1.5 py-0.5 text-[11px]"
-                      style={{ color: done ? C.textPrimary : C.textMuted }}
-                    >
-                      <span
-                        className="w-4 h-4 rounded flex-shrink-0 flex items-center justify-center text-[9px]"
-                        style={{
-                          background: done ? "#dcfce7" : C.pageBg,
-                          border: done ? "1px solid #86efac" : `1px solid ${C.border}`,
-                        }}
-                      >
-                        {done ? "✓" : ""}
-                      </span>
-                      {label}
-                    </div>
-                  ))}
-                </div>
-
-                <div
-                  className="mt-3 rounded text-[11px] leading-relaxed"
-                  style={{
-                    padding: "8px 10px",
-                    background: "#fffbeb",
-                    border: "1px solid #fde68a",
-                    color: "#92400e",
-                  }}
-                >
-                  Complete your profile so artists know what to expect at your venue.
-                </div>
-              </ContentBox>
             </div>
           </div>
 
-          {/* Profile Actions */}
-          <ContentBox>
-            <div className="flex gap-2.5 flex-col md:flex-row">
-              <button
-                className="rn-btn-blue flex-1 text-center"
-                style={{ padding: "10px 20px" }}
-              >
-                Edit Profile
-              </button>
-              <button
-                className="rn-btn-back flex-1 text-center"
-                style={{ padding: "10px 20px" }}
-              >
-                Preview as Artist
-              </button>
-            </div>
-          </ContentBox>
+
         </div>
       </main>
     </>
