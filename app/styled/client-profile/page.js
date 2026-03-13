@@ -44,16 +44,6 @@ const VENUE_DETAILS = [
   ["Total Bookings", "47 completed"],
 ];
 
-const completionItems = [
-  { label: "Venue name", done: true },
-  { label: "Photos", done: true },
-  { label: "Who are we?", done: true },
-  { label: "Working with us", done: false },
-  { label: "Address", done: true },
-  { label: "Venue type", done: true },
-  { label: "Website URL", done: false },
-];
-
 function GenreTag({ children }) {
   return (
     <span
@@ -81,10 +71,6 @@ export default function ClientProfilePage() {
 
   const next = useCallback(() => setActiveIdx(i => (i + 1) % PHOTOS.length), []);
   const prev = useCallback(() => setActiveIdx(i => ((i ?? 0) - 1 + PHOTOS.length) % PHOTOS.length), []);
-
-  const completePct = Math.round(
-    (completionItems.filter((i) => i.done).length / completionItems.length) * 100,
-  );
 
   return (
     <>
